@@ -1,0 +1,28 @@
+version = 1
+SPDX-PackageName = "weyl-magic-stabilizer-frontier"
+SPDX-PackageSupplier = "Alexander Stephen Donahue <0_0@0thernes.art>"
+SPDX-PackageDownloadLocation = "https://github.com/0thernes/weyl-magic-stabilizer-frontier"
+
+[[annotations]]
+path = ["lean/**", "rust/**", "zig/**", "c/**", "cpp/**", "asm/**", "eshkol/**", "quantum_stack/**", "src/**", "reference/**", "tests/**", "scripts/**", "examples/**", ".github/**", ".cursor/**", "justfile", "pyproject.toml", "repo.yaml", "requirements.lock.txt", "repo-standard.schema.json", ".editorconfig", ".gitattributes", ".gitignore"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alexander Stephen Donahue"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["paper/**", "dist/**", "docs/**", "data/**", "results/**", "*.md", "llms*.txt", "CITATION.cff", "VERSION", "MANIFEST.sha256"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Alexander Stephen Donahue"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+[[annotations]]
+path = ["third_party/moonlab/**"]
+precedence = "override"
+SPDX-FileCopyrightText = "Moonlab Quantum Simulator Contributors"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["third_party/qgtl/**"]
+precedence = "override"
+SPDX-FileCopyrightText = "QGTL Contributors"
+SPDX-License-Identifier = "MIT"

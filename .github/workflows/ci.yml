@@ -1,0 +1,232 @@
+# SPDX-License-Identifier: Apache-2.0
+# Informational-only 6-kernel Lean + 9-language polyglot + LaTeX + SLSA provenance CI (Build Standard R1-R4)
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+
+jobs:
+  lean-6kernel:
+    name: Lean 4.35.0 (6 Independent Proof Kernels)
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install bubblewrap for paranoid kernel sandboxing
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq bubblewrap
+
+      - name: Install elan & Lean 4.35.0
+        run: |
+          curl https://elan.lean-lang.org/elan-init.sh -sSf | sh -s -- -y --default-toolchain leanprover/lean4:v4.35.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Build zero-Mathlib library & PalomarChallenge
+        working-directory: lean
+        run: |
+          lake build
+          lake build PalomarChallenge
+
+      - name: Audit axioms (31/31 strictly within propext, Classical.choice, Quot.sound)
+        working-directory: lean
+        run: |
+          lake env lean VerifyAxioms.lean > ../results/ci_lean_axioms.txt
+          cat ../results/ci_lean_axioms.txt
+          diff -u ../results/lean_axioms.txt ../results/ci_lean_axioms.txt
+          python3 ../scripts/check_readme_axioms.py
+
+      - name: Standalone leanchecker & leanchecker-paranoid
+        working-directory: lean
+        run: |
+          lake env leanchecker --fresh PalomarSolution
+          lake env leanchecker-paranoid --fresh PalomarSolution
+
+      - name: Replay all 15 Palomar targets across all 6 independent kernels
+        working-directory: lean
+        run: |
+          lake check --paranoid
+          lake comparator --config comparator.json --paranoid
+
+      - name: Tamper-injecting negative comparator & axiom-gate test
+        run: |
+          rm -rf /tmp/neg_lean_test
+          cp -r lean /tmp/neg_lean_test
+          # Test 1: Inject sorry into PalomarSolution.lean and assert comparator rejects it
+          python3 -c '
+          p = "/tmp/neg_lean_test/PalomarSolution.lean"
+          s = open(p).read()
+          old = "public theorem prove_t1a : T1aStmt := Solution.prove_t1a"
+          assert old in s, "target line not found"
+          open(p, "w").write(s.replace(old, "public theorem prove_t1a : T1aStmt := by sorry", 1))
+          '
+          (cd /tmp/neg_lean_test && lake build PalomarSolution && ! lake comparator --config comparator.json --paranoid)
+          # Test 2: Inject custom axiom into PalomarSolution.lean and assert comparator + axiom gate reject it
+          cp lean/PalomarSolution.lean /tmp/neg_lean_test/PalomarSolution.lean
+          python3 -c '
+          p = "/tmp/neg_lean_test/PalomarSolution.lean"
+          s = open(p).read()
+          old = "public theorem prove_t1a : T1aStmt := Solution.prove_t1a"
+          assert old in s, "target line not found"
+          rep = "public axiom bogus_ci_axiom : T1aStmt\npublic theorem prove_t1a : T1aStmt := bogus_ci_axiom"
+          open(p, "w").write(s.replace(old, rep, 1))
+          '
+          (cd /tmp/neg_lean_test && lake build PalomarSolution && ! lake comparator --config comparator.json --paranoid)
+          (cd /tmp/neg_lean_test && lake env lean VerifyAxioms.lean > /tmp/neg_axioms.txt)
+          grep -q "bogus_ci_axiom" /tmp/neg_axioms.txt
+          ! diff -u results/lean_axioms.txt /tmp/neg_axioms.txt >/dev/null
+          rm -rf /tmp/neg_lean_test /tmp/neg_axioms.txt
+
+  rust-matrix:
+    name: Rust Zero-Unsafe Verifier (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - name: Clippy (-D warnings), release tests & exhaustive Q(5,2)+Q(7,2) cert
+        working-directory: rust
+        run: |
+          cargo clippy --all-targets -- -D warnings
+          cargo test --release
+          cargo run --release -- --json
+
+  zig-check:
+    name: Zig 0.17.0 Comptime & Runtime Verifier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Zig 0.17.0
+        uses: mlugg/setup-zig@v2
+        with:
+          version: "0.17.0"
+      - name: Run Zig comptime tests & ReleaseFast verifier
+        working-directory: zig
+        run: |
+          zig test src/main.zig
+          zig run -O ReleaseFast src/main.zig
+
+  c11-cpp-asm-quantum:
+    name: ISO C11 + x86-64 NASM + ASan/UBSan + Fuzz + C++20 + Moonlab + QGTL
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install NASM
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq nasm
+      - name: Strict ISO C11 + NASM x86-64 (10k diff + 1,546,218 Q(7,2) orbits), ASan/UBSan & 100k Fuzz
+        run: |
+          make -C c clean test-nasm sanitize fuzz
+      - name: Strict ISO C++20 constexpr verifier
+        run: |
+          g++ -std=c++20 -O3 -Wall -Wextra -Wpedantic -Werror cpp/src/weyl_verify.cpp -o /tmp/weyl_verify_cpp
+          /tmp/weyl_verify_cpp
+      - name: Pinned Moonlab WASM + deterministic software QRNG mixer
+        run: |
+          gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o /tmp/qrng_mixer
+          node quantum_stack/moonlab_super_mub.mjs /tmp/qrng_mixer
+      - name: Pinned QGTL C differential geometry harness
+        run: |
+          gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/*.c -lm -o /tmp/qgtl_sic_metric
+          /tmp/qgtl_sic_metric
+
+  python-matrix:
+    name: Python Oracle, Hypothesis, Mutation & Differential (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pinned test dependencies
+        run: pip install -r requirements.lock.txt
+      - name: Run quickstart, pytest, 100% mutation suite, anti-drift, citation & blueprint checks
+        env:
+          PYTHONPATH: src:.
+        run: |
+          python examples/quickstart_demo.py
+          pytest -v tests/test_all.py
+          python scripts/mutate.py
+          python scripts/check_readme_axioms.py
+          python scripts/build_blueprint.py
+
+  latex-and-provenance:
+    name: AMS-LaTeX (0 Warnings), Clean-Room arXiv & SLSA Provenance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Tectonic
+        run: |
+          curl --proto '=https' --tlsv1.2 -fsSL https://drop-sh.fullyjustified.net | sh
+          sudo mv tectonic /usr/local/bin/tectonic
+      - name: Compile manuscript & verify zero warnings/overfulls/underfulls
+        run: |
+          mkdir -p paper/build
+          tectonic -X compile paper/main.tex --outdir paper/build --keep-logs
+          ! grep -E "Overfull|Underfull|Undefined|Error" paper/build/main.log
+      - name: Clean-room compile dist/arxiv_submission.tar.gz
+        run: |
+          mkdir -p /tmp/arxiv_cleanroom/out
+          tar -xzf dist/arxiv_submission.tar.gz -C /tmp/arxiv_cleanroom
+          tectonic -X compile /tmp/arxiv_cleanroom/main.tex --outdir /tmp/arxiv_cleanroom/out
+          test -s /tmp/arxiv_cleanroom/out/main.pdf
+      - name: Verify SHA-256 manifests, RFC 3161/OTS timestamps & generate SHA256SUMS
+        run: |
+          sha256sum -c data/MANIFEST.sha256
+          sha256sum -c MANIFEST.sha256
+          python3 scripts/stamp_timestamps.py --verify --negative-test
+          sha256sum dist/Donahue_2026_weyl_magic_stabilizer_frontier.pdf dist/arxiv_submission.tar.gz MANIFEST.sha256 data/MANIFEST.sha256.tsr data/MANIFEST.sha256.ots > SHA256SUMS
+          cat SHA256SUMS
+      - name: Generate SLSA build provenance attestation
+        if: github.event_name == 'push'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/Donahue_2026_weyl_magic_stabilizer_frontier.pdf
+            dist/arxiv_submission.tar.gz
+            MANIFEST.sha256
+            data/MANIFEST.sha256.tsr
+            data/MANIFEST.sha256.ots
+
+  lint-audit-security:
+    name: Lint, Typecheck, Security & Build Standard Audit (Report-Only)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.lock.txt
+      - name: Ruff & mypy --strict
+        run: |
+          ruff check src/ reference/ scripts/ tests/ examples/
+          mypy --strict src/ reference/ scripts/ tests/ examples/
+      - name: Build Standard v1.2.0 Audit
+        run: bash scripts/audit-repo.sh .
+      - name: Secret, placeholder & affiliation hygiene scan (gitleaks-style + policy audit)
+        run: |
+          ! grep -rnE "(ghp_[A-Za-z0-9]{30,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})" . --exclude-dir=.git --exclude-dir=.lake --exclude-dir=target
+          ! grep -rn "0thernes LLC" . --exclude-dir=.git --exclude-dir=.lake --exclude-dir=target --exclude="ci.yml"

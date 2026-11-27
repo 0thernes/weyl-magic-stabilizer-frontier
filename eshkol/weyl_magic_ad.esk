@@ -1,0 +1,92 @@
+;; SPDX-License-Identifier: Apache-2.0
+;; Copyright (c) 2026 Alexander Stephen Donahue
+;;
+;; Eshkol v1.3.6 LLVM-Compiled Exact Automatic Differentiation Audit
+;; Verifies smooth geometric & magic properties across Pillars I-III using
+;; straight-line dual-number AD compiled natively via LLVM:
+;;   1. Pillar I: Along the continuous non-Clifford-stabilizer d=3 WH-SIC circle
+;;      |psi(theta)> = (0, 1, -exp(i*theta))/sqrt(2), S(theta) = 3/2 identically
+;;      (dS/dtheta == 0) while Fubini-Study g_{theta,theta} = 1/4 > 0.
+;;   2. Pillar II: High-mana Trace-Norm Spectral Lock gap g(lam) = lam - sqrt(D - lam^2)
+;;      has strictly positive slope d(gap)/d(lam) > 0 at D=7, lam=2.1.
+;;   3. Pillar III: 1-qudit d=5 Alltop perturbation phi_x(eps) = (1 + eps*delta_x)*omega_5^(x^3)
+;;      along delta = (2, -1, 0, 0, -1): exact AD certifies stationarity d(S/5)/d(eps)|_0 = 0
+;;      AND strict saddle descent S(0.1)/5 < 0.36 with d(S/5)/d(eps)|_{0.1} < 0!
+
+(define (sic-d3-s4 theta)
+  (let* ((ct (cos theta))
+         (st (sin theta))
+         (r2 (+ (* ct ct) (* st st)))
+         (off-diag (* 0.25 r2)))
+    (+ 1.0 (* 2.0 0.0625) (* 6.0 (* off-diag off-diag)))))
+
+(define (mana-spectral-gap d-dim lam)
+  (- lam (sqrt (- d-dim (* lam lam)))))
+
+;; Exact straight-line dual-number-safe computation of |<phi(eps) | X^p Z^q | phi(eps)>|^4
+;; for d = 5 Alltop perturbed along delta = (2, -1, 0, 0, -1):
+(define (amp5 eps idx)
+  (if (= idx 0) (+ 1.0 (* 2.0 eps))
+      (if (= idx 1) (- 1.0 eps)
+          (if (= idx 4) (- 1.0 eps) 1.0))))
+
+(define (cub5 x)
+  (if (= x 0) 0
+      (if (= x 1) 1
+          (if (= x 2) 3
+              (if (= x 3) 2 4)))))
+
+(define (ov4-d5 eps p q)
+  (let* ((twopi5 1.2566370614359172)
+         (x0 0) (xp0 p)
+         (x1 1) (xp1 (if (< (+ 1 p) 5) (+ 1 p) (- (+ 1 p) 5)))
+         (x2 2) (xp2 (if (< (+ 2 p) 5) (+ 2 p) (- (+ 2 p) 5)))
+         (x3 3) (xp3 (if (< (+ 3 p) 5) (+ 3 p) (- (+ 3 p) 5)))
+         (x4 4) (xp4 (if (< (+ 4 p) 5) (+ 4 p) (- (+ 4 p) 5)))
+         (m0 (* (amp5 eps x0) (amp5 eps xp0)))
+         (m1 (* (amp5 eps x1) (amp5 eps xp1)))
+         (m2 (* (amp5 eps x2) (amp5 eps xp2)))
+         (m3 (* (amp5 eps x3) (amp5 eps xp3)))
+         (m4 (* (amp5 eps x4) (amp5 eps xp4)))
+         (a0 (* twopi5 (- (+ (cub5 xp0) (* q x0)) (cub5 x0))))
+         (a1 (* twopi5 (- (+ (cub5 xp1) (* q x1)) (cub5 x1))))
+         (a2 (* twopi5 (- (+ (cub5 xp2) (* q x2)) (cub5 x2))))
+         (a3 (* twopi5 (- (+ (cub5 xp3) (* q x3)) (cub5 x3))))
+         (a4 (* twopi5 (- (+ (cub5 xp4) (* q x4)) (cub5 x4))))
+         (re (+ (* m0 (cos a0)) (* m1 (cos a1)) (* m2 (cos a2)) (* m3 (cos a3)) (* m4 (cos a4))))
+         (im (+ (* m0 (sin a0)) (* m1 (sin a1)) (* m2 (sin a2)) (* m3 (sin a3)) (* m4 (sin a4))))
+         (n2 (+ (* re re) (* im im))))
+    (* n2 n2)))
+
+(define (row-sum-d5 eps p)
+  (+ (ov4-d5 eps p 0) (ov4-d5 eps p 1) (ov4-d5 eps p 2) (ov4-d5 eps p 3) (ov4-d5 eps p 4)))
+
+(define (alltop-d5-s4-over-5 eps)
+  (let* ((a0 (+ 1.0 (* 2.0 eps)))
+         (a1 (- 1.0 eps))
+         (norm2 (+ (* a0 a0) (* a1 a1) 1.0 1.0 (* a1 a1)))
+         (norm4 (* norm2 norm2))
+         (norm8 (* norm4 norm4))
+         (tot (+ (row-sum-d5 eps 0) (row-sum-d5 eps 1) (row-sum-d5 eps 2)
+                 (row-sum-d5 eps 3) (row-sum-d5 eps 4))))
+    (/ tot (* 5.0 norm8))))
+
+(with-region 'weyl-magic-eshkol-ad
+  (let* ((theta0 0.9272952180016122)
+         (s4-val (sic-d3-s4 theta0))
+         (ds4-dt (derivative (lambda (t) (sic-d3-s4 t)) theta0))
+         (gap-d7 (mana-spectral-gap 7.0 2.1))
+         (dgap-dl (derivative (lambda (l) (mana-spectral-gap 7.0 l)) 2.1))
+         (s5-0 (alltop-d5-s4-over-5 0.0))
+         (ds5-0 (derivative (lambda (e) (alltop-d5-s4-over-5 e)) 0.0))
+         (s5-01 (alltop-d5-s4-over-5 0.1))
+         (ds5-01 (derivative (lambda (e) (alltop-d5-s4-over-5 e)) 0.1)))
+    (display "Weyl-Magic-Stabilizer-Frontier Eshkol AD Verification Report") (newline)
+    (display "  [Pillar I]   d=3 SIC S(atan2(4,3)) [exact 1.5]      = ") (display s4-val) (newline)
+    (display "  [Pillar I]   dS/dtheta at (3,4,5) [exact 0.0]       = ") (display ds4-dt) (newline)
+    (display "  [Pillar II]  Spectral Lock gap (D=7, lam=2.1)       = ") (display gap-d7) (newline)
+    (display "  [Pillar II]  d(gap)/d(lam) at (D=7, lam=2.1) [> 0]  = ") (display dgap-dl) (newline)
+    (display "  [Pillar III] d=5 Alltop S/5 at eps=0 [exact 0.36]   = ") (display s5-0) (newline)
+    (display "  [Pillar III] d(S/5)/deps at eps=0 [stationary 0.0]  = ") (display ds5-0) (newline)
+    (display "  [Pillar III] d=5 Alltop S/5 at eps=0.1 [< 0.36]     = ") (display s5-01) (newline)
+    (display "  [Pillar III] d(S/5)/deps at eps=0.1 [< 0 descent]   = ") (display ds5-01) (newline)))

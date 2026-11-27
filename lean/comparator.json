@@ -1,0 +1,27 @@
+{
+  "challenge_module": "PalomarChallenge",
+  "solution_module": "PalomarSolution",
+  "theorem_names": [
+    "WeylMagicFrontier.Palomar.prove_t1a",
+    "WeylMagicFrontier.Palomar.prove_t1b",
+    "WeylMagicFrontier.Palomar.prove_t1c",
+    "WeylMagicFrontier.Palomar.prove_t1d",
+    "WeylMagicFrontier.Palomar.prove_t2a",
+    "WeylMagicFrontier.Palomar.prove_t2b",
+    "WeylMagicFrontier.Palomar.prove_t2c",
+    "WeylMagicFrontier.Palomar.prove_t3a",
+    "WeylMagicFrontier.Palomar.prove_t3b",
+    "WeylMagicFrontier.Palomar.prove_t3c",
+    "WeylMagicFrontier.Palomar.prove_t3d",
+    "WeylMagicFrontier.Palomar.prove_t4a",
+    "WeylMagicFrontier.Palomar.prove_t4b",
+    "WeylMagicFrontier.Palomar.prove_t4c",
+    "WeylMagicFrontier.Palomar.prove_all_frontier_theorems"
+  ],
+  "definition_names": [],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}

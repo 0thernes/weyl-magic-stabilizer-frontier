@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "engine": "Pinned Tsotchke Moonlab WASM classical simulator",
+  "wasm_sha256": "96eadbd927e77dbb6d2d6155c43f6440a8030a226b91c5b17d90ff890cfd0950",
+  "two_qubit_cs_plus_m2": 0.8266785731844675,
+  "two_qubit_mub_exact_ln_16_7": 0.8266785731844679,
+  "three_qubit_hoggar_m2": 1.5040773967762722,
+  "three_qubit_hoggar_exact_ln_9_2": 1.5040773967762742,
+  "three_qubit_mub_ceiling_ln_64_15": 1.4508328822574619,
+  "three_qubit_super_mub_margin": 0.05324451451881029,
+  "three_qubit_max_sic_equiangular_err": 4.0245584642661925e-16,
+  "moonlab_gate_calls": 10510,
+  "qrng_shots_xyz": 2048,
+  "qrng_empirical_exp_xyz": -0.3544921875,
+  "moonlab_exact_exp_xyz": -0.3333333333333339,
+  "qrng_classification": "Seeded classical xoshiro256**/SplitMix64 software mixer; no quantum hardware entropy claimed",
+  "qrng_seed": 20261126,
+  "qrng_sha256": "29d484bcc3c8e5bf69206f0642959d7453d72984ab94360a117a75f27cad7191"
+}

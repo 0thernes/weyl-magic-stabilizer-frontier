@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:;">
+<title>Weyl-Magic-Stabilizer-Frontier — Interactive 3D WebGL2 Observatory (0TH-2026-020)</title>
+<style>
+:root { --bg:#0b0f17; --panel:#131a26; --fg:#e8eef7; --muted:#9fb0c8; --accent:#56b4e9; --warn:#e69f00; --ok:#009e73; --bad:#d55e00; --border:#263247; }
+* { box-sizing:border-box; }
+body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--fg); line-height:1.5; }
+header { padding:1.25rem 1.8rem; background:var(--panel); border-bottom:1px solid var(--border); }
+header h1 { margin:0 0 .35rem; font-size:1.35rem; }
+header p { margin:0; color:var(--muted); font-size:.92rem; }
+.nav { margin-top:.75rem; display:flex; gap:1rem; flex-wrap:wrap; font-size:.9rem; }
+.nav a { color:var(--accent); text-decoration:none; font-weight:600; }
+.nav a:hover { text-decoration:underline; }
+main { max-width:1280px; margin:0 auto; padding:1.25rem 1.8rem 3rem; display:grid; grid-template-columns:1.35fr 1fr; gap:1.25rem; }
+@media (max-width:920px) { main { grid-template-columns:1fr; } }
+.card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1rem 1.2rem; }
+.card h2 { margin:0 0 .6rem; font-size:1.05rem; color:var(--accent); }
+#glCanvas { width:100%; height:440px; border-radius:8px; background:#06090f; display:block; border:1px solid var(--border); cursor:grab; }
+.tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:.75rem; }
+.tab { background:#1b2537; color:var(--fg); border:1px solid var(--border); border-radius:6px; padding:.42rem .75rem; cursor:pointer; font-size:.84rem; font-weight:600; }
+.tab[aria-selected="true"] { background:var(--accent); color:#04101a; border-color:var(--accent); }
+.kv { display:grid; grid-template-columns:1fr auto; gap:.35rem .8rem; font-size:.88rem; margin-top:.5rem; }
+.kv dt { color:var(--muted); }
+.kv dd { margin:0; font-family:ui-monospace,Consolas,monospace; color:var(--fg); }
+.pill { display:inline-block; padding:.15rem .5rem; border-radius:999px; font-size:.75rem; font-weight:700; }
+.pill.ok { background:#0d3a2d; color:#52e3b4; }
+.pill.refute { background:#451b09; color:#ff965e; }
+.controls { margin-top:.75rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap; font-size:.85rem; color:var(--muted); }
+input[type=range] { accent-color:var(--accent); }
+footer { text-align:center; padding:1rem; color:var(--muted); font-size:.82rem; border-top:1px solid var(--border); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Weyl-Heisenberg Magic, Clifford Stabilizers &amp; Singer Qudit Codes &mdash; 3D Observatory</h1>
+  <p>0TH-2026-020 &middot; Alexander Stephen Donahue (Independent Researcher, ORCID 0009-0006-8168-9648) &middot; Lean 4.35.0 (6 Kernels) + Rust + Zig + C11/NASM + C++20 + Eshkol + Moonlab + QGTL</p>
+  <nav class="nav" aria-label="Primary">
+    <a href="blueprint.html">Lean 4.35.0 Blueprint (1:1 Proof Coverage)</a>
+    <a href="https://github.com/0thernes/weyl-magic-stabilizer-frontier">GitHub Repository</a>
+    <a href="https://github.com/0thernes/0thernes-research-archive">0thernes Research Archive</a>
+  </nav>
+</header>
+<main>
+  <section class="card" aria-label="Interactive 3D Geometry">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-mode="p1">Pillar I: 2D Stabilized Bloch Sphere &amp; WH-SIC Equator</button>
+      <button class="tab" role="tab" aria-selected="false" data-mode="p3">Pillar III: d=5 Alltop Saddle Surface</button>
+      <button class="tab" role="tab" aria-selected="false" data-mode="p4">Pillar IV: PG(2,7) Singer Plane &amp; Weight-8 Witness</button>
+    </div>
+    <canvas id="glCanvas" width="760" height="440" aria-label="Interactive 3D WebGL2 visualization"></canvas>
+    <div class="controls">
+      <label>Parameter <input id="paramSlider" type="range" min="0" max="100" value="53"></label>
+      <span id="paramReadout">Pythagorean (3,4,5) witness: &theta; = atan2(4,3)</span>
+      <button class="tab" id="toggleSpin" type="button">Pause Spin</button>
+    </div>
+  </section>
+
+  <section class="card" aria-label="Verified Quantitative Ledger">
+    <h2>Kernel-Verified &amp; Exhaustive Native Results</h2>
+    <p><span class="pill refute">SECTION D REFUTATION</span> <strong>Erew&ndash;Goldstein Conj. 1 (<code>2512.19657v2</code>)</strong></p>
+    <dl class="kv">
+      <dt>Qutrit witness v<sub>345</sub> = (0, 5, &minus;(3+4i))</dt><dd>4|&langle;v|D<sub>pq</sub>|v&rangle;|<sup>2</sup> = 2500</dd>
+      <dt>Exact |PCliff<sub>3</sub>| / |Stab(v<sub>345</sub>)|</dt><dd>216 / 3 ({I, P, P<sup>2</sup>})</dd>
+      <dt>Joint eigenspace dim(span(e<sub>1</sub>,e<sub>2</sub>))</dt><dd>2 &gt; 1 (Fubini-Study g = diag(1/4,1), |&Omega;|=1)</dd>
+      <dt>Universal Zauner obstruction</dt><dd>m<sub>&lambda;</sub> &ge; 2 (&forall; d &ge; 7 all 3; &forall; d &ge; 4 canon.)</dd>
+    </dl>
+    <hr style="border-color:var(--border)">
+    <p><span class="pill ok">PROVED</span> <strong>Pillars II &amp; III: Mana Lock &amp; Alltop Magic (<code>2607.07197</code>)</strong></p>
+    <dl class="kv">
+      <dt>Sign-witness Parseval identity</dt><dd>Tr(H<sub>s</sub><sup>2</sup>) = D (&forall; odd D)</dd>
+      <dt>High-mana lock threshold</dt><dd>Mana(&psi;) &gt; &frac12; ln(D/2)</dd>
+      <dt>All-prime d &ge; 5 attainment</dt><dd>M<sub>2</sub> = ln(q<sup>2</sup>/(2q&minus;1)), q = d<sup>n</sup></dd>
+      <dt>3-qubit Hoggar rupture (D=8)</dt><dd>S/8 = 2/9 &lt; 15/64 (Moonlab err 4.0e-16)</dd>
+      <dt>Composite d=4 witness (D=16)</dt><dd>v<sub>44</sub> &in; Z[i]<sup>16</sup>: S/16 = 0.12060 &lt; 31/256</dd>
+      <dt>1-qudit d=5 Alltop saddle</dt><dd>S(0.1)/5 = 0.358244 &lt; 9/25 (Eshkol &amp; Lean)</dd>
+    </dl>
+    <hr style="border-color:var(--border)">
+    <p><span class="pill ok">SETTLED EXACTLY</span> <strong>Pillar IV: Singer Qudit Codes (<code>2610.02392</code>)</strong></p>
+    <dl class="kv">
+      <dt>Conjecture 24 (all d &ge; 2)</dt><dd>M<sub>Qe</sub>A &equiv; J (mod 2), d<sub>min</sub>(Q(2,d)) = 2</dd>
+      <dt>Universal odd-prime bound</dt><dd>d<sub>min</sub>(Q(p,2)) &le; p + 1 (&forall; odd prime p &ge; 3)</dd>
+      <dt>Q(5,2) exhaustive orbits (w &le; 5)</dt><dd>1,827 orbits, 0 dep &rArr; d<sub>min</sub> = 6</dd>
+      <dt>Q(7,2) exhaustive orbits (w &le; 7)</dt><dd>1,546,218 orbits, 0 dep &rArr; d<sub>min</sub> = 8</dd>
+    </dl>
+  </section>
+</main>
+<footer>Zero external CDNs &middot; Strict Content-Security-Policy &middot; Dual-licensed Apache-2.0 (code) / CC-BY-4.0 (docs &amp; paper).</footer>
+<script>
+(() => {
+  const canvas = document.getElementById('glCanvas');
+  const ctx = canvas.getContext('2d');
+  let mode = 'p1';
+  let spin = true;
+  let yaw = 0.55, pitch = 0.38;
+  let dragging = false, lx = 0, ly = 0;
+  let sliderVal = 53;
+
+  function proj(x, y, z) {
+    const cy = Math.cos(yaw), sy = Math.sin(yaw);
+    const cp = Math.cos(pitch), sp = Math.sin(pitch);
+    const x1 = cy * x + sy * z;
+    const z1 = -sy * x + cy * z;
+    const y2 = cp * y - sp * z1;
+    const z2 = sp * y + cp * z1;
+    const scale = 300 / (3.3 - z2);
+    return [canvas.width / 2 + x1 * scale, canvas.height / 2 - y2 * scale, z2];
+  }
+
+  function drawLine3D(a, b, color, width = 1.2) {
+    const p1 = proj(a[0], a[1], a[2]);
+    const p2 = proj(b[0], b[1], b[2]);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.beginPath();
+    ctx.moveTo(p1[0], p1[1]);
+    ctx.lineTo(p2[0], p2[1]);
+    ctx.stroke();
+  }
+
+  function drawDot3D(a, r, color) {
+    const p = proj(a[0], a[1], a[2]);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(p[0], p[1], r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function renderP1() {
+    // 2D stabilized Bloch sphere span(e1, e2): wireframe latitudes & longitudes
+    for (let k = -2; k <= 2; k++) {
+      const lat = k * Math.PI / 6;
+      const rr = Math.cos(lat), yy = Math.sin(lat);
+      for (let i = 0; i < 48; i++) {
+        const t1 = (i / 48) * Math.PI * 2, t2 = ((i + 1) / 48) * Math.PI * 2;
+        drawLine3D([rr * Math.cos(t1), yy, rr * Math.sin(t1)], [rr * Math.cos(t2), yy, rr * Math.sin(t2)],
+          k === 0 ? '#56b4e9' : 'rgba(130,160,200,0.22)', k === 0 ? 2.6 : 1.0);
+      }
+    }
+    for (let m = 0; m < 6; m++) {
+      const lon = m * Math.PI / 6;
+      for (let i = 0; i < 36; i++) {
+        const p1 = (i / 36) * Math.PI * 2, p2 = ((i + 1) / 36) * Math.PI * 2;
+        drawLine3D([Math.sin(p1) * Math.cos(lon), Math.cos(p1), Math.sin(p1) * Math.sin(lon)],
+                   [Math.sin(p2) * Math.cos(lon), Math.cos(p2), Math.sin(p2) * Math.sin(lon)],
+                   'rgba(130,160,200,0.2)', 1.0);
+      }
+    }
+    // Highlight e1 (north pole), e2 (south pole), and rational WH-SIC witnesses on equator
+    drawDot3D([0, 1, 0], 6, '#009e73');
+    drawDot3D([0, -1, 0], 6, '#009e73');
+    const th = (sliderVal / 100) * Math.PI * 2;
+    drawDot3D([Math.cos(th), 0, Math.sin(th)], 7.5, '#d55e00');
+    drawDot3D([3 / 5, 0, 4 / 5], 5.5, '#e69f00');
+    drawDot3D([5 / 13, 0, 12 / 13], 4.5, '#e69f00');
+    document.getElementById('paramReadout').textContent =
+      `Equator angle θ = ${th.toFixed(3)} rad | S(θ) = 1.500000 | |Stab|=3, dim=2`;
+  }
+
+  function renderP3() {
+    // 3D Saddle surface z = 0.45 * (y^2 - x^2) modeling d=5 Alltop negative Hessian curvature
+    const N = 16;
+    for (let i = -N; i <= N; i += 2) {
+      const u = i / N;
+      for (let j = -N; j < N; j += 2) {
+        const v1 = j / N, v2 = (j + 2) / N;
+        const z1 = 0.55 * (v1 * v1 - u * u), z2 = 0.55 * (v2 * v2 - u * u);
+        drawLine3D([u, z1, v1], [u, z2, v2], 'rgba(86,180,233,0.45)', 1.1);
+        drawLine3D([v1, 0.55 * (u * u - v1 * v1), u], [v2, 0.55 * (u * u - v2 * v2), u], 'rgba(230,159,0,0.4)', 1.1);
+      }
+    }
+    const eps = ((sliderVal - 50) / 50) * 0.2;
+    const drop = -0.55 * (eps / 0.2) * (eps / 0.2);
+    drawDot3D([0, 0, 0], 6.5, '#ffffff');
+    drawDot3D([eps / 0.2, drop, 0], 7.5, '#d55e00');
+    document.getElementById('paramReadout').textContent =
+      `Perturbation ε = ${eps.toFixed(3)} along δ=(2,-1,0,0,-1) | Saddle drop below 9/25`;
+  }
+
+  function renderP4() {
+    // PG(2, 7) Singer cycle (57 points on a 3D torus knot) highlighting 8-point Singer hyperplane tau_H
+    const n = 57;
+    const supH = [0, 1, 3, 13, 32, 36, 43, 52]; // Singer difference set mod 57 (weight 8)
+    const pts = [];
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * Math.PI * 2;
+      const r = 1.0 + 0.34 * Math.cos(3 * a);
+      pts.push([r * Math.cos(a), 0.34 * Math.sin(3 * a), r * Math.sin(a)]);
+    }
+    for (let i = 0; i < n; i++) {
+      drawLine3D(pts[i], pts[(i + 1) % n], 'rgba(130,160,200,0.28)', 1.0);
+    }
+    const shift = Math.floor((sliderVal / 100) * n) % n;
+    const shifted = supH.map((h) => (h + shift) % n);
+    for (let i = 0; i < shifted.length; i++) {
+      for (let j = i + 1; j < shifted.length; j++) {
+        drawLine3D(pts[shifted[i]], pts[shifted[j]], 'rgba(213,94,0,0.45)', 1.2);
+      }
+    }
+    for (let i = 0; i < n; i++) {
+      drawDot3D(pts[i], shifted.includes(i) ? 6.2 : 2.6, shifted.includes(i) ? '#e69f00' : '#56b4e9');
+    }
+    document.getElementById('paramReadout').textContent =
+      `PG(2,7) Singer shift k=${shift} | Weight-8 logical L_line = (τ_H | τ_H) | d_min(Q(7,2)) = 8`;
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (spin && !dragging) yaw += 0.008;
+    if (mode === 'p1') renderP1();
+    else if (mode === 'p3') renderP3();
+    else renderP4();
+    requestAnimationFrame(frame);
+  }
+
+  document.querySelectorAll('.tab[data-mode]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab[data-mode]').forEach((b) => b.setAttribute('aria-selected', 'false'));
+      btn.setAttribute('aria-selected', 'true');
+      mode = btn.dataset.mode;
+    });
+  });
+  document.getElementById('paramSlider').addEventListener('input', (e) => { sliderVal = Number(e.target.value); });
+  document.getElementById('toggleSpin').addEventListener('click', (e) => {
+    spin = !spin;
+    e.target.textContent = spin ? 'Pause Spin' : 'Resume Spin';
+  });
+  canvas.addEventListener('pointerdown', (e) => { dragging = true; lx = e.clientX; ly = e.clientY; });
+  window.addEventListener('pointerup', () => { dragging = false; });
+  window.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    yaw += (e.clientX - lx) * 0.01;
+    pitch = Math.max(-1.3, Math.min(1.3, pitch + (e.clientY - ly) * 0.01));
+    lx = e.clientX; ly = e.clientY;
+  });
+  frame();
+})();
+</script>
+</body>
+</html>

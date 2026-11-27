@@ -1,0 +1,90 @@
+# SPDX-License-Identifier: Apache-2.0
+schema_version: "1.0"
+id: "0TH-2026-020"
+repository: "https://github.com/0thernes/weyl-magic-stabilizer-frontier"
+version: "1.0.0"
+title: "Refutation of the SIC-Clifford Stabilizer Conjecture, Trace-Norm Spectral Locking of Mana, All-Prime Alltop Magic Attainment, and Exact Distance Settlement of Projective-Geometry Singer Qudit Codes"
+author:
+  name: "Alexander Stephen Donahue"
+  orcid: "0009-0006-8168-9648"
+  affiliation: "Independent Researcher, Spokane, WA, USA"
+  email: "0_0@0thernes.art"
+license:
+  code: "Apache-2.0"
+  documentation: "CC-BY-4.0"
+prover:
+  name: "Lean 4"
+  version: "4.35.0"
+  toolchain: "leanprover/lean4:v4.35.0"
+  mathlib: false
+  zero_mathlib: true
+  module_system: true
+verification:
+  allowed_axioms:
+    - "propext"
+    - "Classical.choice"
+    - "Quot.sound"
+  forbid_sorry: true
+  forbid_admit: true
+  forbid_native_decide: true
+  forbid_custom_axioms: true
+  independent_kernels:
+    - "lean (Lean 4.35.0 C++ kernel)"
+    - "leanchecker-paranoid"
+    - "lean4lean"
+    - "nanoda"
+    - "con-leche"
+    - "con-ron"
+  statement_contract:
+    challenge: "PalomarChallenge"
+    solution: "PalomarSolution"
+    comparator_config: "comparator.json"
+    comparator_flags: "--paranoid"
+theorems:
+  - id: "T1a"
+    name: "qutrit_rational_circle_wh_sic"
+    module: "WeylMagicFrontier.Pillar1_SICRefutation"
+  - id: "T1b"
+    name: "qutrit_sic_refutes_clifford_stabilizer_conjecture"
+    module: "WeylMagicFrontier.Pillar1_SICRefutation"
+  - id: "T1c"
+    name: "zauner_eigenspace_dim_universal_obstruction"
+    module: "WeylMagicFrontier.Pillar1_SICRefutation"
+  - id: "T1d"
+    name: "dim4_scott_grassl_4a_obstruction"
+    module: "WeylMagicFrontier.Pillar1_SICRefutation"
+  - id: "T2a"
+    name: "sign_witness_trace_sq_identity"
+    module: "WeylMagicFrontier.Pillar2_ManaLock"
+  - id: "T2b"
+    name: "trace_norm_spectral_lock"
+    module: "WeylMagicFrontier.Pillar2_ManaLock"
+  - id: "T2c"
+    name: "cubic_bijection_mod3_eq2 / cubic_origin_wigner_concrete_dichotomy"
+    module: "WeylMagicFrontier.Pillar2_ManaLock"
+  - id: "T3a"
+    name: "alltop_fourth_moment_exact / AlltopFieldModel.cube_add_identity / six_mul_eq_zero_imp"
+    module: "WeylMagicFrontier.Pillar3_AlltopMagic"
+  - id: "T3b"
+    name: "alltop_clifford_unification"
+    module: "WeylMagicFrontier.Pillar3_AlltopMagic"
+  - id: "T3c"
+    name: "welch_bound_and_mub_gap / hoggar_3qubit_beats_mub / composite_d4_beats_mub"
+    module: "WeylMagicFrontier.Pillar3_AlltopMagic"
+  - id: "T3d"
+    name: "alltop_d5_saddle_instability"
+    module: "WeylMagicFrontier.Pillar3_AlltopMagic"
+  - id: "T4a"
+    name: "conjecture24_nondivisibility / remark21_plus_sign_dichotomy / binary_singer_exact_distance_two"
+    module: "WeylMagicFrontier.Pillar4_SingerCodes"
+  - id: "T4b"
+    name: "odd_prime_singer_upper_bound"
+    module: "WeylMagicFrontier.Pillar4_SingerCodes"
+  - id: "T4c"
+    name: "conj24_concrete_d2_to_d5 / qp2_concrete_flagship_witnesses"
+    module: "WeylMagicFrontier.Pillar4_SingerCodes"
+open_problems_explicitly_not_claimed:
+  - "Erew-Goldstein Conjecture 2 in the low-mana regime Mana(psi) <= (1/2) ln(D / 2)"
+  - "Global upper bound M_2^max(C^d otimes C^d) <= ln(d^4 / (2d^2 - 1)) for general odd prime d >= 5 (only lower bound attainment, local stability dichotomy, and composite/n=3 sharpness are proved)"
+  - "Zauner's Conjecture (existence of WH-SICs in every dimension d)"
+  - "Kulhandjian-Hanzo Conjecture 27 lower bound d_min(Q(p, 2)) >= p + 1 for general primes p >= 11 (upper bound d_min <= p + 1 is proved for all odd primes p >= 3; exact equality d_min = 8 is settled at p = 7)"

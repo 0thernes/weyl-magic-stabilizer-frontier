@@ -1,0 +1,159 @@
+{
+  "status": "PASS",
+  "entries": [
+    {
+      "source": "arxiv",
+      "id": "2512.19657",
+      "http": 200,
+      "live_title": "Extremizing Measures of Magic on Pure States by Clifford-stabilizer States",
+      "title_overlap": 1.0,
+      "retracted": false,
+      "ok": true,
+      "key": "ErewGoldstein2026",
+      "bib_title": "Extremizing Measures of Magic on Pure States by Clifford-stabilizer States"
+    },
+    {
+      "source": "arxiv",
+      "id": "2607.07197",
+      "http": 200,
+      "live_title": "Analytical Landscape of Maximal Magic for Two-Qutrit States and Beyond",
+      "title_overlap": 1.0,
+      "retracted": false,
+      "ok": true,
+      "key": "Knipfer2026",
+      "bib_title": "Analytical Landscape of Maximal Magic for Two-Qutrit States and Beyond"
+    },
+    {
+      "source": "arxiv",
+      "id": "2610.02392",
+      "http": 200,
+      "live_title": "Singer-Difference-Set Qudit Stabilizer Codes from Non-Degenerate Quadrics in PG(d,q)PG(d,q): Construction, Structural Theorems, and Monte-Carlo Performance",
+      "title_overlap": 1.0,
+      "retracted": false,
+      "ok": true,
+      "key": "KulhandjianHanzo2026",
+      "bib_title": "Singer-Difference-Set Qudit Stabilizer Codes from Non-Degenerate Quadrics in PG(d,q): Construction, Structural Theorems, and Monte-Carlo Performance"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1063/1.1737053",
+      "http": 200,
+      "live_title": "Symmetric informationally complete quantum measurements",
+      "title_overlap": 1.0,
+      "retracted": false,
+      "ok": true,
+      "key": "Renes2004",
+      "bib_title": "Symmetric Informationally Complete Quantum Measurements"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1063/1.1896384",
+      "http": 200,
+      "live_title": "Symmetric informationally complete\u2013positive operator valued measures and the extended Clifford group",
+      "title_overlap": 0.75,
+      "retracted": false,
+      "ok": true,
+      "key": "Appleby2005",
+      "bib_title": "SIC-POVMs and the Extended Clifford Group"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1063/1.3374022",
+      "http": 200,
+      "live_title": "Symmetric informationally complete positive-operator-valued measures: A new computer study",
+      "title_overlap": 0.667,
+      "retracted": false,
+      "ok": true,
+      "key": "ScottGrassl2010",
+      "bib_title": "SIC-POVMs: A new computer study"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1142/S0219749911006776",
+      "http": 200,
+      "live_title": "QUANTUM DESIGNS: FOUNDATIONS OF A NONCOMMUTATIVE DESIGN THEORY",
+      "title_overlap": 1.0,
+      "retracted": false,
+      "ok": true,
+      "key": "Zauner2011",
+      "bib_title": "Quantum Designs: Foundations of a Noncommutative Design Theory"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1063/1.2393152",
+      "http": 200,
+      "live_title": "Hudson\u2019s theorem for finite-dimensional quantum systems",
+      "title_overlap": 1.0,
+      "retracted": false,
+      "ok": true,
+      "key": "Gross2006",
+      "bib_title": "Hudson's Theorem for finite-dimensional quantum systems"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1088/1367-2630/16/1/013009",
+      "http": 200,
+      "live_title": "The resource theory of stabilizer quantum computation",
+      "title_overlap": 1.0,
+      "retracted": false,
+      "ok": true,
+      "key": "Veitch2014",
+      "bib_title": "The Resource Theory of Stabilizer Computation"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1103/PhysRevLett.128.050402",
+      "http": 200,
+      "live_title": "Stabilizer R\u00e9nyi Entropy",
+      "title_overlap": 0.667,
+      "retracted": false,
+      "ok": true,
+      "key": "Leone2022",
+      "bib_title": "Stabilizer R{\\'e}nyi Entropy"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1007/s11128-023-04186-9",
+      "http": 200,
+      "live_title": "Stabilizer R\u00e9nyi entropy on qudits",
+      "title_overlap": 0.75,
+      "retracted": false,
+      "ok": true,
+      "key": "WangLi2023",
+      "bib_title": "Stabilizer R{\\'e}nyi entropy on qudits"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1109/TIT.1980.1056185",
+      "http": 200,
+      "live_title": "Complex sequences with low periodic correlations (Corresp.)",
+      "title_overlap": 1.0,
+      "retracted": false,
+      "ok": true,
+      "key": "Alltop1980",
+      "bib_title": "Complex sequences with low periodic correlations"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1023/A:1005009727232",
+      "http": 200,
+      "live_title": "64 Lines from a Quaternionic Polytope",
+      "title_overlap": 1.0,
+      "retracted": false,
+      "ok": true,
+      "key": "Hoggar1998",
+      "bib_title": "64 Lines from a Quaternionic Polytope"
+    },
+    {
+      "source": "crossref",
+      "id": "10.1090/S0002-9947-1938-1501951-4",
+      "http": 200,
+      "live_title": "A theorem in finite projective geometry and some applications to number theory",
+      "title_overlap": 1.0,
+      "retracted": false,
+      "ok": true,
+      "key": "Singer1938",
+      "bib_title": "A theorem in finite projective geometry and some applications to number theory"
+    }
+  ]
+}

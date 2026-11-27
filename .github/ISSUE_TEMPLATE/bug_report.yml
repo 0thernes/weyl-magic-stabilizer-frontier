@@ -1,0 +1,28 @@
+name: Bug or Mathematical Error Report
+description: Report a verification discrepancy, Lean proof concern, or mathematical error
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: class
+    attributes:
+      label: Finding Class
+      options:
+        - bug
+        - error
+        - issue
+        - problem
+        - concern
+        - dilemma
+        - conflict
+        - gap
+        - hole
+        - blindspot
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Details and Reproduction Steps
+      description: Include exact file, theorem/test name, command run, and observed vs. expected output.
+    validations:
+      required: true

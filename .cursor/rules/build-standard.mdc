@@ -1,0 +1,12 @@
+---
+description: Canonical build standard and zero-Mathlib Lean 4.35.0 rules for weyl-magic-stabilizer-frontier
+globs: ["**/*"]
+alwaysApply: true
+---
+
+Follow `AGENTS.md` without exception:
+- Zero Mathlib, zero `sorry` outside `PalomarChallenge.lean`, zero `admit`, zero `native_decide`, zero custom axioms in `lean/`.
+- Every `.lean` file begins with `module` and verifies cleanly under strict axioms `{propext, Classical.choice, Quot.sound}` (31/31 audited declarations).
+- Separate `[LEAN-6K]`, `[EXACT-COMP]`, and `[NUM-STACK]` tags; never claim quantum hardware entropy for `quantum_stack/qrng_mixer.c`.
+- Author identity: Alexander Stephen Donahue (Independent Researcher, Spokane, WA, USA, ORCID 0009-0006-8168-9648).
+- Direct commits to `main`, unsigned commits/tags, report-only CI, Apache-2.0 code + CC-BY-4.0 docs/paper.

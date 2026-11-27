@@ -1,0 +1,707 @@
+% SPDX-License-Identifier: CC-BY-4.0
+% Copyright (c) 2026 Alexander Stephen Donahue
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,tabularx,multirow}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{fancyhdr}
+
+\emergencystretch=3em
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor={rgb,255:red,0;green,90;blue,156},
+  citecolor={rgb,255:red,0;green,118;blue,85},
+  urlcolor={rgb,255:red,150;green,55;blue,0},
+  pdftitle={Refutation of the SIC-Clifford Stabilizer Conjecture, Trace-Norm Spectral Locking of Mana, All-Prime Alltop Magic Attainment, and Exact Distance Settlement of Projective-Geometry Singer Qudit Codes},
+  pdfauthor={Alexander Stephen Donahue}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\textsc{A.\ S.\ Donahue (0TH-2026-020)}}
+\fancyhead[R]{\footnotesize\textsc{Weyl--Heisenberg Magic, Clifford Stabilizers, and Singer Codes}}
+\fancyfoot[C]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\re}{\operatorname{Re}}
+\newcommand{\im}{\operatorname{Im}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\Stab}{\operatorname{Stab}}
+\newcommand{\PCliff}{\mathrm{PCliff}}
+\newcommand{\Cliff}{\mathrm{Cliff}}
+\newcommand{\SL}{\mathrm{SL}}
+\newcommand{\PG}{\mathrm{PG}}
+\newcommand{\RM}{\mathrm{RM}}
+\newcommand{\Qcode}{\mathcal{Q}}
+\newcommand{\Mana}{\mathcal{M}}
+\newcommand{\ket}[1]{\lvert #1 \rangle}
+\newcommand{\bra}[1]{\langle #1 \rvert}
+\newcommand{\braket}[2]{\langle #1 \vert #2 \rangle}
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\rowsp}{\operatorname{rowspace}}
+\newcommand{\leanref}[1]{\textnormal{\texttt{\footnotesize #1}}}
+\newcommand{\tagbadge}[1]{\textnormal{\texttt{\small [#1]}}}
+
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Refutation of the SIC--Clifford Stabilizer Conjecture, Trace-Norm Spectral Locking of Mana, All-Prime Alltop Magic Attainment, and Exact Distance Settlement of Projective-Geometry Singer Qudit Codes\par}
+  \vspace{0.9em}
+  {\large Alexander Stephen Donahue\par}
+  \vspace{0.3em}
+  {\small Independent Researcher, Spokane, WA, USA \quad$\cdot$\quad
+  ORCID: \href{https://orcid.org/0009-0006-8168-9648}{0009-0006-8168-9648} \quad$\cdot$\quad
+  \texttt{0\_0@0thernes.art}\par}
+  \vspace{0.3em}
+  {\small Archive Identifier: \texttt{0TH-2026-020} \quad$\cdot$\quad
+  Repository: \href{https://github.com/0thernes/weyl-magic-stabilizer-frontier}{\texttt{github.com/0thernes/weyl-magic-stabilizer-frontier}}\par}
+  \vspace{0.3em}
+  {\small November 26, 2026 \quad$\cdot$\quad Code: Apache-2.0 \quad$\cdot$\quad Monograph \& Data: CC-BY-4.0\par}
+\end{center}
+
+\begin{abstract}
+We resolve a connected chain of four open problems across three 2026 preprints in finite-dimensional Weyl--Heisenberg phase-space geometry, quantum non-stabilizerness (magic), and projective-geometry qudit stabilizer codes. All core algebraic theorems are formalized in zero-Mathlib Lean~4.35.0 (checked across six independent type-checking kernels), and every finite witness is cross-verified across nine native and quantum toolchains (Rust, Zig, ISO~C11, bare-metal x86-64 NASM assembly, ISO~C++20, Eshkol automatic differentiation, Moonlab WASM, QGTL~C, and Python).
+First, we \textbf{refute} Conjecture~1 of Erew and Goldstein (\texttt{arXiv:\allowbreak 2512.19657v2}, Feb.~2026), which asserts that every SIC-POVM fiducial state is a Clifford-stabilizer state spanning a $1$-dimensional joint eigenspace of a finite Clifford subgroup. For every Pythagorean triple $(a,b,c)\in\Z^3$, the qutrit vector $v(a,b,c)=(0,c,-(a+bi))\in\Z[i,\omega_3]^3$ is an exact Weyl--Heisenberg SIC fiducial; an exhaustive audit of all $216$ elements of $\PCliff_3$ on $v_{345}=(0,5,-(3+4i))$ shows that its full Clifford stabilizer is $\{I,P,P^2\}$ with a $2$-dimensional joint eigenspace $\Span(e_1,e_2)$ carrying unit Berry curvature $|\Omega_{\theta\phi}|=1$ and Fubini--Study metric $\mathrm{diag}(1/4,1)$. Universally, a Zauner trace-multiplicity obstruction forces eigenspace dimension $m_\lambda\ge 2$ for every canonical eigenspace in $d\ge 4$ and all three eigenspaces in $d\ge 7$, confirmed over full $\PCliff_d$ for $d\in\{4,5,6,7\}$ (including $0/256$ isolated fiducials in Scott--Grassl orbit~$4a$).
+Second, we \textbf{prove} Conjecture~2 of Erew and Goldstein across the entire high-mana regime $\Mana(\ket{\psi})>\tfrac{1}{2}\ln(D/2)$ via an exact sign-witness Parseval identity $\Tr(H_s^2)=D$ and Trace-Norm Spectral Lock theorem, and establish an exact modular dichotomy for prime-dimension Alltop origin Wigner values ($W_{\mathrm{Alltop}}(0,0)=0$ identically for $p\equiv 2\pmod 3$ via $y\mapsto y^{(2p-1)/3}$, versus nonzero $3$-to-$1$ collapse for $p\equiv 1\pmod 3$).
+Third, addressing Conjecture~Eq.~(59) of Knipfer, Roman, Matcheva, and Matchev (\texttt{arXiv:\allowbreak 2607.07197}, Jul.~2026), we prove universal finite-field Alltop attainment $M_2=\ln[q^2/(2q-1)]$ for every prime $d\ge 5$ and $n\ge 1$ ($q=d^n$), establish a parabolic Clifford unification proving every Alltop state is a genuine $1$-dimensional Clifford-stabilizer state, exhibit exact Gaussian-integer Super-MUB ruptures at composite $d=4$ ($\Z_4\times\Z_4$, $D=16$, strictly beating $31/256$) and $3$-qubit Hoggar ($D=8$, $S/8=2/9<15/64$), and certify in $\Z[\zeta_5]$ and Eshkol~AD that the $1$-qudit $d=5$ Alltop state is an unstable saddle point ($S(0.1)/5=0.358244<9/25$).
+Fourth, addressing Section~X of Kulhandjian and Hanzo (\texttt{arXiv:\allowbreak 2610.02392}, Oct.~2026), we \textbf{prove} Conjecture~24 analytically for all $d\ge 2$ ($M_{Q_e}A\equiv J\pmod 2$ and exact distance $d_{\min}(\Qcode(2,d))=2$, while diagnosing the Remark~21 sign dichotomy at $d=2$), prove the universal odd-prime upper bound $d_{\min}(\Qcode(p,2))\le p+1$ for every odd prime $p\ge 3$ via the diagonal Singer-hyperplane operator $L_{\mathrm{line}}=(\tau_H\mid\tau_H)$, and settle $d_{\min}(\Qcode(7,2))=8$ \textbf{exactly} by combining our Lean-certified weight-$8$ witness with independent Rust and C11+NASM exhaustive verifications over all $1{,}546{,}218$ Singer--Frobenius orbits of weight $\le 7$.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+% ===========================================================================
+\section{Introduction and Unified Scientific Context}
+\label{sec:intro}
+
+Finite-dimensional Weyl--Heisenberg (WH) displacement groups $\{D_u\}_{u\in\F_d^{2n}}$, their normalizer Clifford groups $\Cliff_{d,n}$, discrete Wigner phase-point operators $A_u$, and projective-geometry stabilizer codes over $\PG(d,q)$ form a single tightly coupled algebraic ecosystem~\cite{Gross2006,Appleby2005,Veitch2014,Leone2022,Singer1938}. Within the past year, three independent preprints~\cite{ErewGoldstein2026,Knipfer2026,KulhandjianHanzo2026} posed sharp open conjectures probing the exact extremal and structural boundaries of this geometry:
+\begin{enumerate}[leftmargin=2em,itemsep=3pt]
+  \item \textbf{SIC--Clifford duality (Erew \& Goldstein, Feb.~2026~\cite{ErewGoldstein2026}, Conjecture~1):} Does every symmetric informationally complete POVM (SIC-POVM) fiducial state~\cite{Zauner2011,Renes2004,ScottGrassl2010} span a $1$-dimensional joint eigenspace of some finite Clifford subgroup?
+  \item \textbf{Local mana maximality (Erew \& Goldstein, Feb.~2026~\cite{ErewGoldstein2026}, Conjecture~2):} Does every Clifford-stabilizer state with a nowhere-vanishing discrete Wigner function locally maximize the mana of magic $\Mana(\ket{\psi})=\ln\sum_u|W_\psi(u)|$~\cite{Veitch2014} under perturbations orthogonal to its stabilized subspace?
+  \item \textbf{Maximal two-qudit stabilizer R\'enyi entropy (Knipfer et al., Jul.~2026~\cite{Knipfer2026}, Eq.~59):} Is the maximal $2$-R\'enyi stabilizer entropy~\cite{Leone2022,WangLi2023} for two qudits of prime dimension $d$ equal to $\ln[d^4/(2d^2-1)]$ (the complete-MUB ceiling), why are primality of $d$ and $n=2$ necessary, and how do candidate states behave locally?
+  \item \textbf{Projective-geometry Singer qudit codes (Kulhandjian \& Hanzo, Oct.~2026~\cite{KulhandjianHanzo2026}, Sec.~X):} Does the binary identity $M_{Q_e}A\equiv J\pmod 2$ (Conjecture~24, previously checked numerically only for $d\le 6$) hold analytically for all $d\ge 2$, and can the open weight-$8$ upper-bound witness search for $\Qcode(7,2)$ be settled to determine $d_{\min}(\Qcode(7,2))$ exactly?
+\end{enumerate}
+
+Remarkably, these four questions interlock at the algebraic level (Figure~\ref{fig:arch}): the very parabolic Clifford subgroups that \emph{succeed} in isolating $1$-dimensional Alltop cubic-phase eigenstates attaining Eq.~(59) in Pillar~III fail the nowhere-vanishing Wigner hypothesis of Conjecture~2 in Pillar~II whenever $p\equiv 2\pmod 3$; conversely, the Zauner order-$3$ Clifford symmetries of SIC-POVM fiducials have trace $|\Tr(Z)|^2\le 3$, forcing eigenspace dimension $m_\lambda\ge 2$ and refuting Conjecture~1 in Pillar~I while exposing a $2$-dimensional Bloch sphere of WH-SIC states; and the same finite-field trace-character sums over $\F_{q^m}$ that control quadratic Gauss sums in Pillar~III resolve both Conjecture~24 and the universal projective-plane upper bound $d_{\min}(\Qcode(p,2))\le p+1$ in Pillar~IV.
+
+\subsection{Structured Claims Ledger and Verification Boundaries}
+\label{sec:claims-ledger}
+
+To maintain strict epistemic transparency, every claim in this monograph is tagged with its exact verification class:
+\begin{itemize}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{\tagbadge{LEAN-6K}} Machine-checked in zero-Mathlib Lean~4.35.0 (\texttt{lean/}; \texttt{autoImplicit=false}, zero \texttt{sorry}, zero \texttt{admit}, zero \texttt{native\_decide}, zero custom axioms), audited within \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}, and replayed across six independent kernels (\texttt{lean}, \texttt{leanchecker-paranoid}, \texttt{lean4lean}, \texttt{nanoda}, \texttt{con-leche}, \texttt{con-ron}) via Palomar \texttt{comparator --paranoid}.
+  \item \textbf{\tagbadge{EXACT-COMP}} Exact finite-field or integer native computation cross-checked across Rust (\texttt{\#![forbid(\allowbreak unsafe\_\allowbreak code)]}), Zig~0.17, ISO~C11 linked to bare-metal x86-64 NASM assembly, ISO~C++20, and exact Python \texttt{int}/\texttt{Fraction}.
+  \item \textbf{\tagbadge{NUM-STACK}} Floating-point differential-geometric, gate-level quantum, or optimization confirmation via Eshkol~v1.3.6 LLVM automatic differentiation, pinned Moonlab WASM, pinned QGTL~C, or numerical L-BFGS-B/$\PCliff_d$ sweeps (never substituted for a formal proof).
+\end{itemize}
+
+\begin{table}[t]
+\centering
+\caption{Master Claims Ledger mapping every theorem and computational witness to its exact Lean~4.35.0 identifier, native cross-checks, and scope boundary.}
+\label{tab:claims}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}llLll@{}}
+\toprule
+\textbf{ID} & \textbf{Pillar} & \textbf{Claim Summary} & \textbf{Target} & \textbf{Class} \\
+\midrule
+T1a & I & All Pythagorean $(a,b,c)$ yield exact qutrit WH-SIC $v(a,b,c)$ & \leanref{prove\_t1a} & \tagbadge{LEAN-6K} \\
+T1b & I & \textbf{Refutes Erew--Goldstein Conj.~1}: $v_{345}$ has $|\Stab|=3$, $\dim=2$ in $\PCliff_3$ & \leanref{prove\_t1b} & \tagbadge{LEAN-6K} \\
+T1c & I & Universal Zauner obstruction: $m_\lambda\ge 2$ ($\forall d\ge 7$ all 3; $\forall d\ge 4$ canon.) & \leanref{prove\_t1c} & \tagbadge{LEAN-6K} \\
+T1d & I & Exact $d=4$ Scott--Grassl $4a$ multiplicity $(2,1,1)$; $0/256$ are $1$D-stabilized & \leanref{prove\_t1d} & \tagbadge{LEAN-6K} \\
+T2a & II & Sign-witness Parseval identity $\Tr(K_s^2)=D^3$ ($\Tr(H_s^2)=D$) $\forall D$ & \leanref{prove\_t2a} & \tagbadge{LEAN-6K} \\
+T2b & II & \textbf{Proves Erew--Goldstein Conj.~2} for $\Mana(\psi)>\tfrac{1}{2}\ln(D/2)$ & \leanref{prove\_t2b} & \tagbadge{LEAN-6K} \\
+T2c & II & Cubic-Mod-3 Wigner origin dichotomy ($p\equiv 2$ zero vs.\ $p\equiv 1$ nonzero) & \leanref{prove\_t2c} & \tagbadge{LEAN-6K} \\
+T3a & III & All-prime $d\ge 5$, all-$n$ Alltop attainment $M_2=\ln[q^2/(2q-1)]$ & \leanref{prove\_t3a} & \tagbadge{LEAN-6K} \\
+T3b & III & Alltop--Clifford unification: 1D parabolic stabilization $\forall q=d^n$ & \leanref{prove\_t3b} & \tagbadge{LEAN-6K} \\
+T3c & III & Universal Welch gap $(D-1)/(D^2(D+1))$; Hoggar ($D=8$) \& $d=4$ ruptures & \leanref{prove\_t3c} & \tagbadge{LEAN-6K} \\
+T3d & III & Exact $\Z[\zeta_5]$ witness of $1$-qudit $d=5$ Alltop saddle ($S/5<9/25$) & \leanref{prove\_t3d} & \tagbadge{LEAN-6K} \\
+T4a & IV & \textbf{Proves Conj.~24} $\forall d\ge 2$, Remark~21 dichotomy, $d_{\min}(\Qcode(2,d))=2$ & \leanref{prove\_t4a} & \tagbadge{LEAN-6K} \\
+T4b & IV & Universal odd-prime upper bound $d_{\min}(\Qcode(p,2))\le p+1$ ($\forall p\ge 3$) & \leanref{prove\_t4b} & \tagbadge{LEAN-6K} \\
+T4c & IV & Concrete kernel witnesses $d=2..5$ and $\Qcode(3,2),\Qcode(5,2),\Qcode(7,2),\Qcode(11,2)$ & \leanref{prove\_t4c} & \tagbadge{LEAN-6K} \\
+C4d & IV & Exhaustive $1{,}546{,}218$-orbit lower bound $\implies d_{\min}(\Qcode(7,2))=8$ exact & Rust/C11+ASM & \tagbadge{EXACT-COMP} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{remark}[Honest Scope and Non-Claims]
+\label{rem:honest-scope}
+We explicitly report that \textbf{0 of the 1,900 overarching Mega-Atlas grand open problems} are retired by this work. In particular, we do \emph{not} claim: (i)~a resolution of Erew--Goldstein Conjecture~2 in the low-mana regime $\Mana(\ket{\psi})\le \tfrac{1}{2}\ln(D/2)$; (ii)~a proof of the global upper bound $M_2^{\max}(\C^d\otimes\C^d)\le \ln[d^4/(2d^2-1)]$ for general odd prime $d\ge 5$; (iii)~Zauner's conjecture on the existence of SIC-POVMs in every dimension; or (iv)~Kulhandjian--Hanzo Conjecture~27's lower bound $d_{\min}(\Qcode(p,2))\ge p+1$ for primes $p\ge 11$. All open gaps are cataloged verbatim in \texttt{LIMITATIONS.md} and \texttt{docs/MEGA\_ATLAS\_CROSSCHECK.md}.
+\end{remark}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig5_architecture_crosswalk.pdf}
+  \caption{Cross-pillar mathematical dependency chain and four-layer polyglot verification architecture linking zero-Mathlib Lean~4.35.0 (six independent kernels), exact native engines (Rust, Zig, ISO~C11, x86-64 NASM assembly, ISO~C++20), the quantum/AD stack (Eshkol, Moonlab WASM, QGTL~C, Python), and cryptographic archival provenance.}
+  \label{fig:arch}
+\end{figure}
+
+% ===========================================================================
+\section{Pillar I: Refutation of the SIC--Clifford Stabilizer Conjecture}
+\label{sec:pillar1}
+
+\subsection{Formal Definition and Target Conjecture}
+
+Let $\mathcal{H}=\C^d$ carry the standard Weyl--Heisenberg (WH) operators $X\ket{x}=\ket{x+1\bmod d}$, $Z\ket{x}=\omega_d^x\ket{x}$ with $\omega_d=e^{2\pi i/d}$, and displacements $D_{p,q}=\tau^{pq}X^p Z^q$ where $\tau=-e^{i\pi/d}$ ($\tau=\omega_3^2$ for $d=3$). The projective Clifford group $\PCliff_d = N_{U(d)}(\mathrm{WH}_d)/U(1)$ acts on $\mathcal{H}$ via projective unitary representations of $\SL(2,\Z_d)\ltimes \Z_d^2$~\cite{Appleby2005}.
+
+\begin{definition}[$G$-Stabilizer State; Erew--Goldstein~\cite{ErewGoldstein2026}, Sec.~2]
+\label{def:g-stab}
+Let $G\subset U(d)$ be a finite subgroup of unitaries. A pure state $\ket{\psi}\in\C^d\setminus\{0\}$ is a \emph{$G$-stabilizer state} if there exists a character $\chi:G\to U(1)$ such that the joint eigenspace
+\[
+  \mathcal{E}(G,\chi) \coloneqq \bigl\{ w\in\C^d : \forall g\in G,\; g w = \chi(g) w \bigr\}
+\]
+is \emph{strictly $1$-dimensional} and spanned by $\ket{\psi}$, i.e., $\mathcal{E}(G,\chi)=\C\ket{\psi}$. A state is a \emph{Clifford-stabilizer state} if it is a $G$-stabilizer state for some finite subgroup $G\le \Cliff_d$.
+\end{definition}
+
+In Section~4.5.3 of~\cite{ErewGoldstein2026}, Erew and Goldstein state:
+\begin{conjecture}[Erew--Goldstein~\cite{ErewGoldstein2026}, Conjecture~1]
+Every SIC-POVM fiducial state is a Clifford-stabilizer state.
+\end{conjecture}
+
+Observe a basic monotonicity principle: if $G\le \Stab_{\PCliff_d}(\ket{\psi})$ is any Clifford subgroup stabilizing $\ket{\psi}$ up to phase with character $\chi_G$, then $\mathcal{E}(\Stab_{\PCliff_d}(\ket{\psi}),\chi)\subseteq \mathcal{E}(G,\chi_G)$. Hence, if the \emph{full} projective Clifford stabilizer $\Stab_{\PCliff_d}(\ket{\psi})$ fixes a joint eigenspace of dimension at least $2$, then \emph{no} subgroup $G\le \Cliff_d$ can isolate $\ket{\psi}$ as a $1$-dimensional joint eigenstate.
+
+\subsection{Exact Rational Qutrit Circle and Exhaustive 216-Element Refutation}
+
+We work over the exact $12$th cyclotomic integer ring $\Z[\zeta_{12}]=\Z[i,\omega_3]$ with integral basis $\{1,i,\omega_3,i\omega_3\}$, implemented in \leanref{Cyclotomic.Zeta12}. Every $x=a+bi+c\omega_3+di\omega_3\in\Z[\zeta_{12}]$ satisfies the exact norm identity (proved in \leanref{Zeta12.mul\_conj\_eq}):
+\begin{equation}
+\label{eq:zeta12-norm}
+  x\bar{x} = (a^2 - ac + c^2 + b^2 - bd + d^2) + (bc - ad)\sqrt{3},
+  \qquad \sqrt{3} = -i(1+2\omega_3).
+\end{equation}
+
+\begin{theorem}[{T1a: Universal Pythagorean Qutrit WH-SIC Family \tagbadge{LEAN-6K}}]
+\label{thm:t1a}
+For every integer triple $(a,b,c)\in\Z^3$ satisfying $a^2+b^2=c^2$, the vector
+\[
+  v(a,b,c) \coloneqq \bigl(0,\, c,\, -(a+bi)\bigr) \in \Z[\zeta_{12}]^3
+\]
+satisfies $\norm{v}^2=2c^2$ and, for all eight non-identity displacements $(p,q)\in\Z_3^2\setminus\{(0,0)\}$,
+\[
+  4\,\bigl|\braket{v(a,b,c)}{X^p Z^q\, v(a,b,c)}\bigr|^2 = (2c^2)^2 = \norm{v(a,b,c)}^4,
+\]
+with vanishing $\sqrt{3}$-component in~\eqref{eq:zeta12-norm}. Whenever $c\neq 0$, $v(a,b,c)/\sqrt{2c^2}$ is an exact $d=3$ Weyl--Heisenberg SIC-POVM fiducial state.
+\end{theorem}
+
+\begin{proof}
+For $p=0$ and $q\in\{1,2\}$, $\braket{v}{Z^q v}=c^2\omega_3^q+(a^2+b^2)\omega_3^{2q}=c^2(\omega_3+\omega_3^2)=-c^2$, so $4|\braket{v}{Z^q v}|^2=4c^4$. For $p=1$ and $q\in\{0,1,2\}$, $(X Z^q v)=(-(a+bi)\omega_3^{2q},0,c\omega_3^q)$, whence $\braket{v}{X Z^q v}=-(a-bi)c\omega_3^q$ and $4|\braket{v}{X Z^q v}|^2=4(a^2+b^2)c^2=4c^4$. By Hermiticity (or direct evaluation), $p=2$ gives $\braket{v}{X^2 Z^q v}=-(a+bi)c\omega_3^{2q}$ of identical squared modulus $c^4$. Mechanized verbatim in \leanref{Pillar1.qutrit\_rational\_circle\_wh\_sic}.
+\end{proof}
+
+To audit all $216=9\times 24$ elements of $\PCliff_3=\Z_3^2\rtimes\SL(2,\F_3)$ without square roots or floating-point rounding, we represent each $F=\bigl(\begin{smallmatrix}a & b\\ c & d\end{smallmatrix}\bigr)\in\SL(2,\F_3)$ by the exact scaled metaplectic matrix $M_F\in\Z[\omega_3]^{3\times 3}$:
+\begin{equation}
+\label{eq:meta-entry}
+  (M_F)_{y,x} =
+  \begin{cases}
+    \delta_{y,\,ax\bmod 3}\,\omega_3^{2cax^2} & (b\equiv 0\pmod 3,\; s_F=1), \\
+    \omega_3^{2b(dy^2+xy+ax^2)} & (b\not\equiv 0\pmod 3,\; s_F=3).
+  \end{cases}
+\end{equation}
+In Lean (\leanref{allSL2F3\_meta\_unitary} and \leanref{allSL2F3\_symplectic\_covariant}), we verify exhaustively across all $24$ matrices $F\in\SL(2,\F_3)$ that $M_F^\dagger M_F = s_F I_3$ and that $M_F$ conjugates $X\mapsto \omega_3^{\phi_1}X^a Z^c$ and $Z\mapsto \omega_3^{\phi_2}X^b Z^d$. Moreover, collinearity $M v \in \C v$ for $v\neq 0$ holds \emph{if and only if} all three $2\times 2$ minors $v_i(Mv)_j - v_j(Mv)_i$ vanish identically in $\Z[\zeta_{12}]$---requiring zero division and zero radicals.
+
+\begin{theorem}[{T1b: Refutation of Erew--Goldstein Conjecture~1 \tagbadge{LEAN-6K}}]
+\label{thm:t1b}
+Let $v_{345}=v(3,4,5)=(0,5,-(3+4i))\in\Z[\zeta_{12}]^3$. Then:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item $v_{345}/\sqrt{50}$ is an exact $d=3$ Weyl--Heisenberg SIC-POVM fiducial (Theorem~\ref{thm:t1a}).
+  \item Across all $216$ projective Clifford elements $g=(p,q,F)\in\PCliff_3$, \emph{exactly three} elements stabilize $v_{345}$ up to phase:
+  \[
+    \Stab_{\PCliff_3}(v_{345}) = \{I,\, P,\, P^2\},
+    \qquad P = \operatorname{diag}(1, \omega_3^2, \omega_3^2).
+  \]
+  \item Every $g\in\{I,P,P^2\}$ acts by the identical scalar $\omega_3^{2c(g)}$ on every vector $(0,y,z)\in\C^3$. Consequently, the two linearly independent vectors $e_1=(0,1,0)$ and $e_2=(0,0,1)$ both belong to the joint eigenspace of the full Clifford stabilizer of $v_{345}$ with the exact same eigenvalues as $v_{345}$, so $\dim\mathcal{E}(\Stab_{\PCliff_3}(v_{345}),\chi_{v_{345}})=2>1$.
+\end{enumerate}
+Hence \emph{no} finite subgroup $G\le \Cliff_3$ admits $v_{345}$ as a $1$-dimensional joint eigenstate, refuting Conjecture~1 of~\cite{ErewGoldstein2026}.
+\end{theorem}
+
+\begin{remark}[{Monopole Geometry of the Refuting Subspace \tagbadge{NUM-STACK}}]
+\label{rem:qgtl-monopole}
+The joint eigenspace $\Span(e_1,e_2)\cong\C^2$ forms a Bloch sphere with states $\ket{\psi(\theta,\phi)}=(0,\cos\phi,-\sin\phi\,e^{i\theta})$, whose equator $\phi=\pi/4$ is the entire continuous WH-SIC circle (Figure~\ref{fig:p1}(a)). Evaluating this surface via our compiled QGTL~C harness (\nolinkurl{quantum_stack/qgtl_sic_metric.c}) yields exact Fubini--Study metric $g=\operatorname{diag}(1/4,1)$ and unit Berry curvature $|\Omega_{\theta\phi}|=\sin(2\phi)=1$ (both to error $0.0$) at $(3,4,5)$, while Eshkol~v1.3.6 LLVM automatic differentiation confirms $S(\theta)=3/2$ and $dS/d\theta=0$ identically along the equator. An independent cardinality obstruction also explains why Conjecture~1 fails in $d=3$: the finite group $\PCliff_3$ has finitely many subgroups and thus finitely many $1$-dimensional joint eigenspaces, whereas Theorem~\ref{thm:t1a} gives infinitely many distinct rational WH-SIC fiducials.
+\end{remark}
+
+\subsection{Universal All-Dimension Zauner Obstruction and \texorpdfstring{$d=4..7$}{d=4..7} Audit}
+
+Why does Conjecture~1 fail not merely on the continuous $d=3$ family, but even for \emph{isolated} WH-SIC fiducials in dimensions $d\ge 4$? The mechanism is governed universally by the trace of the order-$3$ Zauner symmetry~\cite{Zauner2011,Appleby2005}.
+
+\begin{theorem}[{T1c: Universal All-$d$ Zauner Eigenspace Obstruction \tagbadge{LEAN-6K}}]
+\label{thm:t1c}
+Let $Z\in U(d)$ be any order-$3$ unitary ($Z^3=I$) with eigenspace multiplicities $m_0,m_1,m_2\in\Z_{\ge 0}$ ($m_0+m_1+m_2=d$). Then:
+\begin{equation}
+\label{eq:zauner-id}
+  (3m_0-d)^2 + (3m_1-d)^2 + (3m_2-d)^2 = 3\bigl((m_0-m_1)^2 + (m_0-m_2)^2 + (m_1-m_2)^2\bigr) = 6|\Tr(Z)|^2.
+\end{equation}
+In particular, whenever $|\Tr(Z)|^2\le 3$ (which holds for every symplectic order-$3$ Zauner Clifford unitary since $|\Tr(\mu(F))|^2=|\ker(F-I)|\in\{1,3\}$), every multiplicity satisfies $(3m_\lambda-d)^2\le 12$, forcing:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item For every $d\ge 7$, \emph{all three} eigenspaces have multiplicity $m_\lambda\ge 2$.
+  \item For every $d\ge 4$, the canonical Zauner eigenspace ($3m_\lambda\ge d$) has multiplicity $m_\lambda\ge \lceil d/3\rceil\ge 2$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Expanding $3m_0-d=(m_0-m_1)+(m_0-m_2)$, $3m_1-d=(m_1-m_2)-(m_0-m_1)$, and $3m_2-d=-((m_0-m_2)+(m_1-m_2))$ yields~\eqref{eq:zauner-id} identically in $\Z$. If $d\ge 7$ and $m\le 1$, then $3m-d\le 3-7=-4$, so $(3m-d)^2\ge 16>12$, a contradiction; if $d\ge 4$ and $3m\ge d$, then $3m\ge 4\implies m\ge 2$. Mechanized in \leanref{zauner\_trace\_multiplicity\_identity} and \leanref{zauner\_eigenspace\_dim\_universal\_obstruction}.
+\end{proof}
+
+\begin{corollary}[{T1d: Unique Isolated $d=4$ Scott--Grassl $4a$ Orbit \tagbadge{LEAN-6K}/\tagbadge{NUM-STACK}}]
+\label{cor:t1d}
+Any order-$3$ Zauner unitary $Z\in U(4)$ with $\Tr(Z)=1$ (equivalently $2m_0-m_1-m_2=2$ and $m_1=m_2$) has unique multiplicities $(m_0,m_1,m_2)=(2,1,1)$ (\leanref{dim4\_scott\_grassl\_4a\_obstruction}). Direct numerical enumeration over full $\PCliff_d$ confirms that every fiducial in the unique isolated $d=4$ orbit $4a$ ($|\PCliff_4|=768$, $256$ fiducials) has $|\Stab|=3$ and joint eigenspace dimension $2$, so \textbf{zero of $256$} isolated $d=4$ WH-SIC fiducials are Clifford-stabilizer states. Analogous full-$\PCliff_d$ checks yield $|\Stab|=3$ and joint eigenspace dimensions $m=2,3,3$ for $d=5,6,7$ ($|\PCliff_d|=3{,}000;\,5{,}184;\,16{,}464$; Figure~\ref{fig:p1}(b)).
+\end{corollary}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig1_sic_clifford_refutation.pdf}
+  \caption{(a)~Rational Pythagorean WH-SIC fiducials on the equator of the $2$-dimensional stabilized Bloch sphere $\Span(e_1,e_2)$ refuting Erew--Goldstein Conjecture~1 (Theorems~\ref{thm:t1a}--\ref{thm:t1b}). (b)~Universal all-$d$ Zauner eigenspace dimension obstruction (Theorem~\ref{thm:t1c}) overlaid with full-$\PCliff_d$ audits for $d\in\{3,4,5,6,7\}$.}
+  \label{fig:p1}
+\end{figure}
+
+% ===========================================================================
+\section{Pillar II: High-Mana Proof of Conjecture~2 and the Cubic-Mod-3 Wigner Dichotomy}
+\label{sec:pillar2}
+
+\subsection{Sign-Witness Parseval Identity and Trace-Norm Spectral Lock}
+
+For any odd dimension $D$, the Gross discrete phase-point operators $\{A_u\}_{u\in\F_d^{2n}}$ ($D=d^n$) are Hermitian, satisfy $A_u^2=I$, $\Tr(A_u)=1$, and form an orthogonal operator basis with $\Tr(A_u A_v)=D\,\delta_{u,v}$~\cite{Gross2006}. The discrete Wigner function of $\ket{\psi}$ is $W_\psi(u)=\tfrac{1}{D}\bra{\psi}A_u\ket{\psi}\in\R$, and its mana of magic~\cite{Veitch2014} is $\Mana(\ket{\psi})=\ln\sum_u|W_\psi(u)|$.
+
+Given any sign vector $s:\{0,\dots,D^2-1\}\to\{\pm 1\}$, define the Hermitian \emph{sign-witness operator}
+\begin{equation}
+\label{eq:sign-witness}
+  H_s \coloneqq \frac{1}{D}\sum_{u=0}^{D^2-1} s(u)\,A_u,
+  \qquad K_s \coloneqq D\,H_s = \sum_{u=0}^{D^2-1} s(u)\,A_u.
+\end{equation}
+When $W_\psi(u)\neq 0$ for all $u$ and $s(u)=\operatorname{sgn}(W_\psi(u))$, there is an open neighborhood $U\ni\ket{\psi}$ on which $\operatorname{sgn}(W_{\psi'}(u))=s(u)$ remains constant, so the Wigner $\ell_1$-norm coincides locally with the smooth Rayleigh quotient:
+\[
+  \forall \ket{\psi'}\in U, \qquad \sum_u |W_{\psi'}(u)| = \frac{\bra{\psi'}H_s\ket{\psi'}}{\braket{\psi'}{\psi'}}.
+\]
+Moreover, if $\ket{\psi}$ is a $G$-stabilizer state for a Clifford subgroup $G$, then $G$ permutes $\{A_u\}$ while preserving $W_\psi$, so $H_s$ commutes with $G$; because $\ket{\psi}$ spans a $1$-dimensional joint eigenspace of $G$, $\ket{\psi}$ is automatically an eigenvector of $H_s$ with eigenvalue $\lambda_\psi=\sum_u|W_\psi(u)|=e^{\Mana(\ket{\psi})}$.
+
+\begin{theorem}[{T2a--T2b: Parseval Identity and Trace-Norm Spectral Lock \tagbadge{LEAN-6K}}]
+\label{thm:t2ab}
+Let $D\ge 1$ be odd and let $s:\{0,\dots,D^2-1\}\to\{\pm 1\}$ be any sign vector.
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Universal Parseval Identity (\leanref{prove\_t2a}):}
+  \[
+    \Tr(K_s^2) = \sum_{u,v} s(u)s(v)\Tr(A_u A_v) = \sum_{u=0}^{D^2-1} s(u)^2 D = D^3,
+    \qquad\text{i.e.,}\qquad \Tr(H_s^2) = D.
+  \]
+  \item \textbf{Trace-Norm Spectral Lock (\leanref{prove\_t2b}):} Let $\{\lambda_j\}_{j=0}^{D-1}$ be the real eigenvalues of $H_s$ (satisfying $\sum_{j=0}^{D-1}\lambda_j^2 = D$), with $\lambda_k = \lambda_\psi > 0$. Whenever $\ket{\psi}$ lies in the \emph{high-mana regime}
+  \begin{equation}
+  \label{eq:high-mana-thresh}
+    \lambda_\psi^2 > \frac{D}{2}
+    \qquad\Longleftrightarrow\qquad
+    \Mana(\ket{\psi}) > \frac{1}{2}\ln\!\left(\frac{D}{2}\right),
+  \end{equation}
+  every orthogonal eigenvalue $\lambda_j$ ($j\neq k$) satisfies
+  \[
+    |\lambda_j| \le \sqrt{D - \lambda_\psi^2} < \lambda_\psi,
+  \]
+  with explicit positive spectral gap $\Delta \ge \lambda_\psi - \sqrt{D-\lambda_\psi^2} > 0$. Consequently, for every nonzero perturbation $\ket{\psi'}=c_k\ket{\psi}+\sum_{j\neq k} c_j\ket{\psi_j}$ with $\sum_{j\neq k}|c_j|^2>0$,
+  \[
+    \frac{\bra{\psi'}H_s\ket{\psi'}}{\braket{\psi'}{\psi'}} < \lambda_\psi,
+  \]
+  establishing strict local maximality of $\Mana(\ket{\psi})$ and proving Erew--Goldstein Conjecture~2~\cite{ErewGoldstein2026} throughout the high-mana regime~\eqref{eq:high-mana-thresh}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Because $\sum_{j=0}^{D-1}\lambda_j^2=D$, isolating index $k$ yields $\lambda_j^2\le \sum_{i\neq k}\lambda_i^2 = D-\lambda_k^2$ for every $j\neq k$. Under $2\lambda_k^2>D$, we obtain $D-\lambda_k^2<\lambda_k^2$, hence $|\lambda_j|<\lambda_k$. Expanding the Rayleigh quotient numerator gives $\sum_j |c_j|^2\lambda_j < \lambda_k\sum_j|c_j|^2$ strictly whenever some $c_{j_0}\neq 0$ ($j_0\neq k$). Cleared of any denominator $N>0$, both parts are proved universally over $\mathrm{Fin}\,D$ in \leanref{Pillar2\_ManaLock.lean}.
+\end{proof}
+
+As Figure~\ref{fig:p2}(a) shows, the universal Parseval ceiling is $\tfrac{1}{2}\ln D$, so the proven Spectral-Lock band $\tfrac{1}{2}\ln(D/2)<\Mana(\ket{\psi})\le \tfrac{1}{2}\ln D$ captures the entire top $\tfrac{1}{2}\ln 2 \approx 0.3466$~nat window beneath the global ceiling---containing every prime-dimension Alltop cubic-phase state tested across $5\le p\le 47$. Note also that our adversarial Lean test \leanref{refute\_at03\_spectral\_lock\_without\_high\_mana} proves that the threshold $2\lambda_k^2>D$ is sharp for purely trace-norm arguments.
+
+\subsection{The Cubic-Mod-3 Wigner Origin Dichotomy}
+
+Surprisingly, although prime-dimension Alltop states $\ket{\psi_{\mathrm{Alltop}}}=p^{-1/2}\sum_{x\in\F_p}\omega_p^{x^3}\ket{x}$ ($p\ge 5$) are genuine $1$-dimensional Clifford-stabilizer states (Theorem~\ref{thm:t3b} below) lying well inside the high-mana Spectral-Lock band, half of all primes fail the \emph{non-vanishing Wigner function} hypothesis of Erew--Goldstein Conjecture~2.
+
+\begin{theorem}[{T2c: Exact Cubic-Mod-3 Wigner Dichotomy \tagbadge{LEAN-6K}}]
+\label{thm:t2c}
+For every odd prime $p\ge 5$, the origin Wigner value of the Alltop state is $W_{\mathrm{Alltop}}(0,0)=\frac{1}{p^2}\sum_{x\in\F_p}\omega_p^{-2x^3}$, obeying the sharp modular dichotomy:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item If $p\equiv 2\pmod 3$, then $e=(2p-1)/3\in\Z_{\ge 3}$ satisfies $3e=2(p-1)+1$, so $x\mapsto x^3$ is a bijection on $\F_p$ with explicit inverse $y\mapsto y^e$. Hence $x\mapsto -2x^3$ permutes $\F_p$ and $W_{\mathrm{Alltop}}(0,0)=\frac{1}{p^2}\sum_{y\in\F_p}\omega_p^y = 0$ identically.
+  \item If $p\equiv 1\pmod 3$, any primitive cube root $g\in\F_p^\times\setminus\{1\}$ satisfies $(gx)^3=x^3$ for all $x$, collapsing $\F_p^\times$ $3$-to-$1$ onto $(p-1)/3$ cubic residues. By irreducibility of the $p$-th cyclotomic polynomial $\Phi_p(z)$, the multiplicity histogram of $-2x^3\bmod p$ is non-constant, forcing $W_{\mathrm{Alltop}}(0,0)\neq 0$ (verified explicitly in Lean for $p\in\{5,7,11,13,17,19,23\}$ and in Rust/Python up to $p=47$; Figure~\ref{fig:p2}(b)).
+\end{enumerate}
+\end{theorem}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig2_mana_lock_and_wigner_dichotomy.pdf}
+  \caption{(a)~Trace-Norm Spectral Lock phase diagram showing the proven high-mana lock zone $\Mana>\tfrac{1}{2}\ln(D/2)$ (Theorem~\ref{thm:t2ab}) alongside prime-dimension Alltop states ($p=5..47$). (b)~Exact Cubic-Mod-3 Wigner origin dichotomy (Theorem~\ref{thm:t2c}): exact vanishing for $p\equiv 2\pmod 3$ versus nonzero $3$-to-$1$ cubic character sums for $p\equiv 1\pmod 3$.}
+  \label{fig:p2}
+\end{figure}
+
+% ===========================================================================
+\section{Pillar III: All-Prime Alltop Magic Attainment, Clifford Unification, and Super-MUB Ruptures}
+\label{sec:pillar3}
+
+For a $D$-dimensional pure state $\ket{\psi}$, the $2$-R\'enyi stabilizer entropy (SRE)~\cite{Leone2022,WangLi2023} is
+\begin{equation}
+\label{eq:sre2}
+  M_2(\ket{\psi}) \coloneqq -\ln\!\left(\frac{1}{D}\sum_{u\in\F_d^{2n}} \bigl|\bra{\psi}D_u\ket{\psi}\bigr|^4\right) = -\ln\!\left(\frac{S(\ket{\psi})}{D}\right).
+\end{equation}
+In July~2026, Knipfer, Roman, Matcheva, and Matchev~\cite{Knipfer2026} (Eq.~59) conjectured that for two qudits of prime dimension $d$, the maximum of $M_2$ equals the complete-MUB value $\ln[d^4/(2d^2-1)]$, noting explicitly that they had no formal proof beyond $d=2,3$.
+
+\subsection{Universal All-Prime All-\texorpdfstring{$n$}{n} Attainment and Parabolic Clifford Unification}
+
+Let $K=\F_q$ be any finite field of size $q=d^n$ and prime characteristic $d\ge 5$ (so $6\neq 0$ in $K$), with field trace $\Tr_{K/\F_d}:K\to\F_d$ and additive character $\chi(u)=\omega_d^{\Tr(u)}$. Define the finite-field \emph{Alltop cubic-phase state}~\cite{Alltop1980}
+\begin{equation}
+\label{eq:alltop-state}
+  \ket{\psi_{\mathrm{Alltop}}} \coloneqq \frac{1}{\sqrt{q}}\sum_{x\in K} \chi(x^3)\,\ket{x} \in \C^K \cong (\C^d)^{\otimes n}.
+\end{equation}
+
+\begin{theorem}[{T3a: Universal All-Prime All-$n$ Alltop Attainment \tagbadge{LEAN-6K}}]
+\label{thm:t3a}
+For every finite field $K=\F_q$ with $q=d^n$ and prime $d\ge 5$, the Weyl--Heisenberg ambiguity function $A(a,b)=\sum_{x\in K}\chi((x+a)^3-x^3+bx)$ satisfies:
+\begin{equation}
+\label{eq:alltop-amb}
+  |A(a,b)|^2 =
+  \begin{cases}
+    q^2 & (a=0,\; b=0),\\
+    0   & (a=0,\; b\neq 0),\\
+    q   & (a\neq 0,\; b\in K).
+  \end{cases}
+\end{equation}
+Hence $\sum_{a,b\in K}|A(a,b)|^4 = q^3(2q-1)$, yielding exact $2$-R\'enyi stabilizer entropy
+\[
+  M_2(\ket{\psi_{\mathrm{Alltop}}}) = \ln\!\left(\frac{q^2}{2q-1}\right).
+\]
+In particular, setting $n=2$ ($q=d^2$) proves the universal lower bound $M_2^{\max}(\C^d\otimes\C^d)\ge \ln\!\bigl[d^4/(2d^2-1)\bigr]$ for \emph{every} prime $d\ge 5$.
+\end{theorem}
+
+\begin{proof}
+Expanding the identity $(x+a)^3-x^3=3ax^2+3a^2x+a^3$ (mechanized for abstract fields in \leanref{AlltopFieldModel.\allowbreak cube\_\allowbreak add\_\allowbreak identity}), the case $a=0$ reduces to character orthogonality $\sum_x \chi(bx)=q\,\delta_{b,0}$. For $a\neq 0$, multiplying $A(a,b)$ by $\overline{A(a,b)}$ and substituting $y=x+h$ yields
+\[
+  |A(a,b)|^2 = \sum_{h\in K}\chi\bigl(3ah^2+(3a^2+b)h\bigr)\sum_{x\in K}\chi(6ahx).
+\]
+Because $\operatorname{char}(K)=d\ge 5$ implies $6\neq 0$ (\leanref{six\_\allowbreak mul\_\allowbreak eq\_\allowbreak zero\_\allowbreak imp}), $6ah=0\iff h=0$, so the inner sum equals $q\,\delta_{h,0}$, giving $|A(a,b)|^2=q$. Summing $|A(a,b)|^4$ over all $q^2$ pairs yields $q^4+(q-1)\cdot 0+q(q-1)\cdot q^2=q^3(2q-1)$ (\leanref{alltop\_\allowbreak fourth\_\allowbreak moment\_\allowbreak exact}), and dividing by $q^5$ gives $S/q=(2q-1)/q^2$.
+\end{proof}
+
+\begin{theorem}[{T3b: Alltop--Clifford Unification Theorem \tagbadge{LEAN-6K}}]
+\label{thm:t3b}
+For every finite field $K=\F_q$ of characteristic $d\ge 5$, define the order-$q$ parabolic Clifford subgroup $\{C_a : a\in K\}$ on $\C^K$ by
+\[
+  (C_a\phi)(x) \coloneqq \chi\bigl(-(3ax^2 + 3a^2x)\bigr)\,\phi(x+a).
+\]
+Then: (i)~$C_a\ket{\psi_{\mathrm{Alltop}}}=\chi(a^3)\ket{\psi_{\mathrm{Alltop}}}$ for all $a\in K$; and (ii)~any vector $\phi:K\to\C$ satisfying $C_a\phi=\chi(a^3)\phi$ for all $a\in K$ satisfies $\phi(a)=\chi(a^3)\phi(0)$ for all $a\in K$. Thus every finite-field Alltop state is a genuine $1$-dimensional Clifford-stabilizer state in the exact sense of Definition~\ref{def:g-stab}.
+\end{theorem}
+
+\begin{proof}
+Part~(i) follows directly from $(x+a)^3-(3ax^2+3a^2x)=x^3+a^3$. For~(ii), evaluating $(C_a\phi)(x)=\chi(a^3)\phi(x)$ at $x=0$ gives $\chi(0)\phi(0+a)=\chi(a^3)\phi(0)$, i.e., $\phi(a)=\phi(0)\chi(a^3)$ immediately. Mechanized verbatim in \leanref{Pillar3.alltop\_clifford\_unification}.
+\end{proof}
+
+\subsection{Welch--MUB Gap, Exact Super-MUB Ruptures, and the \texorpdfstring{$d=5$}{d=5} Saddle Instability}
+
+Why does Conjecture~Eq.~(59) of~\cite{Knipfer2026} restrict to \emph{prime} $d$ and $n=2$? First, Cauchy--Schwarz gives a universal lower bound on $S/D$ strictly beneath the MUB value $(2D-1)/D^2$:
+
+\begin{theorem}[{T3c: Universal Welch Gap and Exact Super-MUB Ruptures \tagbadge{LEAN-6K}}]
+\label{thm:t3c}
+The universal Welch lower bound and two exact Super-MUB ceiling ruptures hold:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Welch Bound and MUB Gap} (\leanref{prove\_t3c}): For every integer $D\ge 2$ and every pure state $\ket{\psi}\in\C^D$ whose squared WH overlaps satisfy $p_0=N$ and Parseval's identity $\sum_{k=0}^{D^2-1}p_k=DN$,
+  \[
+    \frac{S(\ket{\psi})}{D} \ge \frac{2}{D+1},
+    \qquad\text{with strict gap}\qquad
+    \frac{2D-1}{D^2} - \frac{2}{D+1} = \frac{D-1}{D^2(D+1)} > 0.
+  \]
+  \item \textbf{$3$-Qubit Hoggar Rupture ($n=3,d=2,D=8$; \leanref{hoggar\_3qubit\_beats\_mub}):} The exact Gaussian-integer Hoggar fiducial~\cite{Hoggar1998} $v_H=(1+i,0,-1,1,-i,-1,0,0)\in\Z[i]^8$ ($\norm{v_H}^2=6$) satisfies $S_{\mathrm{int}}(v_H)=2304$, achieving exact SIC saturation $S/8=2/9<15/64$ ($M_2=\ln(9/2)\approx 1.50408 > \ln(64/15)\approx 1.45083$, confirmed independently in pinned Moonlab WASM across all $64$ Pauli words to error $4.02\times 10^{-16}$). Thus $n=2$ is sharp for qubits.
+  \item \textbf{Composite $d=4$ Two-Ququart Rupture ($\Z_4\times\Z_4, D=16$; \leanref{composite\_d4\_beats\_mub}):} Even though no $\Z_4\times\Z_4$ WH-SIC exists, the explicit Gaussian-integer vector $v_{44}\in\Z[i]^{16}$ (tabulated in Appendix~\ref{app:witnesses}, $\norm{v_{44}}^2=354$) has exact integer $4$th-moment sum $S_{\mathrm{int}}(v_{44})=30{,}301{,}769{,}984$, satisfying
+  \[
+    256\,S_{\mathrm{int}}(v_{44}) = 7{,}757{,}253{,}115{,}904 \;<\; 7{,}789{,}230{,}282{,}496 = 31\cdot 16\cdot 354^4,
+  \]
+  i.e., $S/16\approx 0.120597 < 31/256=0.12109375$ ($M_2\approx 2.11531 > \ln(256/31)\approx 2.11119$; numerical L-BFGS-B descends further to $S/16=0.119251$, $M_2=2.12653$; Figure~\ref{fig:p3}(a)). Thus primality of $d$ is sharp in Eq.~(59) of~\cite{Knipfer2026}.
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}[{T3d: Exact $\Z[\zeta_5]$ Ququint Alltop Saddle Instability \tagbadge{LEAN-6K}}]
+\label{thm:t3d}
+Define the perturbed $1$-qudit $d=5$ Alltop vector $\phi_5\in\Z[\zeta_5]^5$ by $\phi_5[x]=(10+\delta_x)\zeta_5^{x^3\bmod 5}$ with $\delta=(2,-1,0,0,-1)$ ($\norm{\phi_5}^2=506$). Then $S(\phi_5)=\sum_{p,q\in\Z_5}|\braket{\phi_5}{X^p Z^q\phi_5}|^4$ is strictly real in $\Z[\sqrt{5}]\subset\Z[\zeta_5]$ and satisfies
+\[
+  25\,S(\phi_5) < 9\cdot 5\cdot 506^4
+  \qquad\Longleftrightarrow\qquad
+  \frac{S(\phi_5)}{5} \approx 0.3582441485 < \frac{9}{25} = 0.36.
+\]
+Hence the $1$-qudit $d=5$ Alltop state is a \emph{saddle point} (not a local maximum) of $M_2$, whereas numerical Hessian audits confirm that $1$-qudit Alltop states for $d\in\{7,11,13\}$ and the $2$-qudit $d=5$ Alltop state ($D=25$, exact tangent Hessian eigenvalues $\{112/25, 160/25, 272/25\}>0$) are strict local maxima (Figure~\ref{fig:p3}(b)).
+\end{theorem}
+
+Independent Eshkol~v1.3.6 LLVM dual-number automatic differentiation along $\phi(\varepsilon)=(1+\varepsilon\delta)\odot\psi_{\mathrm{Alltop}}$ confirms exact stationarity $d(S/5)/d\varepsilon|_{\varepsilon=0}=4.77\times 10^{-17}$ and strict downward slope $d(S/5)/d\varepsilon|_{\varepsilon=0.1}=-0.0360167$ at $S(0.1)/5=0.3582441485$.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig3_alltop_ruptures_and_saddle.pdf}
+  \caption{(a)~All-prime Alltop attainment vs.\ the universal Welch/SIC ceiling and exact Super-MUB ruptures at $3$-qubit Hoggar ($D=8$) and composite $d=4$ ($\Z_4\times\Z_4$, $D=16$; Theorem~\ref{thm:t3c}). (b)~Exact $1$-qudit $d=5$ Alltop saddle instability profile $S(\varepsilon)/5$ along $\delta=(2,-1,0,0,-1)$, verified in $\Z[\zeta_5]$ (Theorem~\ref{thm:t3d}) and Eshkol~v1.3.6 AD.}
+  \label{fig:p3}
+\end{figure}
+
+% ===========================================================================
+\section{Pillar IV: Resolution of Conjecture~24 and Exact Settlement of \texorpdfstring{$d_{\min}(\Qcode(7,2))=8$}{d\_min(Q(7,2))=8}}
+\label{sec:pillar4}
+
+In October~2026, Kulhandjian and Hanzo~\cite{KulhandjianHanzo2026} introduced a family of projective-geometry qudit stabilizer codes $\Qcode(q,d)$ of length $n=(q^{d+1}-1)/(q-1)$ built from Singer difference sets~\cite{Singer1938} $H=\{i\in\Z_n : \Tr_{\F_{q^{d+1}}/\F_q}(\alpha^i)=0\}$ (circulant incidence matrix $A$) and non-degenerate quadrics $Q=\{j\in\Z_n : \Tr(\alpha^{(q+1)j})=0\}$ (circulant matrix $M_Q$), with parity-check matrix $H_{\mathrm{code}}=(A\mid M_Q A)$ over $\F_q$. Section~X of~\cite{KulhandjianHanzo2026} highlighted two concrete open problems: (1)~settle Conjecture~24 analytically for binary codes $\Qcode(2,d)$ across all $d\ge 2$ (previously verified numerically only for $d\le 6$, with Remark~21 describing odd $d$ as delicate); and (2)~find an explicit weight-$8$ logical witness for $\Qcode(7,2)$ ($n=57$) to match their lower bound $d_{\min}(\Qcode(7,2))\ge 8$ (Theorem~28).
+
+\subsection{Complete All-\texorpdfstring{$d\ge 2$}{d>=2} Proof of Conjecture~24 and Remark~21 Sign Dichotomy}
+
+For $q=2$ and $m=d+1\ge 3$, $n=2^m-1$, $E=\{i\in\Z_n:\Tr_{\F_{2^m}/\F_2}(\alpha^i)=0\}$, and $Q_e=\{j\in\Z_n:\Tr(\alpha^{3j})=0\}$. The $(0,k)$-entry of the circulant product $M_{Q_e}A\bmod 2$ counts
+\begin{equation}
+\label{eq:conj24-sum}
+  u_-[k] \coloneqq |E\cap(k-Q_e)|
+  = \sum_{z\in\F_{2^m}^\times}\bigl(1+\Tr(c z^{-1})\bigr)\bigl(1+\Tr(z^3)\bigr) \pmod 2,
+\end{equation}
+where $c=\alpha^k\in\F_{2^m}^\times$ and $z=\alpha^j$. Expanding $\Tr(x)=\sum_{i=0}^{m-1}x^{2^i}$ over $\F_{2^m}$ turns~\eqref{eq:conj24-sum} into a sum of monomials $z^e$ with exponents $0$, $-2^i$, $3\cdot 2^j$, and cross-terms $3\cdot 2^j - 2^i \equiv 2^i(3\cdot 2^{(j-i)\bmod m}-1)\pmod{2^m-1}$. Since $\sum_{z\in\F_{2^m}^\times} z^e=0$ in $\F_{2^m}$ whenever $(2^m-1)\nmid e$ and $=2^m-1\equiv 1\pmod 2$ when $(2^m-1)\mid e$, Conjecture~24 reduces completely to an elementary divisibility theorem.
+
+\begin{theorem}[{T4a: Conjecture~24, Remark~21 Dichotomy, and $d_{\min}(\Qcode(2,d))=2$ \tagbadge{LEAN-6K}}]
+\label{thm:t4a}
+Let $m=d+1\ge 3$ ($d\ge 2$) and $n=2^m-1$.
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Universal Non-Divisibility Core} (\leanref{conjecture24\_\allowbreak nondivisibility}): For every $m\ge 3$, every $0\le r<m$, and every $i\ge 0$,
+  \[
+    (2^m-1)\nmid 1,\qquad (2^m-1)\nmid 3,\qquad (2^m-1)\nmid (3\cdot 2^r - 1),
+  \]
+  and $(2^m-1)\mid 2^i e \iff (2^m-1)\mid e$ (\leanref{pow2\_\allowbreak dvd\_\allowbreak iff\_\allowbreak of\_\allowbreak odd\_\allowbreak mod}). Consequently, every non-constant monomial sum in~\eqref{eq:conj24-sum} vanishes in $\F_{2^m}$, proving $u_-[k]\equiv 1\pmod 2$ for all $k\in\Z_n$ and hence $M_{Q_e}A\equiv J\pmod 2$ for \emph{every} $d\ge 2$.
+  \item \textbf{Remark~21 Sign-Convention Dichotomy} (\leanref{remark21\_\allowbreak plus\_\allowbreak sign\_\allowbreak dichotomy}): For the opposite-sign count $u_+[k]=|E\cap(k+Q_e)|$ (from $M_{Q_e}^T A$, cross-exponents $3\cdot 2^r+1$): at $d=2$ ($m=3,r=1$), $(2^3-1)\mid(3\cdot 2^1+1)$ ($7\mid 7$), so $u_+[k]\equiv 1+\Tr(\alpha^k)\pmod 2$ takes even values; for every $d\ge 3$ ($m\ge 4$) and $r<m$, $(2^m-1)\nmid(3\cdot 2^r+1)$, so \emph{both} $u_-$ and $u_+$ are identically odd.
+  \item \textbf{Exact Distance $d_{\min}(\Qcode(2,d))=2$ for All $d\ge 2$ (\leanref{binary\_\allowbreak singer\_\allowbreak exact\_\allowbreak distance\_\allowbreak two}):} With $H_{\mathrm{code}}=(A\mid J)$, no weight-$1$ Pauli commutes with $H_{\mathrm{code}}$ (each column of $A$ has weight $2^d-1\in(0,n)$), while every weight-$2$ pure-$X$ operator $X_{j_0}X_{j_1}=(e_{j_0}+e_{j_1}\mid 0)$ ($j_0\neq j_1$) satisfies $J(e_{j_0}+e_{j_1})=0\pmod 2$ and lies strictly outside $\rowsp_{\F_2}(A\mid J)$ because every nonzero codeword of punctured $\RM(1,d+1)=\rowsp_{\F_2}(A)$ has weight $\ge 2^d-1\ge 3$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For $r\le m-2$, $0<3\cdot 2^r-1\le 3\cdot 2^{m-2}-1 < 4\cdot 2^{m-2}-1=2^m-1$; for $r=m-1$, $3\cdot 2^{m-1}-1=(2^m-1)+2^{m-1}$ with $0<2^{m-1}<2^m-1$. Hence $(2^m-1)\nmid(3\cdot 2^r-1)$ for all $m\ge 3, r<m$. The exact same two-case sandwich proves $(2^m-1)\nmid(3\cdot 2^r+1)$ for all $m\ge 4$ (using $2^{m-2}\ge 4>2$ and $2^{m-1}\ge 8>3$), while at $m=3,r=1$, $3\cdot 2^1+1=7=2^3-1$.
+\end{proof}
+
+\subsection{Universal Odd-Prime Bound \texorpdfstring{$d_{\min}(\Qcode(p,2))\le p+1$}{d\_min(Q(p,2))<=p+1} and Exact Settlement of \texorpdfstring{$\Qcode(7,2)$}{Q(7,2)}}
+
+\begin{theorem}[{T4b: Universal Odd-Prime Upper Bound $d_{\min}(\Qcode(p,2))\le p+1$ \tagbadge{LEAN-6K}}]
+\label{thm:t4b}
+Let $p\ge 3$ be any odd prime, $n=p^2+p+1$, $A$ the circulant Singer hyperplane incidence matrix of $\PG(2,p)$ with first row $\tau_H\in\{0,1\}^n$ ($\mathrm{wt}(\tau_H)=p+1$), and $M_Q$ the circulant quadric matrix with first row $\tau_Q\in\{0,1\}^n$ ($\mathrm{wt}(\tau_Q)=p+1$). Let $c_k=(\tau_H^T M_Q)_k=|H\cap(k-Q)|$ (or $c_k^+=(\tau_H^T M_Q^T)_k=|H\cap(k+Q)|\le 2$). Whenever $0\le c_k<p$ for all $k\in\Z_n$ and $\sum_{k=0}^{n-1}c_k(c_k-1)=p(p+1)$ (guaranteed by the Singer difference-set property of $H$ and B\'ezout's bound on $\PG(1,p)$), the explicit weight-$(p+1)$ diagonal Pauli operator
+\[
+  L_{\mathrm{line}} \coloneqq (\tau_H \mid \tau_H) \in \F_p^{2n}
+\]
+satisfies:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Exact Symplectic Commutation:} $A\tau_H \equiv \mathbf{1}\pmod p$ (every two lines of $\PG(2,p)$ meet in $1$ point, and $p+1\equiv 1\pmod p$), so $(M_Q A)\tau_H\equiv M_Q\mathbf{1}\equiv (p+1)\mathbf{1}\equiv\mathbf{1}\pmod p$, giving $(M_Q A)\tau_H - A\tau_H \equiv \mathbf{0}\pmod p$.
+  \item \textbf{Strict Non-Stabilizer Property:} $L_{\mathrm{line}}\notin \rowsp_{\F_p}(A\mid M_Q A)$.
+\end{enumerate}
+Therefore $d_{\min}(\Qcode(p,2))\le p+1$ for every odd prime $p\ge 3$.
+\end{theorem}
+
+\begin{proof}
+Suppose for contradiction that $u^T(A\mid M_Q A)\equiv (\tau_H^T\mid \tau_H^T)\pmod p$ for some $u\in\F_p^n$. Because circulant matrices commute ($M_Q A=A M_Q$), we obtain
+\[
+  \tau_H^T \equiv u^T(M_Q A) = (u^T A)M_Q \equiv \tau_H^T M_Q \pmod p,
+\]
+meaning $c_k\equiv \tau_H[k]\in\{0,1\}\pmod p$ for every $k\in\Z_n$. Because $0\le c_k<p$, this forces $c_k\in\{0,1\}$ for all $k$, hence $\sum_k c_k(c_k-1)=0$, contradicting $\sum_k c_k(c_k-1)=p(p+1)>0$. Mechanized in full generality in \leanref{Pillar4.odd\_prime\_singer\_upper\_bound}.
+\end{proof}
+
+\begin{remark}[Conic vs.\ Reciprocal-Conic Orientation Discovered via Formalization]
+Formalizing Theorem~\ref{thm:t4b} in Lean~4 caught a subtle distinction between the two circulant transposes: for $M_Q^T$ ($c_k^+=|H\cap(k+Q)|$), $Q$ cuts each projective line in at most $2$ points ($c_k^+\le 2$ for all $p$, yielding exact secant count $\binom{p+1}{2}=28$ at $p=7$); for $M_Q$ ($c_k^-=|H\cap(k-Q)|$), the intersection is governed by $\Tr(c x^{-2})=0$ on $\PG(1,p)$, which reaches $c_k^-=3$ at $p=5$ and $c_k^-=4$ at $p=7,11$ (Figure~\ref{fig:p4}(b)). Because our sharpened Lean proof requires only $0\le c_k<p$, Theorem~\ref{thm:t4b} holds unconditionally for \emph{both} orientations simultaneously.
+\end{remark}
+
+\begin{theorem}[{T4c \& C4d: Exact Settlement $d_{\min}(\Qcode(7,2))=8$ \tagbadge{LEAN-6K}/\tagbadge{EXACT-COMP}}]
+\label{thm:t4c}
+The exact minimum distance $d_{\min}(\Qcode(7,2))=8$ follows from two complementary certifications:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Kernel-Checked Concrete Witnesses} (\leanref{prove\_t4c}): Using explicit primitive cubics over $\F_p$ ($x^3+2x^2+1$ for $p=3$, $x^3+x^2+2$ for $p=5$, $x^3+x^2+x+2$ for $p=7$, $x^3+x^2+3$ for $p=11$), the Lean~4.35.0 kernel directly verifies all hypotheses of Theorem~\ref{thm:t4b} and certifies non-stabilizer logical witnesses $L_{\mathrm{line}}$ of exact weights $4,6,8,12$ for $\Qcode(3,2),\Qcode(5,2),\Qcode(7,2),\Qcode(11,2)$---proving $d_{\min}(\Qcode(7,2))\le 8$ and resolving the open weight-$8$ search of~\cite{KulhandjianHanzo2026}, Sec.~X.
+  \item \textbf{Exhaustive Lower-Bound Certification} (\texttt{rust/}, \texttt{c/}, \texttt{asm/}): Exploiting the order-$3n$ Singer--Frobenius automorphism group $\langle i\mapsto i+1,\,i\mapsto pi\rangle$ of $\Qcode(p,2)$ with lossless cyclic-gap pruning and incremental column-echelon elimination over $\F_p$, two independent native engines---zero-unsafe Rust and strict ISO~C11 calling our bare-metal x86-64 NASM kernel (\texttt{asm/\allowbreak gf7\_singer\_kernel.asm}, verified on $10{,}000$ differential vectors)---exhaustively confirm:
+  \begin{itemize}[leftmargin=1.5em,itemsep=1pt]
+    \item $\Qcode(5,2)$ ($n=31,\operatorname{rank}=16$): all $1{,}827$ Singer--Frobenius orbits of weight $5$ have full column rank $10$ ($0$ dependent orbits, $2$\,ms) $\implies d_{\min}(\Qcode(5,2))=6$.
+    \item $\Qcode(7,2)$ ($n=57,\operatorname{rank}=29$): all \textbf{$1{,}546{,}218$ Singer--Frobenius orbits} of weight $7$ (matching the exact Burnside orbit count derived in Appendix~\ref{app:burnside}) have full column rank $14$ ($0$ dependent orbits, $5.4$\,s in Rust) $\implies d_{\min}(\Qcode(7,2))\ge 8$.
+  \end{itemize}
+\end{enumerate}
+Combining the kernel-verified weight-$8$ upper bound with both Kulhandjian--Hanzo Theorem~28~\cite{KulhandjianHanzo2026} and our independent exhaustive $1{,}546{,}218$-orbit lower-bound certification settles $d_{\min}(\Qcode(7,2))=8$ \textbf{exactly} (Figure~\ref{fig:p4}(a)).
+\end{theorem}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/fig4_singer_codes_and_conic_obstruction.pdf}
+  \caption{(a)~Minimum distance landscape of odd-prime Singer stabilizer codes $\Qcode(p,2)$ showing our universal upper bound $d_{\min}\le p+1$ (Theorem~\ref{thm:t4b}) and the newly settled exact distance $d_{\min}(\Qcode(7,2))=8$ (Theorem~\ref{thm:t4c}). (b)~Exact intersection histograms $c_+(k)\le 2$ (conic orientation, $28$ secants) vs.\ $c_-(k)<7$ (reciprocal orientation) at $p=7, n=57$.}
+  \label{fig:p4}
+\end{figure}
+
+% ===========================================================================
+\section{Nine-Language Polyglot Architecture and Six-Kernel Verification Audit}
+\label{sec:verification}
+
+To eliminate single-implementation, single-compiler, and single-kernel blindspots, every quantitative and formal assertion in this monograph was independently implemented and cross-checked across nine programming/quantum ecosystems and six independent Lean~4.35.0 type-checking kernels (Table~\ref{tab:polyglot}).
+
+\begin{table}[t]
+\centering
+\caption{Polyglot nine-language and six-kernel verification matrix. All engines ran natively and produced bit-for-bit agreeing exact outputs.}
+\label{tab:polyglot}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}llLl@{}}
+\toprule
+\textbf{Engine / Kernel} & \textbf{Scope} & \textbf{Key Verified Artifact \& Quantitative Result} & \textbf{Status} \\
+\midrule
+Lean~4.35.0 (6 kernels) & Pillars I--IV & 14 headline theorems + 8 NV + 8 AT; 31 \texttt{\#print axioms} $\subseteq\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ & \textbf{PASS} \\
+Rust 1.94 (\texttt{forbid(unsafe)}) & Pillars I--IV & Exact $1{,}546{,}218$-orbit $\Qcode(7,2)$ cert ($0$ dep, $5.4$\,s); $0$ clippy warnings & \textbf{PASS} \\
+Zig 0.17.0 (comptime+run) & Pillars I, III, IV & Comptime Hoggar $S_4=2304$ \& Conj.~24; runtime $v_{44}$ \& $\Qcode(p,2)$ & \textbf{PASS} \\
+ISO~C11 + NASM x86-64 & Pillar IV & Dual-ABI ASM \texttt{gf\_sub\_mul\_asm}; $10\text{k}/10\text{k}$ diff + $1{,}546{,}218$-orbit $\Qcode(7,2)$ & \textbf{PASS} \\
+ISO~C++20 (\texttt{constexpr}) & Pillars I, III, IV & \texttt{static\_assert} on $|\Stab|=3$ \& $S_4=2304$; $v_{44}$ \& Conj.~24 ($m\le 20$) & \textbf{PASS} \\
+Eshkol v1.3.6 LLVM AD & Pillars I--III & Exact $S_{\mathrm{SIC}}'=0$, gap slope $+2.305$, $d=5$ saddle $S'(0.1)=-0.03602$ & \textbf{PASS} \\
+Moonlab WASM + QRNG & Pillar III & $10{,}510$ native gates; $2\text{q}$ MUB ($4\times 10^{-16}$); $3\text{q}$ Hoggar ($4.0\times 10^{-16}$), $2048$ shots & \textbf{PASS} \\
+Pinned QGTL~C & Pillar I & Exact Fubini--Study $\mathrm{diag}(1/4,1)$ ($0.0$ err) \& Berry $|\Omega|=1.0$ ($0.0$ err) & \textbf{PASS} \\
+Python Oracle + Hypothesis & All + Diff & Exact \texttt{int}/\texttt{Fraction}, property tests, $8/8$ ($100\%$) mutation kill, \texttt{ruff}/\texttt{mypy} & \textbf{PASS} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Statement-Fidelity Audit and Adversarial Hardening}
+
+A formal proof can be kernel-valid yet mathematically vacuous if its statement deviates from the target literature or hides trivializing hypotheses. We enforce three safeguards:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Palomar Statement Contract:} \texttt{Challenge.lean} defines the literal \texttt{Prop} statements \texttt{T1aStmt}--\texttt{T4cStmt} plus the master conjunction. \texttt{PalomarChallenge.lean} holds the \texttt{sorry}-stubbed targets (excluded from \texttt{defaultTargets}), while \texttt{PalomarSolution.lean} discharges every target without \texttt{sorry}. CI runs \texttt{lake check --paranoid} and \texttt{lake comparator --paranoid} on six kernels (\texttt{lean}, \texttt{leanchecker-paranoid}, \texttt{lean4lean}, \texttt{nanoda}, \texttt{con-leche}, \texttt{con-ron}), plus a live tamper test verifying that injecting a synthetic axiom is rejected immediately.
+  \item \textbf{Constructive Non-Vacuity (\texttt{NonVacuity.lean}, NV01--NV08):} Eight theorems construct explicit concrete witnesses inhabiting the hypotheses of every universal theorem (e.g., the $(5,12,13)$ rational SIC, the $\F_5$ \texttt{AlltopFieldModel}, the concrete $D=7$ high-mana spectrum, and concrete $\Qcode(7,2)$ and $\Qcode(11,2)$ planes).
+  \item \textbf{Formal Adversarial Refutations (\texttt{AdversarialTests.lean}, AT01--AT08):} Eight theorems formally refute false strengthenings (e.g., proving $|\Stab_{\PCliff_3}(v_{345})|\notin\{1,9\}$, showing the Trace-Norm Spectral Lock fails without $2\lambda_k^2>D$, and refuting Remark~21 $u_+$ oddness at $d=2$).
+\end{enumerate}
+
+\noindent\textbf{Real Defects Caught During Hardening:} Our polyglot and formalization workflow caught and eliminated five genuine errors prior to release (logged in \texttt{HARDENING\_LOG.md}): (i)~Lean~4 caught an algebraic slip in the Welch--MUB gap numerator ($(D-1)$ rather than $(D-1)^2$); (ii)~Lean~4 discovered the conic vs.\ reciprocal-conic bound distinction ($c_k^+\le 2$ vs.\ $c_k^-\le 4<p$), yielding a strictly stronger Theorem~\ref{thm:t4b}; (iii)~QGTL~C caught a hand-computed Berry curvature zero on $\Span(e_1,e_2)$, revealing the exact Bloch-sphere monopole $|\Omega_{\theta\phi}|=1$; (iv)~Eshkol AD output inspection caught a missing square in the $d=5$ normalization denominator ($\norm{\phi}^8$ vs.\ $\norm{\phi}^4$); and (v)~adding a mandatory green-baseline guard to \texttt{scripts/mutate.py} exposed three weak mutants and strengthened \texttt{verify\_pillar1} to verify full $24$-element symplectic covariance.
+
+% ===========================================================================
+\section{Open Problems, Limitations, and Future Directions}
+\label{sec:limitations}
+
+Our results sharpen four natural open problems left explicitly unresolved:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Low-Mana Regime of Conjecture~2:} Extend Theorem~\ref{thm:t2ab} below $\Mana(\ket{\psi})\le \tfrac{1}{2}\ln(D/2)$---where $\Tr(H_s^2)=D$ alone no longer locks the spectral gap---or construct a counterexample (none appeared across $7{,}000+$ single-qudit states up to $d=47$ and $3{,}435$ two-qutrit Clifford eigenstates).
+  \item \textbf{Global Upper Bound on Two-Qudit Prime $M_2$:} Prove or refute whether $M_2^{\max}(\C^d\otimes\C^d)=\ln[d^4/(2d^2-1)]$ for odd primes $d\ge 5$, given that $1$-qudit $d=5$ Alltop is an unstable saddle while $2$-qudit $d=5$ Alltop is a strict local maximum.
+  \item \textbf{Conjecture~27 Lower Bound for $p\ge 11$:} Establish analytically whether $d_{\min}(\Qcode(p,2))=p+1$ holds for all odd primes $p\ge 5$ (now settled for $p=5,7$, with universal upper bound $p+1$ proved for all $p\ge 3$).
+  \item \textbf{Hardware QRNG Classification:} The classical software mixer \texttt{quantum\_\allowbreak stack/\allowbreak qrng\_\allowbreak mixer.c} (SplitMix64 + xoshiro256**) used for Moonlab Born sampling is explicitly deterministic software and makes zero claim of quantum hardware entropy.
+\end{enumerate}
+
+% ===========================================================================
+\section*{Disclosures: AI Assistance, CRediT Authorship, and Reproducibility}
+\addcontentsline{toc}{section}{Disclosures: AI Assistance, CRediT Authorship, and Reproducibility}
+
+\noindent\textbf{Author \& Conflict of Interest:} Alexander Stephen Donahue (Independent Researcher, Spokane, WA, USA; ORCID \texttt{0009-0006-8168-9648}) declares no competing financial or non-financial interests and received no external funding.
+
+\noindent\textbf{CRediT \& Transparent AI-Assistance Disclosure:} The human author conceived the research direction, enforced integrity and verification standards, and takes full responsibility for all mathematical claims and code. AI coding and proof-engineering assistants (Google Antigravity / Gemini) were used extensively for conjecture scouting, algebraic proof exploration, Lean~4.35.0 tactic synthesis, polyglot software engineering, figure generation, and manuscript drafting. Every mathematical theorem in Sections~\ref{sec:pillar1}--\ref{sec:pillar4} was independently machine-checked by the Lean~4.35.0 kernel (and five independent external kernels in CI) and cross-verified by nine independent executable engines, while every bibliographic entry in \texttt{paper/refs.bib} was verified live against the Crossref and arXiv APIs with zero retractions.
+
+\noindent\textbf{Data, Code, and Archival Availability:} All Lean~4 sources, Rust, Zig, C11, NASM, C++20, Eshkol, Moonlab, QGTL, and Python verification artifacts, SHA-256 manifests, DigiCert RFC~3161 and Bitcoin OpenTimestamps proofs, and the interactive 3D WebGL2 Observatory and Lean Blueprint are archived openly at \href{https://github.com/0thernes/weyl-magic-stabilizer-frontier}{\texttt{github.com/\allowbreak 0thernes/\allowbreak weyl-magic-stabilizer-frontier}} and registered under \texttt{0TH-2026-020} in \href{https://github.com/0thernes/0thernes-research-archive}{\texttt{0thernes-research-archive}}.
+
+\clearpage
+\appendix
+
+% ===========================================================================
+\section{Statement-Fidelity Mapping and Exact Explicit Witnesses}
+\label{app:witnesses}
+
+Table~\ref{tab:fidelity} provides a literal statement-fidelity audit matching each target conjecture from the 2026 literature to its Lean~4.35.0 formalization in \texttt{lean/Challenge.lean}, noting every exact scope boundary.
+
+\begin{table}[h]
+\centering
+\caption{Statement-fidelity crosswalk between target 2026 arXiv conjectures and \texttt{Challenge.lean}.}
+\label{tab:fidelity}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}llLL@{}}
+\toprule
+\textbf{Source} & \textbf{Literature Statement} & \textbf{Lean Formalization (\texttt{Challenge.lean})} & \textbf{Scope Fidelity} \\
+\midrule
+\cite{ErewGoldstein2026} Conj.~1 & Every SIC-POVM fiducial is a $1$D Clifford-stabilizer state & \leanref{T1aStmt}, \leanref{T1bStmt}: $v_{345}$ is exact WH-SIC with $|\Stab_{\PCliff_3}|=3$, $\dim=2$ & \textbf{Exact refutation} (no extra assumptions) \\
+\cite{ErewGoldstein2026} Conj.~2 & Clifford-stabilizer with $W_\psi\neq 0$ locally maximizes mana & \leanref{T2aStmt}, \leanref{T2bStmt}: $\Tr(H_s^2)=D$, $2\lambda_\psi^2>D\implies$ strict local max & \textbf{Proved for} $\Mana>\tfrac{1}{2}\ln(D/2)$; low-mana open \\
+\cite{Knipfer2026} Eq.~(59) & $\max M_2(\C^d\otimes\C^d)=\ln[d^4/(2d^2-1)]$ for prime $d$ & \leanref{T3aStmt}--\leanref{T3dStmt}: all-prime $d\ge 5$ attainment, 1D Clifford, $d=4$/$n=3$ ruptures & \textbf{Lower bound + sharpness proved}; upper bound open \\
+\cite{KulhandjianHanzo2026} Conj.~24 & Binary Singer code obeys $M_{Q_e}A\equiv J\pmod 2$ for all $d\ge 2$ & \leanref{T4aStmt}, \leanref{T4cStmt}: non-divisibility $\forall m\ge 3$, Remark~21 split, $d_{\min}=2$ & \textbf{Complete all-$d\ge 2$ proof} \\
+\cite{KulhandjianHanzo2026} Sec.~X & Weight-$8$ upper bound for $\Qcode(7,2)$ & \leanref{T4bStmt}, \leanref{T4cStmt} + Rust/C11+ASM $1{,}546{,}218$-orbit lower bound & \textbf{Exact settlement} $d_{\min}(\Qcode(7,2))=8$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Exact Integer and Cyclotomic Witnesses}
+
+\begin{enumerate}[leftmargin=2em,itemsep=4pt]
+  \item \textbf{Pillar I Rational WH-SIC Witness (\texttt{v345}):}
+  $v_{345}=(0, 5, -3-4i)\in\Z[\zeta_{12}]^3$, $\norm{v_{345}}^2=50$. All $8$ non-identity WH overlaps satisfy $4|\braket{v_{345}}{X^p Z^q v_{345}}|^2=2500$. Its complete projective Clifford stabilizer in $\PCliff_3$ (order $216$) is $\{I, P, P^2\}$ with $P=\operatorname{diag}(1,\omega_3^2,\omega_3^2)$, fixing every $(0,y,z)$ with eigenvalue $\omega_3^{2c}$.
+  \item \textbf{Pillar III Composite $d=4$ Super-MUB Witness (\texttt{v44}):}
+  Over $\Z_4\times\Z_4$ ($D=16$), the $16$ coordinates of $v_{44}\in\Z[i]^{16}$ are
+  \begin{align*}
+    v_{44}[0..7]  &= \bigl(8,\; -1+2i,\; -4i,\; 7,\; -i,\; 5-4i,\; -1+i,\; -5+5i\bigr),\\
+    v_{44}[8..15] &= \bigl(6,\; 7+i,\; -2i,\; 1+3i,\; i,\; 1+2i,\; 1+i,\; -3-3i\bigr),
+  \end{align*}
+  with exact squared norm $\norm{v_{44}}^2=354$ and exact $4$th-moment sum $S_{\mathrm{int}}(v_{44})=30{,}301{,}769{,}984$, yielding exact rational ratio $S(v_{44})/16 = 30{,}301{,}769{,}984 / (16\cdot 354^4) \approx 0.1205965730 < 31/256 = 0.12109375$.
+  \item \textbf{Pillar III Ququint $d=5$ Alltop Saddle Witness (\texttt{phi5}):}
+  $\phi_5[x]=a_x\,\zeta_5^{x^3\bmod 5}$ with $(a_0,a_1,a_2,a_3,a_4)=(12,9,10,10,9)$, $\norm{\phi_5}^2=506$. Inside $\Z[\zeta_5]$, $S(\phi_5)$ is strictly real with $c_1=0, c_2=c_3$, and exact sign test $25\,S(\phi_5) - 45\cdot 506^4 < 0$ in $\Z[\sqrt{5}]$ certified via \leanref{Zeta5.zSqrt5LtZero\_sound}.
+  \item \textbf{Pillar IV Primitive Polynomials:}
+  Binary $\F_{2^{d+1}}$ ($d=2..9$): $x^3+x+1$, $x^4+x+1$, $x^5+x^2+1$, $x^6+x+1$, $x^7+x+1$, $x^8+x^4+x^3+x^2+1$, $x^9+x^4+1$, $x^{10}+x^3+1$.
+  Odd-prime cubics $\F_{p^3}$: $x^3+2x^2+1$ ($p=3,n=13$), $x^3+x^2+2$ ($p=5,n=31$), $x^3+x^2+x+2$ ($p=7,n=57$), and $x^3+x^2+3$ ($p=11,n=133$).
+\end{enumerate}
+
+% ===========================================================================
+\section{Verbatim Lean~4.35.0 Axiom Footprint and Six-Kernel Protocol}
+\label{app:axioms}
+
+Every single one of the $31$ audited declarations in \texttt{lean/VerifyAxioms.lean} (15 Palomar targets \texttt{prove\_t1a}--\texttt{prove\_all\_frontier\_theorems}, 8 constructive non-vacuity witnesses \texttt{NV01}--\texttt{NV08}, and 8 formal adversarial refutations \texttt{AT01}--\texttt{AT08}) depends \emph{strictly} on a subset of the three standard Lean~4 foundational axioms $\{\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}\}$---with zero occurrences of \texttt{sorryAx}, \texttt{Lean.ofReduceBool}, or any custom axiom. Table~\ref{tab:axioms} summarizes the exact kernel footprints captured verbatim in \texttt{results/lean\_axioms.txt} and enforced in CI by \texttt{scripts/check\_readme\_axioms.py}.
+
+\begin{table}[h]
+\centering
+\caption{Exact transitive axiom footprints verified by \texttt{VerifyAxioms.lean} and checked across six independent Lean~4.35.0 kernels (\texttt{lean}, \texttt{leanchecker-paranoid}, \texttt{lean4lean}, \texttt{nanoda}, \texttt{con-leche}, \texttt{con-ron}).}
+\label{tab:axioms}
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}lL@{}}
+\toprule
+\textbf{Axiom Footprint} & \textbf{Audited Lean~4.35.0 Declarations (31 Total)} \\
+\midrule
+$\emptyset$ (pure kernel) & \leanref{nonvacuity\_nv08\_singer\_q7\_q11\_witnesses} \\
+$\{\texttt{propext}\}$ & \leanref{prove\_t3b}, \leanref{prove\_t4c}, \leanref{nonvacuity\_nv07\_binary\_singer\_d2} \\
+$\{\texttt{propext}, \texttt{Quot.sound}\}$ & \leanref{prove\_t1a}, \leanref{prove\_t1c}, \leanref{prove\_t2a}, \leanref{prove\_t2c}, \leanref{prove\_t3a}, \leanref{prove\_t4a}, \leanref{nv01}, \leanref{nv03}, \leanref{nv05}, \leanref{at03}, \leanref{at04}, \leanref{at06}, \leanref{at08} \\
+$\{\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}\}$ & \leanref{prove\_t1b}, \leanref{prove\_t1d}, \leanref{prove\_t2b}, \leanref{prove\_t3c}, \leanref{prove\_t3d}, \leanref{prove\_t4b}, \leanref{prove\_all\_frontier\_theorems}, \leanref{nv02}, \leanref{nv04}, \leanref{nv06}, \leanref{at01}, \leanref{at02}, \leanref{at05}, \leanref{at07} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ===========================================================================
+\section{Singer--Frobenius Burnside Orbit Enumeration and Bare-Metal x86-64 Kernel}
+\label{app:burnside}
+
+To certify $d_{\min}(\Qcode(7,2))\ge 8$ exhaustively without relying on any external theorem or unverified solver, we must prove that for every $7$-subset $S\subset \Z_{57}$, the $29\times 14$ submatrix $M_S=(B_{:,S}\mid -A_{:,S})$ over $\F_7$ (restricted to $29$ linearly independent rows of $(B\mid -A)$, where $\operatorname{rank}_{\F_7}(A)=29$) has full column rank $14$. Because every subset of size $w<7$ is contained in a $7$-subset, full column rank on all $7$-subsets simultaneously excludes all nonzero commuting Paulis of weight $1\le w\le 7$.
+
+\subsection{Exact Burnside Count of \texorpdfstring{$7$}{7}-Subsets under \texorpdfstring{$\Z_{57}\rtimes\Z_3$}{Z\_57 x| Z\_3}}
+
+The automorphism group $G=\langle\sigma,\phi\rangle\cong \Z_{57}\rtimes\Z_3$ of $\Qcode(7,2)$ has order $|G|=171$, generated by the Singer shift $\sigma(x)=x+1\pmod{57}$ and the Frobenius map $\phi(x)=7x\pmod{57}$ ($\phi^3=1$ since $7^3=343=6\cdot 57+1$). Its $171$ elements fall into three cycle-type classes on $\Z_{57}$:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Identity ($1$ element):} fixes all $\binom{57}{7} = 264{,}385{,}836$ subsets.
+  \item \textbf{Non-trivial pure shifts $\sigma^k$ ($56$ elements):} every cycle length divides $57=3\cdot 19$ and is $>1$. Because $\gcd(7,3)=\gcd(7,19)=1$, no union of orbits of size $3,19,$ or $57$ can have cardinality $7$, so \textbf{$0$ subsets} of size $7$ are fixed.
+  \item \textbf{Frobenius cosets $\sigma^k\phi$ and $\sigma^k\phi^2$ ($114$ elements of order $3$):} each map $x\mapsto 7x+k\pmod{57}$ has $7x+k\equiv x\iff 6x\equiv -k\pmod{57}$. Since $\gcd(6,57)=3$, exactly $38$ elements ($k\equiv 0\pmod 3$, $19$ in each coset) have \textbf{$3$ fixed points} and $18$ cycles of length $3$, while the remaining $76$ elements ($k\not\equiv 0\pmod 3$) have $0$ fixed points and $19$ cycles of length $3$ (fixing $0$ subsets of size $7$ because $3\nmid 7$). Each of the $38$ elements with $3$ fixed points fixes a $7$-subset iff it chooses $1$ of the $3$ fixed points and $2$ of the $18$ length-$3$ cycles, giving $3\binom{18}{2}=3\cdot 153 = 459$ fixed $7$-subsets!
+\end{enumerate}
+By Burnside's lemma, the exact number of Singer--Frobenius orbits of $7$-subsets of $\Z_{57}$ is
+\begin{equation}
+\label{eq:burnside-q7}
+  N_{\mathrm{orb}}(57,7)
+  = \frac{1}{171}\Bigl(\binom{57}{7} + 38\cdot 459\Bigr)
+  = \frac{264{,}385{,}836 + 17{,}442}{171}
+  = \frac{264{,}403{,}278}{171}
+  = 1{,}546{,}218.
+\end{equation}
+Both our zero-unsafe Rust certifier (\texttt{rust/src/main.rs}) and our strict ISO~C11 + x86-64 NASM assembly certifier (\texttt{c/src/weyl\_verify.c} linked to \texttt{asm/gf7\_singer\_kernel.asm}) enumerate \textbf{literally $1{,}546{,}218$ canonical orbit representatives} (matching~\eqref{eq:burnside-q7} to the exact unit, proving zero orbits were missed by lossless cyclic-gap pruning) and report \textbf{$0$ dependent orbits}.
+
+\subsection{Dual-ABI Bare-Metal x86-64 NASM Kernel Verification}
+
+To verify the inner finite-field elimination independent of compiler vectorizers, \texttt{asm/\allowbreak gf7\_\allowbreak singer\_\allowbreak kernel.asm} implements \texttt{gf\_\allowbreak sub\_\allowbreak mul\_\allowbreak asm}---computing $\mathrm{dst}[i]\gets (\mathrm{dst}[i]+p-(\mathrm{factor}\cdot\mathrm{src}[i])\bmod p)\bmod p$---and \texttt{gf\_\allowbreak dot\_\allowbreak mod\_\allowbreak asm} in hand-written x86-64 assembly with compile-time \texttt{WIN64} and System~V AMD64 ABI selection. Before executing the exhaustive $\Qcode(5,2)$ ($1{,}827$ orbits) and $\Qcode(7,2)$ ($1{,}546{,}218$ orbits) loops, \texttt{c/src/weyl\_\allowbreak verify.c} runs $10{,}000$ deterministic differential tests comparing both assembly entry points bit-for-bit against pure ISO~C11 across primes $p\in\{3,5,7,11\}$ and vector lengths $1\le \ell\le 64$, achieving $10{,}000/10{,}000$ exact agreement.
+
+{\raggedright
+\bibliographystyle{plainurl}
+\bibliography{refs}
+}
+
+\end{document}

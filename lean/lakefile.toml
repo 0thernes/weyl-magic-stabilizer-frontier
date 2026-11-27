@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: Apache-2.0
+name = "WeylMagicFrontier"
+version = "1.0.0"
+defaultTargets = ["WeylMagicFrontier", "Challenge", "Solution", "PalomarSolution"]
+
+[leanOptions]
+autoImplicit = false
+relaxedAutoImplicit = false
+linter.unusedVariables = true
+linter.deprecated = true
+
+[[lean_lib]]
+name = "WeylMagicFrontier"
+
+[[lean_lib]]
+name = "Challenge"
+
+[[lean_lib]]
+name = "Solution"
+
+[[lean_lib]]
+name = "PalomarChallenge"
+
+[[lean_lib]]
+name = "PalomarSolution"

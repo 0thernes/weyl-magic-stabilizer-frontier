@@ -1,0 +1,20 @@
+# weyl-magic-stabilizer-frontier (0TH-2026-020)
+
+> Zero-Mathlib Lean 4.35.0 six-kernel formalization (14 headline theorems, 15 Palomar targets, 31 audited declarations) and 9-language polyglot/quantum verification stack resolving a connected chain of four 2026 open problems across Weyl-Heisenberg SIC-Clifford stabilizers, discrete Wigner mana, Alltop stabilizer Rényi entropy, and projective-geometry Singer qudit codes.
+
+- Author: Alexander Stephen Donahue (Independent Researcher, Spokane, WA, USA; ORCID 0009-0006-8168-9648)
+- Repository: https://github.com/0thernes/weyl-magic-stabilizer-frontier
+- Interactive Observatory & Lean Blueprint: https://0thernes.github.io/weyl-magic-stabilizer-frontier/
+- Master Archive Entry: 0TH-2026-020 (https://github.com/0thernes/0thernes-research-archive)
+
+## Core Artifacts
+- [README.md](README.md): Executive summary, verbatim `#print axioms` proof block, 9-language quickstart
+- [CLAIMS.md](CLAIMS.md): Complete claims ledger, verification classes, and falsification conditions
+- [LIMITATIONS.md](LIMITATIONS.md): Explicit non-claims, open gaps, and `0 / 1,900` Mega-Atlas count
+- [paper/main.tex](paper/main.tex): 21-page AMS-LaTeX monograph (0 warnings, 0 overfull/underfull hboxes)
+- [dist/Donahue_2026_weyl_magic_stabilizer_frontier.pdf](dist/Donahue_2026_weyl_magic_stabilizer_frontier.pdf): Frozen compiled PDF
+- [lean/Challenge.lean](lean/Challenge.lean): Literal statement contract (`T1aStmt`..`T4cStmt`, `AllFrontierTheoremsStmt`)
+- [lean/VerifyAxioms.lean](lean/VerifyAxioms.lean): Transitive axiom audit (31 declarations within `{propext, Classical.choice, Quot.sound}`)
+- [docs/site/index.html](docs/site/index.html): Zero-CDN interactive 3D Observatory
+- [docs/site/blueprint.html](docs/site/blueprint.html): Auto-generated Lean 4 Proof Blueprint (91 theorems, 115 defs)
+- [HARDENING_LOG.md](HARDENING_LOG.md): 3 full audit cycles across 10 finding classes and 10 Playbook lenses

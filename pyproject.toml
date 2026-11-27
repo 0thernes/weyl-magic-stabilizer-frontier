@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: Apache-2.0
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "weyl-magic-stabilizer-frontier"
+version = "1.0.0"
+description = "Zero-Mathlib Lean 4.35.0 six-kernel formalization (14 headline theorems, 15 Palomar targets) and 9-language polyglot/quantum verification suite for Weyl-Heisenberg SIC-Clifford stabilizers, Trace-Norm Spectral Locking of mana, Alltop magic, and projective-geometry Singer qudit codes."
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [{name = "Alexander Stephen Donahue", email = "0_0@0thernes.art"}]
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "hypothesis>=6.100",
+    "numpy>=2.0",
+    "scipy>=1.14",
+    "matplotlib>=3.9",
+    "ruff>=0.6",
+    "mypy>=1.11",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+ignore = ["E402"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+explicit_package_bases = true

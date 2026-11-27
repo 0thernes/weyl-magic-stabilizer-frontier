@@ -1,0 +1,11 @@
+name: Research Extension or Feature Request
+description: Propose an extension (e.g., low-mana Conjecture 2 bound, Q(11,2) lower bound, additional kernels)
+labels: ["gap"]
+body:
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: Describe the mathematical question, formalization target, or tooling improvement.
+    validations:
+      required: true

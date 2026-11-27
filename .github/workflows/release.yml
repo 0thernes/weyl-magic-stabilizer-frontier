@@ -1,0 +1,49 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Release Artifacts & Checksums
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify frozen artifacts and generate SHA256SUMS
+        run: |
+          sha256sum -c data/MANIFEST.sha256
+          sha256sum -c MANIFEST.sha256
+          python3 scripts/stamp_timestamps.py --verify --negative-test
+          sha256sum dist/Donahue_2026_weyl_magic_stabilizer_frontier.pdf dist/arxiv_submission.tar.gz MANIFEST.sha256 data/MANIFEST.sha256.tsr data/MANIFEST.sha256.ots > SHA256SUMS
+          cat SHA256SUMS
+      - name: Attest SLSA release provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: |
+            dist/Donahue_2026_weyl_magic_stabilizer_frontier.pdf
+            dist/arxiv_submission.tar.gz
+            MANIFEST.sha256
+            data/MANIFEST.sha256.tsr
+            data/MANIFEST.sha256.ots
+            SHA256SUMS
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${GITHUB_REF_NAME}" \
+            dist/Donahue_2026_weyl_magic_stabilizer_frontier.pdf \
+            dist/arxiv_submission.tar.gz \
+            MANIFEST.sha256 \
+            data/MANIFEST.sha256 \
+            data/MANIFEST.sha256.tsr \
+            data/MANIFEST.sha256.ots \
+            SHA256SUMS \
+            --title "${GITHUB_REF_NAME} — Weyl-Heisenberg Magic, Clifford Stabilizers & Singer Codes (0TH-2026-020)" \
+            --generate-notes
