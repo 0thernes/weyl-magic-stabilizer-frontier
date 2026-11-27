@@ -13,6 +13,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.figure import Figure
+from matplotlib.patches import Rectangle
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 FIG_DIR = ROOT / "paper" / "figures"
@@ -47,7 +49,7 @@ plt.rcParams.update({
 })
 
 
-def save_fig(fig: plt.Figure, stem: str) -> None:
+def save_fig(fig: Figure, stem: str) -> None:
     fig.savefig(FIG_DIR / f"{stem}.pdf")
     fig.savefig(FIG_DIR / f"{stem}.png", dpi=200)
     plt.close(fig)
@@ -330,7 +332,7 @@ def make_fig5() -> None:
     ax.axis("off")
 
     def box(x: float, y: float, w: float, h: float, title: str, body: str, color: str, fc: str) -> None:
-        rect = plt.Rectangle((x, y), w, h, facecolor=fc, edgecolor=color, lw=1.6, zorder=2)
+        rect = Rectangle((x, y), w, h, facecolor=fc, edgecolor=color, lw=1.6, zorder=2)
         ax.add_patch(rect)
         ax.text(x + w / 2, y + h - 0.16, title, ha="center", va="top", fontsize=8.3, fontweight="bold", color=color, zorder=3)
         ax.text(x + w / 2, y + h - 0.44, body, ha="center", va="top", fontsize=6.8, color=OI["black"], linespacing=1.32, zorder=3)

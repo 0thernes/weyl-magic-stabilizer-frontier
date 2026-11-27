@@ -102,10 +102,10 @@ make -C c test-nasm sanitize fuzz
 g++ -std=c++20 -O3 -Wall -Wextra -Wpedantic -Werror cpp/src/weyl_verify.cpp -o /tmp/weyl_cpp && /tmp/weyl_cpp
 
 # 6. Pinned Moonlab WASM + deterministic software QRNG mixer + pinned QGTL C
-gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o /tmp/qrng_mixer
-node quantum_stack/moonlab_super_mub.mjs /tmp/qrng_mixer
+mkdir -p build && gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o build/qrng_mixer
+node quantum_stack/moonlab_super_mub.mjs
 gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
-    quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/*.c -lm -o /tmp/qgtl_sic && /tmp/qgtl_sic
+    quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/*.c -lm -o build/qgtl_sic && ./build/qgtl_sic
 
 # 7. Eshkol v1.3.6 LLVM automatic differentiation audit (if eshkol-run is installed)
 eshkol-run -r eshkol/weyl_magic_ad.esk

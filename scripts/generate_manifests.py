@@ -36,7 +36,7 @@ def normalize_lf() -> int:
     for p in sorted(ROOT.rglob("*")):
         if not p.is_file():
             continue
-        if any(part in SKIP_DIRS for part in p.relative_to(ROOT).parts):
+        if any(part in SKIP_DIRS or part.endswith(".egg-info") for part in p.relative_to(ROOT).parts):
             continue
         if p.suffix.lower() in CRLF_EXTS:
             continue
@@ -82,7 +82,7 @@ def main() -> int:
             if not p.is_file():
                 continue
             rel = p.relative_to(ROOT)
-            if any(part in SKIP_DIRS for part in rel.parts):
+            if any(part in SKIP_DIRS or part.endswith(".egg-info") for part in rel.parts):
                 continue
             if rel.as_posix().startswith("paper/build/"):
                 continue

@@ -37,10 +37,10 @@ Any independent researcher can reproduce every formal proof, exact computation, 
    Verify that Rust and C11+NASM both report `q5_orbits = 1827, q5_deps = 0` and `q7_orbits = 1546218, q7_deps = 0`.
 3. **Quantum & Differential-Geometry Stack (Moonlab WASM, QGTL C, Eshkol AD):**
    ```bash
-   gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o /tmp/qrng_mixer
-   node quantum_stack/moonlab_super_mub.mjs /tmp/qrng_mixer
+   mkdir -p build && gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o build/qrng_mixer
+   node quantum_stack/moonlab_super_mub.mjs
    gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
-       quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/*.c -lm -o /tmp/qgtl_sic && /tmp/qgtl_sic
+       quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/*.c -lm -o build/qgtl_sic && ./build/qgtl_sic
    ```
 4. **Python Oracle, Property/Differential Tests, 100% Mutation Suite & Blueprint:**
    ```bash
