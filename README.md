@@ -105,7 +105,7 @@ g++ -std=c++20 -O3 -Wall -Wextra -Wpedantic -Werror cpp/src/weyl_verify.cpp -o /
 mkdir -p build && gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o build/qrng_mixer
 node quantum_stack/moonlab_super_mub.mjs
 gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
-    quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/*.c -lm -o build/qgtl_sic && ./build/qgtl_sic
+    quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/quantum_geometric/distributed/differential_geometry.c -lm -o build/qgtl_sic && ./build/qgtl_sic
 
 # 7. Eshkol v1.3.6 LLVM automatic differentiation audit (if eshkol-run is installed)
 eshkol-run -r eshkol/weyl_magic_ad.esk

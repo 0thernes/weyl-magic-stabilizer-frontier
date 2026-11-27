@@ -40,7 +40,7 @@ Any independent researcher can reproduce every formal proof, exact computation, 
    mkdir -p build && gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o build/qrng_mixer
    node quantum_stack/moonlab_super_mub.mjs
    gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
-       quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/*.c -lm -o build/qgtl_sic && ./build/qgtl_sic
+       quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/quantum_geometric/distributed/differential_geometry.c -lm -o build/qgtl_sic && ./build/qgtl_sic
    ```
 4. **Python Oracle, Property/Differential Tests, 100% Mutation Suite & Blueprint:**
    ```bash

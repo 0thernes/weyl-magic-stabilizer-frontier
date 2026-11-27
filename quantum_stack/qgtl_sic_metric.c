@@ -6,9 +6,9 @@
  * along the Pillar I non-Clifford-stabilizer d=3 WH-SIC circle:
  *   |psi(theta, phi)> = (0, cos(phi), -sin(phi) * exp(i*theta))
  * At the WH-SIC circle phi = pi/4 (including the Pythagorean (3,4,5) witness at theta = atan2(4,3)):
- *   g_{theta,theta} = 1/4,  g_{phi,phi} = 1,  g_{theta,phi} = 0,  Omega_{theta,phi} = 0 (real Berry curvature!).
- * Also checks the complex 2-parameter deformation (phi, theta) where QGTL reports exact
- * Fubini-Study metric `g = diag(1/4, 1)` and Berry curvature `Omega = 0` to < 1e-13!
+ *   g_{theta,theta} = 1/4,  g_{phi,phi} = 1,  g_{theta,phi} = 0,  |Omega_{theta,phi}| = sin(2*phi) = 1.0
+ *   (exact Bloch-sphere monopole Berry curvature on the 2D joint eigenspace span(e_1, e_2)).
+ * Also checks an off-circle complex 2-parameter deformation (alpha = pi/6, theta) with |Omega| = sqrt(3)/4!
  */
 
 #include <math.h>

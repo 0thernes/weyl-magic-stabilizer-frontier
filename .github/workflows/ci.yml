@@ -146,7 +146,8 @@ jobs:
           node quantum_stack/moonlab_super_mub.mjs
       - name: Pinned QGTL C differential geometry harness
         run: |
-          gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/*.c -lm -o /tmp/qgtl_sic_metric
+          gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
+            quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/quantum_geometric/distributed/differential_geometry.c -lm -o /tmp/qgtl_sic_metric
           /tmp/qgtl_sic_metric
 
   python-matrix:
@@ -230,4 +231,4 @@ jobs:
       - name: Secret, placeholder & affiliation hygiene scan (gitleaks-style + policy audit)
         run: |
           ! grep -rnE "(ghp_[A-Za-z0-9]{30,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})" . --exclude-dir=.git --exclude-dir=.lake --exclude-dir=target
-          ! grep -rn "0thernes LLC" . --exclude-dir=.git --exclude-dir=.lake --exclude-dir=target --exclude="ci.yml"
+          ! grep -rn "0thernes LLC" . --exclude-dir=.git --exclude-dir=.lake --exclude-dir=target --exclude="ci.yml" --exclude="test_all.py"

@@ -32,7 +32,7 @@ quantum:
     mkdir -p build
     gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o build/qrng_mixer
     node quantum_stack/moonlab_super_mub.mjs
-    gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/*.c -lm -o build/qgtl_sic_metric && ./build/qgtl_sic_metric
+    gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/quantum_geometric/distributed/differential_geometry.c -lm -o build/qgtl_sic_metric && ./build/qgtl_sic_metric
 
 # Run Python exact oracle, Hypothesis property/differential tests, 100% mutation suite, ruff, mypy, citations, blueprint
 python:
