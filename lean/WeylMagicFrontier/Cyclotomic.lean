@@ -105,6 +105,52 @@ theorem normSq_mul (x y : GaussInt) : (x * y).normSq = x.normSq * y.normSq := by
     omega
   exact h
 
+theorem add_comm (x y : GaussInt) : add x y = add y x := by
+  unfold add; ext <;> simp [Int.add_comm]
+
+theorem add_assoc (x y z : GaussInt) : add (add x y) z = add x (add y z) := by
+  unfold add; ext <;> simp [Int.add_assoc]
+
+theorem mul_comm (x y : GaussInt) : mul x y = mul y x := by
+  unfold mul
+  ext <;> simp
+  · rw [Int.mul_comm x.re y.re, Int.mul_comm x.im y.im]
+  · rw [Int.mul_comm x.re y.im, Int.mul_comm x.im y.re, Int.add_comm]
+
+theorem mul_assoc (x y z : GaussInt) : mul (mul x y) z = mul x (mul y z) := by
+  unfold mul
+  ext <;> simp
+  · have h1 := Int.sub_mul (x.re * y.re) (x.im * y.im) z.re
+    have h2 := Int.add_mul (x.re * y.im) (x.im * y.re) z.im
+    have h3 := Int.mul_sub x.re (y.re * z.re) (y.im * z.im)
+    have h4 := Int.mul_add x.im (y.re * z.im) (y.im * z.re)
+    simp only [Int.mul_assoc] at h1 h2 h3 h4
+    omega
+  · have h1 := Int.sub_mul (x.re * y.re) (x.im * y.im) z.im
+    have h2 := Int.add_mul (x.re * y.im) (x.im * y.re) z.re
+    have h3 := Int.mul_add x.re (y.re * z.im) (y.im * z.re)
+    have h4 := Int.mul_sub x.im (y.re * z.re) (y.im * z.im)
+    simp only [Int.mul_assoc] at h1 h2 h3 h4
+    omega
+
+theorem left_distrib (x y z : GaussInt) : mul x (add y z) = add (mul x y) (mul x z) := by
+  unfold mul add
+  ext <;> simp
+  · rw [Int.mul_add, Int.mul_add]; omega
+  · rw [Int.mul_add, Int.mul_add]; omega
+
+theorem mul_sub_right (x y z : GaussInt) : mul x (sub y z) = sub (mul x y) (mul x z) := by
+  unfold mul sub
+  ext <;> simp
+  · rw [Int.mul_sub, Int.mul_sub]; omega
+  · rw [Int.mul_sub, Int.mul_sub]; omega
+
+theorem right_distrib (x y z : GaussInt) : mul (add x y) z = add (mul x z) (mul y z) := by
+  rw [mul_comm, left_distrib, mul_comm z x, mul_comm z y]
+
+theorem sub_mul_left (x y z : GaussInt) : mul (sub x y) z = sub (mul x z) (mul y z) := by
+  rw [mul_comm, mul_sub_right, mul_comm z x, mul_comm z y]
+
 /-- Power of `i`: `i^(k mod 4)`. -/
 @[expose] def powI (k : Nat) : GaussInt :=
   match k % 4 with
@@ -233,6 +279,63 @@ theorem mul_conj_eq (x : Zeta12) :
       omega
     omega
 
+theorem beq_iff_eq (x y : Zeta12) : beq x y = true ↔ x = y := by
+  unfold beq
+  cases x; cases y
+  simp [Bool.and_eq_true, and_assoc]
+
+theorem mul_comm (x y : Zeta12) : mul x y = mul y x := by
+  unfold mul
+  dsimp only
+  have h00 : GaussInt.mul ⟨x.a, x.b⟩ ⟨y.a, y.b⟩ = GaussInt.mul ⟨y.a, y.b⟩ ⟨x.a, x.b⟩ :=
+    GaussInt.mul_comm _ _
+  have h11 : GaussInt.mul ⟨x.c, x.d⟩ ⟨y.c, y.d⟩ = GaussInt.mul ⟨y.c, y.d⟩ ⟨x.c, x.d⟩ :=
+    GaussInt.mul_comm _ _
+  have h01 : GaussInt.mul ⟨x.a, x.b⟩ ⟨y.c, y.d⟩ = GaussInt.mul ⟨y.c, y.d⟩ ⟨x.a, x.b⟩ :=
+    GaussInt.mul_comm _ _
+  have h10 : GaussInt.mul ⟨x.c, x.d⟩ ⟨y.a, y.b⟩ = GaussInt.mul ⟨y.a, y.b⟩ ⟨x.c, x.d⟩ :=
+    GaussInt.mul_comm _ _
+  rw [h00, h11, h01, h10, GaussInt.add_comm]
+
+theorem mul_assoc (x y z : Zeta12) : mul (mul x y) z = mul x (mul y z) := by
+  unfold mul
+  dsimp only
+  let x0 : GaussInt := ⟨x.a, x.b⟩
+  let x1 : GaussInt := ⟨x.c, x.d⟩
+  let y0 : GaussInt := ⟨y.a, y.b⟩
+  let y1 : GaussInt := ⟨y.c, y.d⟩
+  let z0 : GaussInt := ⟨z.a, z.b⟩
+  let z1 : GaussInt := ⟨z.c, z.d⟩
+  have hr0 : GaussInt.sub
+      (GaussInt.mul (GaussInt.sub (GaussInt.mul x0 y0) (GaussInt.mul x1 y1)) z0)
+      (GaussInt.mul (GaussInt.sub (GaussInt.add (GaussInt.mul x0 y1) (GaussInt.mul x1 y0)) (GaussInt.mul x1 y1)) z1) =
+    GaussInt.sub
+      (GaussInt.mul x0 (GaussInt.sub (GaussInt.mul y0 z0) (GaussInt.mul y1 z1)))
+      (GaussInt.mul x1 (GaussInt.sub (GaussInt.add (GaussInt.mul y0 z1) (GaussInt.mul y1 z0)) (GaussInt.mul y1 z1))) := by
+    simp only [GaussInt.sub_mul_left, GaussInt.right_distrib, GaussInt.mul_sub_right,
+               GaussInt.left_distrib, GaussInt.mul_assoc]
+    unfold GaussInt.add GaussInt.sub
+    ext <;> simp <;> omega
+  have hr1 : GaussInt.sub
+      (GaussInt.add
+        (GaussInt.mul (GaussInt.sub (GaussInt.mul x0 y0) (GaussInt.mul x1 y1)) z1)
+        (GaussInt.mul (GaussInt.sub (GaussInt.add (GaussInt.mul x0 y1) (GaussInt.mul x1 y0)) (GaussInt.mul x1 y1)) z0))
+      (GaussInt.mul (GaussInt.sub (GaussInt.add (GaussInt.mul x0 y1) (GaussInt.mul x1 y0)) (GaussInt.mul x1 y1)) z1) =
+    GaussInt.sub
+      (GaussInt.add
+        (GaussInt.mul x0 (GaussInt.sub (GaussInt.add (GaussInt.mul y0 z1) (GaussInt.mul y1 z0)) (GaussInt.mul y1 z1)))
+        (GaussInt.mul x1 (GaussInt.sub (GaussInt.mul y0 z0) (GaussInt.mul y1 z1))))
+      (GaussInt.mul x1 (GaussInt.sub (GaussInt.add (GaussInt.mul y0 z1) (GaussInt.mul y1 z0)) (GaussInt.mul y1 z1))) := by
+    simp only [GaussInt.sub_mul_left, GaussInt.right_distrib, GaussInt.mul_sub_right,
+               GaussInt.left_distrib, GaussInt.mul_assoc]
+    unfold GaussInt.add GaussInt.sub
+    ext <;> simp <;> omega
+  ext
+  · exact congrArg GaussInt.re hr0
+  · exact congrArg GaussInt.im hr0
+  · exact congrArg GaussInt.re hr1
+  · exact congrArg GaussInt.im hr1
+
 end Zeta12
 
 /-- Exact cyclotomic ring `Z[zeta_5]` in integral basis `{1, z, z^2, z^3}` where
@@ -289,7 +392,25 @@ namespace Zeta5
 
 @[expose] def realTwiceInt (x : Zeta5) : Int := 2 * x.c0 - x.c2
 @[expose] def realTwiceSqrt5 (x : Zeta5) : Int := -x.c2
+@[expose] def sqrt5Elem : Zeta5 := ⟨-1, 0, -2, -2⟩
 @[expose] def absSq (x : Zeta5) : Zeta5 := mul x (conj x)
+
+/-- Exact square-root-of-5 witness inside `Z[zeta_5]`: `(-1 - 2*(z^2 + z^3))^2 = 5`. -/
+theorem sqrt5Elem_sq : mul sqrt5Elem sqrt5Elem = ofInt 5 := by
+  decide
+
+/-- Soundness of the `Z[sqrt(5)]` decomposition for real symmetric elements of `Z[zeta_5]`:
+    whenever `c1 = 0` and `c2 = c3`, `2 * x = realTwiceInt(x) + realTwiceSqrt5(x) * sqrt(5)`! -/
+theorem real_twice_decomp (x : Zeta5) (h1 : x.c1 = 0) (h23 : x.c2 = x.c3) :
+    scaleInt 2 x = add (ofInt (realTwiceInt x)) (scaleInt (realTwiceSqrt5 x) sqrt5Elem) := by
+  unfold scaleInt add ofInt realTwiceInt realTwiceSqrt5 sqrt5Elem
+  ext <;> simp
+  · have hm : (-x.c2) * (-1) = x.c2 := by rw [Int.neg_mul_neg, Int.mul_one]
+    omega
+  · have hm : (-x.c2) * (-2) = 2 * x.c2 := by rw [Int.neg_mul_neg, Int.mul_comm]
+    omega
+  · have hm : (-x.c2) * (-2) = 2 * x.c2 := by rw [Int.neg_mul_neg, Int.mul_comm]
+    omega
 
 @[expose] def zSqrt5LtZero (u v : Int) : Bool :=
   if u < 0 then
@@ -457,6 +578,130 @@ theorem sumFin_cauchy_schwarz {n : Nat} (f : Fin n → Int) :
       have h2a : 2 * a * sumFin tail = 2 * (a * sumFin tail) := Int.mul_assoc 2 a (sumFin tail)
       omega
     omega
+
+/-- Splitting off the last element of `sumFin` over `Fin (m + 1)`. -/
+theorem sumFin_snoc {m : Nat} (g : Fin (m + 1) → Int) :
+    sumFin g = sumFin (fun i : Fin m => g ⟨i.val, Nat.lt_succ_of_lt i.isLt⟩) + g ⟨m, Nat.lt_succ_self m⟩ := by
+  induction m with
+  | zero =>
+    simp [sumFin]
+  | succ k ih =>
+    change g ⟨0, Nat.zero_lt_succ (k + 1)⟩ + sumFin (fun i : Fin (k + 1) => g i.succ) =
+      (g ⟨0, Nat.zero_lt_succ (k + 1)⟩ + sumFin (fun i : Fin k => g (⟨i.val, Nat.lt_succ_of_lt i.isLt⟩ : Fin (k + 1)).succ)) +
+      g (⟨k, Nat.lt_succ_self k⟩ : Fin (k + 1)).succ
+    rw [ih (fun i : Fin (k + 1) => g i.succ)]
+    omega
+
+/-- Fubini exchange of double finite sums over `Fin m` and `Fin n`. -/
+theorem sumFin_swap {m n : Nat} (h : Fin m → Fin n → Int) :
+    sumFin (fun i : Fin m => sumFin (fun j : Fin n => h i j)) =
+    sumFin (fun j : Fin n => sumFin (fun i : Fin m => h i j)) := by
+  induction m with
+  | zero =>
+    simp only [sumFin]
+    exact (sumFin_zero (n := n)).symm
+  | succ k ih =>
+    simp only [sumFin]
+    rw [ih (fun i j => h i.succ j), ← sumFin_add]
+
+/-- Single-step cyclic shift invariance of `sumFin` over `Fin n`. -/
+theorem sumFin_shift_one {n : Nat} (f : Fin n → Int) :
+    sumFin (fun i : Fin n => f ⟨(i.val + 1) % n, Nat.mod_lt _ (Fin.pos i)⟩) = sumFin f := by
+  cases n with
+  | zero => rfl
+  | succ m =>
+    rw [sumFin_snoc]
+    have hhead : sumFin (fun i : Fin m => f ⟨(i.val + 1) % (m + 1), Nat.mod_lt _ (Nat.zero_lt_succ m)⟩) =
+        sumFin (fun i : Fin m => f i.succ) := by
+      apply sumFin_eq_of_eq
+      intro i
+      congr 1
+      apply Fin.ext
+      exact Nat.mod_eq_of_lt (Nat.succ_lt_succ i.isLt)
+    have hlast : (⟨(m + 1) % (m + 1), Nat.mod_lt _ (Nat.zero_lt_succ m)⟩ : Fin (m + 1)) =
+        ⟨0, Nat.zero_lt_succ m⟩ := by
+      apply Fin.ext
+      exact Nat.mod_self (m + 1)
+    rw [hhead, hlast]
+    simp only [sumFin]
+    omega
+
+/-- Arbitrary cyclic shift invariance of `sumFin` over `Fin n`. -/
+theorem sumFin_shift {n : Nat} (s : Nat) (f : Fin n → Int) :
+    sumFin (fun i : Fin n => f ⟨(i.val + s) % n, Nat.mod_lt _ (Fin.pos i)⟩) = sumFin f := by
+  induction s with
+  | zero =>
+    apply sumFin_eq_of_eq
+    intro i
+    congr 1
+    apply Fin.ext
+    simp [Nat.mod_eq_of_lt i.isLt]
+  | succ k ih =>
+    have hstep : sumFin (fun i : Fin n => f ⟨(i.val + (k + 1)) % n, Nat.mod_lt _ (Fin.pos i)⟩) =
+        sumFin (fun i : Fin n => f ⟨(((i.val + 1) % n) + k) % n, Nat.mod_lt _ (Fin.pos i)⟩) := by
+      apply sumFin_eq_of_eq
+      intro i
+      congr 1
+      apply Fin.ext
+      dsimp only
+      rw [Nat.mod_add_mod, Nat.add_assoc, Nat.add_comm 1 k]
+    rw [hstep, sumFin_shift_one (fun j : Fin n => f ⟨(j.val + k) % n, Nat.mod_lt _ (Fin.pos j)⟩)]
+    exact ih
+
+/-- Reversal invariance of `sumFin` over `Fin n`: `sum_i f(n - 1 - i) = sum_i f(i)`. -/
+theorem sumFin_rev {n : Nat} (f : Fin n → Int) :
+    sumFin (fun i : Fin n => f ⟨n - 1 - i.val, by omega⟩) = sumFin f := by
+  induction n with
+  | zero => rfl
+  | succ m ih =>
+    rw [sumFin_snoc]
+    have hhead : sumFin (fun i : Fin m => f ⟨m + 1 - 1 - i.val, by omega⟩) =
+        sumFin (fun i : Fin m => f ⟨(m - 1 - i.val) + 1, by omega⟩) := by
+      apply sumFin_eq_of_eq
+      intro i
+      congr 1
+      apply Fin.ext
+      dsimp only
+      have hi : i.val < m := i.isLt
+      omega
+    have hlast : (⟨m + 1 - 1 - m, by omega⟩ : Fin (m + 1)) = ⟨0, Nat.zero_lt_succ m⟩ := by
+      apply Fin.ext
+      dsimp only
+      omega
+    rw [hhead, hlast]
+    have hrec := ih (fun i : Fin m => f i.succ)
+    change sumFin (fun i : Fin m => f (⟨m - 1 - i.val, by omega⟩ : Fin m).succ) +
+      f ⟨0, Nat.zero_lt_succ m⟩ = sumFin f
+    rw [hrec]
+    simp only [sumFin]
+    omega
+
+/-- Modular negation-shift invariance of `sumFin` over `Fin n`: `j ↦ (k + n - j) % n`. -/
+theorem sumFin_neg_shift {n : Nat} (k : Nat) (f : Fin n → Int) :
+    sumFin (fun j : Fin n => f ⟨(k + n - j.val) % n, Nat.mod_lt _ (Fin.pos j)⟩) = sumFin f := by
+  have heq : sumFin (fun j : Fin n => f ⟨(k + n - j.val) % n, Nat.mod_lt _ (Fin.pos j)⟩) =
+      sumFin (fun j : Fin n => f ⟨((n - 1 - j.val) + (k + 1)) % n, Nat.mod_lt _ (Fin.pos j)⟩) := by
+    apply sumFin_eq_of_eq
+    intro j
+    congr 1
+    apply Fin.ext
+    have hj : j.val < n := j.isLt
+    have hnat : k + n - j.val = (n - 1 - j.val) + (k + 1) := by omega
+    rw [hnat]
+  rw [heq, sumFin_rev (fun i : Fin n => f ⟨(i.val + (k + 1)) % n, Nat.mod_lt _ (Fin.pos i)⟩)]
+  exact sumFin_shift (k + 1) f
+
+/-- Modular reduction commutes with `sumFin`. -/
+theorem sumFin_emod_eq {n : Nat} (p : Int) (f g : Fin n → Int)
+    (h : ∀ i : Fin n, f i % p = g i % p) :
+    sumFin f % p = sumFin g % p := by
+  induction n with
+  | zero => simp [sumFin]
+  | succ m ih =>
+    simp only [sumFin]
+    rw [Int.add_emod, h ⟨0, Nat.zero_lt_succ m⟩,
+        ih (fun i => f i.succ) (fun i => g i.succ) (fun i => h i.succ),
+        ← Int.add_emod]
 
 end
 

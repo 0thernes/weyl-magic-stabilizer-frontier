@@ -2,12 +2,14 @@
 // Copyright (c) 2026 Alexander Stephen Donahue
 //
 // Pinned Moonlab WASM gate-level + projective-measurement verification of Pillar III:
-//   1. Prepares the 2-qubit MUB-optimal magic state (M_2 = ln(16/7)) via native Moonlab gates,
-//      computing all 16 Pauli expectations via Moonlab basis-rotation + _measurement_expectation_z.
-//   2. Prepares the 3-qubit Hoggar Super-MUB fiducial (M_2 = ln(9/2) > ln(64/15)) via native
-//      Moonlab Ry/Rz/H/S/CNOT gates, verifying all 64 Pauli expectations (|<psi|P|psi>|^2 = 1/9
-//      for all 63 non-identity Paulis!) AND executing 4,096 seeded QRNG projective shots.
-//   NOTE: QRNG stream is a deterministic classical software mixer; NO hardware entropy is claimed.
+//   1. Prepares the 2-qubit MUB-optimal magic state CS|++> (M_2 = ln(16/7)) via native
+//      Moonlab {H, Rz, CNOT} gates and computes all 16 Pauli expectations via basis rotation.
+//   2. Loads the exact 3-qubit Hoggar Super-MUB fiducial (M_2 = ln(9/2) > ln(64/15)) into
+//      Moonlab's statebuffer, verifies all 64 Pauli expectations (|<psi|P|psi>|^2 = 1/9
+//      for all 63 non-identity Paulis) via native {H, S^dag, CNOT} basis rotations, and
+//      executes 4,096 seeded classical-mixer projective measurement shots.
+//   NOTE: QRNG stream is a deterministic classical SplitMix64 + xoshiro256** software mixer;
+//   NO hardware quantum entropy is claimed.
 
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
@@ -24,6 +26,9 @@ const M = await require(path.join(root, 'third_party/moonlab/moonlab.js'))({
 });
 
 const seed = Number(process.argv[2] ?? 20261126);
+if (!Number.isInteger(seed) || seed < 0) {
+  throw new Error(`Invalid non-negative integer seed: ${process.argv[2]}`);
+}
 const qrngBin = path.join(root, 'build', process.platform === 'win32' ? 'qrng_mixer.exe' : 'qrng_mixer');
 const qrngBytes = Buffer.from(execFileSync(qrngBin, [String(seed), '65536'], { maxBuffer: 512000 }).toString(), 'hex');
 let cursor = 0;
@@ -108,12 +113,8 @@ function setAmpsNormalized(p, rawAmps) {
   }
 }
 
-// 1. 2-qubit maximal magic state |T> x |T> (actually M_2(|T>)=ln(4/3), M_2(|T>x|T>)=2*ln(4/3) vs MUB ln(16/7))
-//    Prepare exact 2-qubit MUB-optimal magic state (exact M_2 = ln(16/7) via native Moonlab H, T, CNOT, Ry gates!)
-//    First check single-qubit |T> = T H |0> -> M_2 = ln(4/3), and 2-qubit |H_2> = (|00> + |01> + |10> + i|11>)/2
-//    Wait: (1,1,1,i)/2 is a graph/stabilizer state? No, CZ(|++>) has (1,1,1,-1)/2 (stabilizer); CS(|++>) = (1,1,1,i)/2 has M_2 = ln(16/7)!
-//    Wait: check exact T-state product |T>|T>: S/4 = (1/2)*(1/2) = 1/4? No, |T> has <X>=<Y>=1/sqrt(2), <Z>=0 -> S/2 = (1+1/4+1/4)/2 = 3/4!
-//    And CS(|++>) = (1, 1, 1, i)/2: exact gate circuit H0, H1, T0, T1, CNOT(0,1), Tdag1, CNOT(0,1) = controlled-S on |++>!!
+// 1. Prepare exact 2-qubit MUB-optimal magic state CS|++> = (1, 1, 1, i)/2 (exact M_2 = ln(16/7))
+//    via native Moonlab {H, Rz, CNOT} gates: Controlled-S = T_0 * T_1 * CNOT(0,1) * T^\dag_1 * CNOT(0,1).
 const st2 = initState(2);
 gate('_gate_hadamard', st2, 0);
 gate('_gate_hadamard', st2, 1);
@@ -158,9 +159,9 @@ const m2_3q = -Math.log(s4_3q / 8.0);
 const m2_3q_exact = Math.log(9.0 / 2.0);
 const m2_3q_mub = Math.log(64.0 / 15.0);
 
-// Execute 2,048 seeded QRNG projective measurements on rotated Pauli 'XYZ' to check Born statistics
+// Execute 4,096 seeded classical-mixer projective measurements on rotated Pauli 'XYZ' to check Born statistics
 let plusCount = 0;
-const shots = 2048;
+const shots = 4096;
 for (let s = 0; s < shots; s++) {
   const q = cloneState(st3);
   const t = rotatePauli(q, 'XYZ');

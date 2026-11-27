@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) 2026 Alexander Stephen Donahue
 """RFC 3161 (DigiCert TSA) & 3-Calendar Bitcoin OpenTimestamps (.ots) stamper and verifier
-for data/MANIFEST.sha256 (Playbook v1.3 Gold Standard provenance)."""
+for data/MANIFEST.sha256 (Playbook v1.3 Gold Standard provenance, including OpenSSL X.509
+CMS cryptographic signature verification)."""
 
 from __future__ import annotations
 
@@ -40,6 +41,26 @@ def find_openssl() -> str | None:
     return None
 
 
+def find_ca_bundle() -> str | None:
+    candidates: list[Path] = [
+        Path("/etc/ssl/certs/ca-certificates.crt"),
+        Path("/etc/ssl/cert.pem"),
+        Path("/etc/pki/tls/certs/ca-bundle.crt"),
+        Path(r"C:\Program Files\Git\mingw64\etc\ssl\certs\ca-bundle.crt"),
+        Path(r"C:\Program Files\Git\usr\ssl\certs\ca-bundle.crt"),
+    ]
+    try:
+        import certifi
+
+        candidates.insert(0, Path(certifi.where()))
+    except ImportError:
+        pass
+    for c in candidates:
+        if c.exists() and c.stat().st_size > 0:
+            return str(c)
+    return None
+
+
 def sha256_bytes(path: Path) -> bytes:
     return hashlib.sha256(path.read_bytes()).digest()
 
@@ -62,7 +83,7 @@ def stamp_rfc3161(target: Path, out_tsr: Path) -> None:
             data=tmp_tsq.read_bytes(),
             headers={
                 "Content-Type": "application/timestamp-query",
-                "User-Agent": "weyl-magic-stabilizer-frontier/1.0",
+                "User-Agent": "weyl-magic-stabilizer-frontier/2.0",
             },
             method="POST",
         )
@@ -84,7 +105,7 @@ def stamp_ots(target: Path, out_ots: Path) -> None:
             headers={
                 "Accept": "application/vnd.opentimestamps.v1",
                 "Content-Type": "application/x-www-form-urlencoded",
-                "User-Agent": "weyl-magic-stabilizer-frontier/1.0",
+                "User-Agent": "weyl-magic-stabilizer-frontier/2.0",
             },
             method="POST",
         )
@@ -123,9 +144,12 @@ def verify_tsr(target: Path, tsr_path: Path) -> tuple[bool, str]:
     if (b"\x04\x20" + digest) not in raw:
         return False, f"TSR digest mismatch (expected SHA-256 {digest.hex()})"
     openssl = find_openssl()
+    sig_note = "ASN.1 + SHA-256 digest checked"
     if openssl:
         with tempfile.TemporaryDirectory() as td:
+            tmp_in = Path(td) / "target.bin"
             tmp_tsr = Path(td) / "check.tsr"
+            tmp_in.write_bytes(target.read_bytes())
             tmp_tsr.write_bytes(raw)
             proc = subprocess.run(
                 [openssl, "ts", "-reply", "-in", str(tmp_tsr), "-text"],
@@ -137,7 +161,22 @@ def verify_tsr(target: Path, tsr_path: Path) -> tuple[bool, str]:
                 return False, f"openssl ts -reply failed: {proc.stderr.strip()}"
             if "Status: Granted" not in proc.stdout:
                 return False, "TSR status is not Granted"
-    return True, f"TSR OK (SHA-256 {digest.hex()[:16]}..., {len(raw)} bytes)"
+
+            ca_bundle = find_ca_bundle()
+            if ca_bundle:
+                vproc = subprocess.run(
+                    [openssl, "ts", "-verify", "-data", str(tmp_in), "-in", str(tmp_tsr), "-CAfile", ca_bundle],
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                )
+                if vproc.returncode == 0 and "Verification: OK" in vproc.stdout:
+                    sig_note = "OpenSSL X.509 CMS signature Verification: OK"
+                else:
+                    return False, f"openssl ts -verify X.509 CMS failed: {(vproc.stderr or vproc.stdout).strip()}"
+            else:
+                sig_note = "openssl ts -reply Status: Granted (no system CA bundle found for X.509 chain)"
+    return True, f"TSR OK ({sig_note}, SHA-256 {digest.hex()[:16]}..., {len(raw)} bytes)"
 
 
 def verify_ots(target: Path, ots_path: Path) -> tuple[bool, str]:

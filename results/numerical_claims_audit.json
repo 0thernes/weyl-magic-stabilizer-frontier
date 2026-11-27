@@ -1,0 +1,188 @@
+{
+  "status": "PASS",
+  "verification_class": "NUM-STACK (numerical_approximation)",
+  "claim_n1_pcliff_d4_to_d7": {
+    "d=4": {
+      "d": 4,
+      "sl2_order": 48,
+      "pcliff_order": 768,
+      "sic_max_overlap_err": 3.608224830031759e-16,
+      "stabilizer_order": 3,
+      "joint_eigenspace_dim": 2,
+      "orbit_size": 256,
+      "is_1d_clifford_stabilizer": false,
+      "distinct_4a_fiducials": 256,
+      "isolated_1d_fiducials_in_4a": 0
+    },
+    "d=5": {
+      "d": 5,
+      "sl2_order": 120,
+      "pcliff_order": 3000,
+      "sic_max_overlap_err": 4.440892098500626e-16,
+      "stabilizer_order": 3,
+      "joint_eigenspace_dim": 2,
+      "orbit_size": 1000,
+      "is_1d_clifford_stabilizer": false
+    },
+    "d=6": {
+      "d": 6,
+      "sl2_order": 144,
+      "pcliff_order": 5184,
+      "sic_max_overlap_err": 8.604228440844963e-16,
+      "stabilizer_order": 3,
+      "joint_eigenspace_dim": 3,
+      "orbit_size": 1728,
+      "is_1d_clifford_stabilizer": false
+    },
+    "d=7": {
+      "d": 7,
+      "sl2_order": 336,
+      "pcliff_order": 16464,
+      "sic_max_overlap_err": 8.465450562766819e-16,
+      "stabilizer_order": 3,
+      "joint_eigenspace_dim": 3,
+      "orbit_size": 5488,
+      "is_1d_clifford_stabilizer": false
+    }
+  },
+  "claim_n2_composite_d4_lbfgsb": {
+    "dimension": 16,
+    "starts": 20,
+    "seed": 20261126,
+    "best_s_over_16": 0.11925052185511992,
+    "best_m2": 2.1265287730796985,
+    "mub_ceiling_s_over_16": 0.12109375,
+    "mub_ceiling_m2": 2.111190239994416,
+    "super_mub_margin_m2": 0.015338533085282435,
+    "beats_mub_ceiling": true,
+    "beats_gauss_witness": true
+  },
+  "claim_n3_alltop_hessians": {
+    "single_qudit": {
+      "d=5": {
+        "d": 5,
+        "tangent_dim": 8,
+        "grad_norm": 7.257114432557586e-16,
+        "min_eig": -0.5573303637676627,
+        "max_eig": 2.464499877989259,
+        "num_negative_eigs": 2,
+        "classification": "saddle"
+      },
+      "d=7": {
+        "d": 7,
+        "tangent_dim": 12,
+        "grad_norm": 1.0979472907033481e-15,
+        "min_eig": 0.5784327480420373,
+        "max_eig": 1.5699482484799376,
+        "num_negative_eigs": 0,
+        "classification": "strict_local_max_of_M2"
+      },
+      "d=11": {
+        "d": 11,
+        "tangent_dim": 20,
+        "grad_norm": 4.643836105676266e-16,
+        "min_eig": 0.15593048164678583,
+        "max_eig": 1.0623598422791303,
+        "num_negative_eigs": 0,
+        "classification": "strict_local_max_of_M2"
+      },
+      "d=13": {
+        "d": 13,
+        "tangent_dim": 24,
+        "grad_norm": 6.230051648288613e-16,
+        "min_eig": 0.40686144886151115,
+        "max_eig": 0.8740564296163469,
+        "num_negative_eigs": 0,
+        "classification": "strict_local_max_of_M2"
+      }
+    },
+    "two_qudit_d5": {
+      "D": 25,
+      "s_over_25": 0.07840000000000011,
+      "exact_49_over_625": 0.0784,
+      "tangent_dim": 48,
+      "grad_norm": 1.7767555167533072e-16,
+      "min_eig": 0.1791999999999995,
+      "max_eig": 0.4352000000000004,
+      "distinct_eigenvalues": [
+        {
+          "value": 0.1791999999999995,
+          "times_25": 4.479999999999987,
+          "multiplicity": 6
+        },
+        {
+          "value": 0.25599999999999956,
+          "times_25": 6.399999999999989,
+          "multiplicity": 6
+        },
+        {
+          "value": 0.2766698904686778,
+          "times_25": 6.916747261716945,
+          "multiplicity": 6
+        },
+        {
+          "value": 0.30719999999999953,
+          "times_25": 7.679999999999988,
+          "multiplicity": 6
+        },
+        {
+          "value": 0.3199999999999996,
+          "times_25": 7.99999999999999,
+          "multiplicity": 6
+        },
+        {
+          "value": 0.3839999999999995,
+          "times_25": 9.599999999999987,
+          "multiplicity": 6
+        },
+        {
+          "value": 0.41453010953132136,
+          "times_25": 10.363252738283034,
+          "multiplicity": 6
+        },
+        {
+          "value": 0.4351999999999995,
+          "times_25": 10.879999999999987,
+          "multiplicity": 6
+        }
+      ],
+      "max_analytic_cluster_err": 1.4210854715202004e-14,
+      "classification": "strict_local_max_of_M2"
+    }
+  },
+  "claim_n4_low_mana_sweep": {
+    "single_qudit_primes": [
+      3,
+      5,
+      7,
+      11,
+      13,
+      17,
+      19,
+      23,
+      29,
+      31,
+      37,
+      41,
+      43,
+      47
+    ],
+    "single_qudit_1d_eigenstates_tested": 15566,
+    "single_qudit_nowhere_vanishing": 13215,
+    "single_qudit_low_mana_checked": 0,
+    "single_qudit_counterexamples": 0,
+    "two_qutrit_1d_eigenstates_tested": 2678,
+    "two_qutrit_nowhere_vanishing": 1344,
+    "two_qutrit_low_mana_checked": 0,
+    "two_qutrit_counterexamples": 0,
+    "three_qutrit_low_mana_witness": {
+      "D": 27,
+      "single_qutrit_min_mana": 0.39745569939952596,
+      "three_qutrit_mana": 1.192367098198578,
+      "high_mana_threshold": 1.3013448427221919,
+      "strictly_below_threshold": true,
+      "still_strict_local_max": true,
+      "spectral_gap_3qutrit": 1.476163202242631
+    }
+  }
+}

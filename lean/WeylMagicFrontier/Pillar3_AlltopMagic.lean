@@ -14,8 +14,9 @@ We establish four exact, zero-Mathlib, kernel-checked theorems:
 - **T3b (`alltop_clifford_unification`)**: Universal 1-dimensional parabolic Clifford stabilization
   of Alltop states, unifying `2607.07197` with `2512.19657v2`.
 - **T3c (`welch_bound_and_mub_gap`, `hoggar_3qubit_beats_mub`, `composite_d4_beats_mub`)**:
-  Universal Welch/Cauchy-Schwarz bound + MUB-to-SIC gap `(D - 1)^2 > 0`, 3-qubit Hoggar Super-MUB
-  rupture (`S/8 = 2/9 < 15/64`), and composite `d = 4` (`Z_4 x Z_4`) Gaussian-integer Super-MUB rupture.
+  Universal Welch/Cauchy-Schwarz bound + exact MUB-to-SIC gap `(D - 1)/(D^2(D + 1))` (`D - 1 > 0`),
+  3-qubit Hoggar Super-MUB rupture (`S/8 = 2/9 < 15/64`), and composite `d = 4` (`Z_4 x Z_4`)
+  Gaussian-integer Super-MUB rupture.
 - **T3d (`alltop_d5_saddle_instability`)**: Exact `Z[zeta_5]` witness of 1-qudit `d = 5` Alltop
   saddle instability (`S/5 < 9/25`).
 -/

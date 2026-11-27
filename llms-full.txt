@@ -1,36 +1,37 @@
-# weyl-magic-stabilizer-frontier (0TH-2026-021) — Full LLM Context
+# weyl-magic-stabilizer-frontier (0TH-2026-021 v2.0.0) — Full LLM Context
 
 ## 1. Scientific Summary (Four Linked 2026 Pillars)
 1. **Pillar I — Refutation of Erew & Goldstein Conjecture 1 (`arXiv:2512.19657v2`) [LEAN-6K]:**
    - `T1a` (`qutrit_rational_circle_wh_sic`): Every Pythagorean triple $(a,b,c)$ yields an exact qutrit WH-SIC fiducial $v(a,b,c)=(0,c,-(a+bi))\in\mathbb{Z}[\zeta_{12}]^3$.
-   - `T1b` (`qutrit_sic_refutes_clifford_stabilizer_conjecture`): Exhaustive audit over all 216 projective Clifford elements $\mathrm{PCliff}_3$ proves $\mathrm{Stab}(v_{345})=\{I,P,P^2\}$ with 2D joint eigenspace $\mathrm{span}(e_1,e_2)$, refuting Conjecture 1.
+   - `T1b` (`qutrit_sic_refutes_clifford_stabilizer_conjecture` + `allPCliff3_nodup` + `mem_allPCliff3_iff` + `isCollinear_of_scale`): Exhaustive duplicate-free audit over all 216 projective Clifford elements $\mathrm{PCliff}_3$ proves $\mathrm{Stab}(v_{345})=\{I,P,P^2\}$ with 2D joint eigenspace $\mathrm{span}(e_1,e_2)$, refuting Conjecture 1.
    - `T1c` (`zauner_eigenspace_dim_universal_obstruction`): Universal all-$d$ Zauner trace-multiplicity bound $(3m_\lambda-d)^2\le 12$, forcing $m_\lambda\ge 2$ for all canonical eigenspaces ($d\ge 4$) and all three eigenspaces ($d\ge 7$).
-   - `T1d` (`dim4_scott_grassl_4a_obstruction`): Unique $d=4$ multiplicity $(2,1,1)$; $0/256$ isolated Scott-Grassl $4a$ fiducials are 1D Clifford-stabilized.
+   - `T1d` (`dim4_scott_grassl_4a_obstruction`): Unique $d=4$ multiplicity $(2,1,1)$; $0/256$ isolated Scott-Grassl $4a$ fiducials are 1D Clifford-stabilized (`scripts/verify_numerical_claims.py`).
    - QGTL C (`quantum_stack/qgtl_sic_metric.c`): Exact Fubini-Study metric $\mathrm{diag}(1/4,1)$ and Bloch-sphere monopole Berry curvature $|\Omega_{\theta\phi}|=1.0$ (0.0 error).
 
 2. **Pillar II — High-Mana Proof of Erew & Goldstein Conjecture 2 & Cubic-Mod-3 Wigner Dichotomy [LEAN-6K]:**
    - `T2a` (`sign_witness_trace_sq_identity`): Universal $\mathrm{Tr}(K_s^2)=D^3$ ($\mathrm{Tr}(H_s^2)=D$).
-   - `T2b` (`trace_norm_spectral_lock`): Proves Conjecture 2 across the entire high-mana regime $\mathcal{M}(\psi) > \frac{1}{2}\ln(D/2)$ with strict positive spectral gap $\Delta \ge \lambda_\psi - \sqrt{D-\lambda_\psi^2} > 0$.
+   - `T2b` (`trace_norm_spectral_lock`): Proves Conjecture 2 across the entire high-mana regime $\mathcal{M}(\psi) > \frac{1}{2}\ln(D/2)$ with strict positive spectral gap $\Delta \ge \lambda_\psi - \sqrt{D-\lambda_\psi^2} > 0$. Reproducible low-mana sweep (`results/numerical_claims_audit.json`) verifies 15,566 single-qudit (13,215 nowhere-vanishing) and 2,678 two-qutrit (1,344 nowhere-vanishing) eigenstates plus a locally maximal 3-qutrit low-mana witness at $D=27$.
    - `T2c` (`cubic_bijection_mod3_eq2`, `cubic_3to1_mod3_eq1`): Exact prime-dimension Alltop origin Wigner dichotomy ($W_{\mathrm{Alltop}}(0,0)=0$ identically for $p\equiv 2\pmod 3$ via inverse $y^{(2p-1)/3}$, vs nonzero 3-to-1 collapse for $p\equiv 1\pmod 3$).
 
 3. **Pillar III — All-Prime Alltop Magic Attainment, Clifford Unification & Super-MUB Ruptures (`arXiv:2607.07197` Eq. 59) [LEAN-6K]:**
    - `T3a` (`alltop_fourth_moment_exact`): Universal all-prime $d\ge 5$, all-$n$ ($q=d^n$) Alltop attainment $M_2 = \ln[q^2/(2q-1)]$.
    - `T3b` (`alltop_clifford_unification`): Every Alltop state is a genuine 1D parabolic Clifford-stabilizer state.
-   - `T3c` (`welch_bound_and_mub_gap`, `hoggar_3qubit_beats_mub`, `composite_d4_beats_mub`): Exact Welch-MUB gap $(D-1)/(D^2(D+1))$; exact Gaussian-integer Super-MUB ruptures at 3-qubit Hoggar ($D=8, S/8=2/9<15/64$, also confirmed in Moonlab WASM to $4.02\times 10^{-16}$) and composite $d=4$ ($\mathbb{Z}_4\times\mathbb{Z}_4, D=16, S_{\mathrm{int}}=30{,}301{,}769{,}984$, $S/16\approx 0.120597 < 31/256$).
-   - `T3d` (`alltop_d5_saddle_instability`): Exact $\mathbb{Z}[\zeta_5]$ proof + Eshkol AD confirmation ($dS/d\varepsilon|_{0.1}=-0.03602$) that 1-qudit $d=5$ Alltop is an unstable saddle.
+   - `T3c` (`welch_bound_and_mub_gap`, `hoggar_3qubit_beats_mub`, `composite_d4_beats_mub`): Exact Welch-MUB gap $(D-1)/(D^2(D+1))$; exact Gaussian-integer Super-MUB ruptures at 3-qubit Hoggar ($D=8, S/8=2/9<15/64$, also confirmed in Moonlab WASM across `20,750` gates and `4,096` shots to $4.02\times 10^{-16}$) and composite $d=4$ ($\mathbb{Z}_4\times\mathbb{Z}_4, D=16, S_{\mathrm{int}}=30{,}301{,}769{,}984$, $S/16\approx 0.120597 < 31/256$).
+   - `T3d` (`alltop_d5_saddle_instability` + `Zeta5.sqrt5Elem_sq` + `real_twice_decomp`): Exact $\mathbb{Z}[\zeta_5]$ proof + Eshkol AD confirmation ($dS/d\varepsilon|_{0.1}=-0.03602$) that 1-qudit $d=5$ Alltop is an unstable saddle, while 2-qudit $d=5$ Alltop has eight strictly positive multiplicity-6 Hessian clusters ($\lambda_{\min}(\nabla^2(S/25))=112/625=0.1792>0$).
 
 4. **Pillar IV — Proof of Kulhandjian & Hanzo Conjecture 24 & Exact Settlement $d_{\min}(\mathcal{Q}(7,2))=8$ (`arXiv:2610.02392`) [LEAN-6K + EXACT-COMP]:**
-   - `T4a` (`conjecture24_nondivisibility`, `remark21_plus_sign_dichotomy`, `binary_singer_exact_distance_two`): Complete all-$d\ge 2$ proof of Conjecture 24, diagnosis of Remark 21 $u_+$ sign exception at $d=2$ ($7\mid 7$), and exact $d_{\min}(\mathcal{Q}(2,d))=2$.
-   - `T4b` (`odd_prime_singer_upper_bound`): Universal odd-prime upper bound $d_{\min}(\mathcal{Q}(p,2))\le p+1$ via $L_{\mathrm{line}}=(\tau_H\mid\tau_H)$, covering both conic ($c_k^+\le 2$) and reciprocal-conic ($c_k^-<p$) orientations.
+   - `T4a` (`conjecture24_nondivisibility`, `remark21_plus_sign_dichotomy`, `binary_singer_exact_distance_two`): Complete all-$d\ge 2$ proof of Conjecture 24, diagnosis of Remark 21 $u_+$ sign exception at $d=2$ ($7\mid 7$), and exact $d_{\min}(\mathcal{Q}(2,d))=2$ (all inside `T4aStmt`).
+   - `T4b` (`odd_prime_singer_upper_bound`): Universal odd-prime upper bound $d_{\min}(\mathcal{Q}(p,2))\le p+1$ via $L_{\mathrm{line}}=(\tau_H\mid\tau_H)$ with internal circulant commutation proof (`circMulVec_circConv`, `vecMulCirc_circConv`), covering both conic ($c_k^+\le 2$) and reciprocal-conic ($c_k^-<p$) orientations.
    - `T4c` (`qp2_concrete_flagship_witnesses`): Kernel-verified witnesses for $\mathcal{Q}(3,2), \mathcal{Q}(5,2), \mathcal{Q}(7,2), \mathcal{Q}(11,2)$.
    - `C4d` (`rust/src/main.rs`, `c/src/weyl_verify.c`, `asm/gf7_singer_kernel.asm`): Independent zero-unsafe Rust and C11+x86-64 NASM certifications over all $1{,}827$ $\mathcal{Q}(5,2)$ orbits and all $1{,}546{,}218$ $\mathcal{Q}(7,2)$ Singer-Frobenius orbits (exact Burnside match, 0 dependent) settling $d_{\min}(\mathcal{Q}(7,2))=8$ exactly.
+   - Honest Scope: Retires `0 / 2,000` overarching Mega-Atlas grand open problems.
 
 ## 2. Architecture & Reproduction Map
-- `lean/`: Zero-Mathlib Lean 4.35.0 project (`lake build`, `lake env lean VerifyAxioms.lean`, `lake check --paranoid`, `lake comparator --config comparator.json --paranoid`).
+- `lean/`: Zero-Mathlib Lean 4.35.0 project (`lake build`, `VerifyAxioms.lean` 31/31, `AuditAllDecls.lean` 471/471 0 violations, `lake check --paranoid`, `lake comparator --config comparator.json --paranoid`).
 - `rust/`: Stdlib-only `#![forbid(unsafe_code)]` exact verifier (`cargo test --release && cargo run --release -- --json`).
 - `zig/`: Zig 0.17.0 comptime + runtime verifier (`zig test src/main.zig && zig run -O ReleaseFast src/main.zig`).
 - `c/` + `asm/`: Strict ISO C11 + dual-ABI x86-64 NASM assembly + libFuzzer-compatible fuzzer (`make -C c test-nasm sanitize fuzz`).
 - `cpp/`: Strict ISO C++20 `constexpr` `static_assert` verifier.
-- `eshkol/`: Eshkol v1.3.6 LLVM automatic differentiation audit (`eshkol-run -r eshkol/weyl_magic_ad.esk`).
-- `quantum_stack/` + `third_party/`: Pinned Moonlab WASM + deterministic software QRNG mixer + pinned QGTL C harness.
-- `src/`, `reference/`, `tests/`, `scripts/`: Python exact oracle, Hypothesis property/differential tests, 8/8 mutation suite, figure generator, Blueprint builder, live citation auditor, RFC 3161/OTS timestamping.
+- `eshkol/`: Eshkol v1.3.6 LLVM automatic differentiation audit (9-term WH SIC & $d=5$ saddle, `eshkol-run -r eshkol/weyl_magic_ad.esk`).
+- `quantum_stack/` + `third_party/`: Pinned Moonlab WASM (`20,750` gates, `4,096` shots) + deterministic software QRNG mixer + pinned QGTL C harness (`-Werror`).
+- `src/`, `reference/`, `tests/`, `scripts/`: Python exact oracle, standalone independent `reference/oracle.py`, Draft 2020-12 `repo.yaml` schema test, 1,000-case Hypothesis property/metamorphic/differential suite, 8/8 mutation suite (`-B`), reproducible `verify_numerical_claims.py`, figure generator, WCAG 2.2 AA Blueprint builder, live citation auditor (14/14 title+author+year+retraction), OpenSSL X.509 RFC 3161/OTS timestamping.

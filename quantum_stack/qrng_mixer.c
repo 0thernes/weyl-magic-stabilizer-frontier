@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0
  * Copyright (c) 2026 Alexander Stephen Donahue
  *
- * Seeded classical software QRNG stream (SplitMix64 + ChaCha-style ARX whitening).
+ * Seeded classical software QRNG stream (SplitMix64 seeding + xoshiro256** generator).
  * Explicitly classified as a deterministic classical software entropy mixer;
  * NO quantum hardware entropy is claimed.
  */

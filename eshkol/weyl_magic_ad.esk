@@ -13,12 +13,47 @@
 ;;      along delta = (2, -1, 0, 0, -1): exact AD certifies stationarity d(S/5)/d(eps)|_0 = 0
 ;;      AND strict saddle descent S(0.1)/5 < 0.36 with d(S/5)/d(eps)|_{0.1} < 0!
 
+;; First-principles 9-term Weyl-Heisenberg 4th moment S(theta) = sum_{p,q in Z_3} |<psi(theta)|X^p Z^q|psi(theta)>|^4
+;; computed directly from |psi(theta)> = (0, 1, -(cos theta + i sin theta)) / sqrt(2) (no circular shortcuts!)
+(define (sic-d3-re theta idx)
+  (if (= idx 0) 0.0
+      (if (= idx 1) 0.7071067811865475
+          (* -0.7071067811865475 (cos theta)))))
+
+(define (sic-d3-im theta idx)
+  (if (= idx 2) (* -0.7071067811865475 (sin theta)) 0.0))
+
+(define (sic-d3-ov4 theta p q)
+  (let* ((twopi3 2.0943951023931953)
+         (x0 (if (= p 0) 0 (if (= p 1) 2 1)))
+         (x1 (if (= p 0) 1 (if (= p 1) 0 2)))
+         (x2 (if (= p 0) 2 (if (= p 1) 1 0)))
+         (c0 (cos (* twopi3 (* q x0)))) (s0 (sin (* twopi3 (* q x0))))
+         (c1 (cos (* twopi3 (* q x1)))) (s1 (sin (* twopi3 (* q x1))))
+         (c2 (cos (* twopi3 (* q x2)))) (s2 (sin (* twopi3 (* q x2))))
+         (u0r (sic-d3-re theta 0)) (u0i (sic-d3-im theta 0))
+         (u1r (sic-d3-re theta 1)) (u1i (sic-d3-im theta 1))
+         (u2r (sic-d3-re theta 2)) (u2i (sic-d3-im theta 2))
+         (v0r (sic-d3-re theta x0)) (v0i (sic-d3-im theta x0))
+         (v1r (sic-d3-re theta x1)) (v1i (sic-d3-im theta x1))
+         (v2r (sic-d3-re theta x2)) (v2i (sic-d3-im theta x2))
+         (w0r (- (* c0 v0r) (* s0 v0i))) (w0i (+ (* c0 v0i) (* s0 v0r)))
+         (w1r (- (* c1 v1r) (* s1 v1i))) (w1i (+ (* c1 v1i) (* s1 v1r)))
+         (w2r (- (* c2 v2r) (* s2 v2i))) (w2i (+ (* c2 v2i) (* s2 v2r)))
+         (re (+ (+ (* u0r w0r) (* u0i w0i))
+                (+ (* u1r w1r) (* u1i w1i))
+                (+ (* u2r w2r) (* u2i w2i))))
+         (im (+ (- (* u0r w0i) (* u0i w0r))
+                (- (* u1r w1i) (* u1i w1r))
+                (- (* u2r w2i) (* u2i w2r))))
+         (n2 (+ (* re re) (* im im))))
+    (* n2 n2)))
+
+(define (sic-d3-row theta p)
+  (+ (sic-d3-ov4 theta p 0) (sic-d3-ov4 theta p 1) (sic-d3-ov4 theta p 2)))
+
 (define (sic-d3-s4 theta)
-  (let* ((ct (cos theta))
-         (st (sin theta))
-         (r2 (+ (* ct ct) (* st st)))
-         (off-diag (* 0.25 r2)))
-    (+ 1.0 (* 2.0 0.0625) (* 6.0 (* off-diag off-diag)))))
+  (+ (sic-d3-row theta 0) (sic-d3-row theta 1) (sic-d3-row theta 2)))
 
 (define (mana-spectral-gap d-dim lam)
   (- lam (sqrt (- d-dim (* lam lam)))))

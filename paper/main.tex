@@ -27,7 +27,7 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\footnotesize\textsc{A.\ S.\ Donahue (0TH-2026-021)}}
+\fancyhead[L]{\footnotesize\textsc{A.\ S.\ Donahue (0TH-2026-021 v2.0.0)}}
 \fancyhead[R]{\footnotesize\textsc{Weyl--Heisenberg Magic, Clifford Stabilizers, and Singer Codes}}
 \fancyfoot[C]{\footnotesize\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -88,7 +88,7 @@
   {\small Archive Identifier: \texttt{0TH-2026-021} \quad$\cdot$\quad
   Repository: \href{https://github.com/0thernes/weyl-magic-stabilizer-frontier}{\texttt{github.com/0thernes/weyl-magic-stabilizer-frontier}}\par}
   \vspace{0.3em}
-  {\small November 26, 2026 \quad$\cdot$\quad Code: Apache-2.0 \quad$\cdot$\quad Monograph \& Data: CC-BY-4.0\par}
+  {\small Version 2.0.0 \quad$\cdot$\quad November 27, 2026 \quad$\cdot$\quad Code: Apache-2.0 \quad$\cdot$\quad Monograph \& Data: CC-BY-4.0\par}
 \end{center}
 
 \begin{abstract}
@@ -121,7 +121,7 @@ Remarkably, these four questions interlock at the algebraic level (Figure~\ref{f
 
 To maintain strict epistemic transparency, every claim in this monograph is tagged with its exact verification class:
 \begin{itemize}[leftmargin=2em,itemsep=2pt]
-  \item \textbf{\tagbadge{LEAN-6K}} Machine-checked in zero-Mathlib Lean~4.35.0 (\texttt{lean/}; \texttt{autoImplicit=false}, zero \texttt{sorry}, zero \texttt{admit}, zero \texttt{native\_decide}, zero custom axioms), audited within \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}, and replayed across six independent kernels (\texttt{lean}, \texttt{leanchecker-paranoid}, \texttt{lean4lean}, \texttt{nanoda}, \texttt{con-leche}, \texttt{con-ron}) via Palomar \texttt{comparator --paranoid}.
+  \item \textbf{\tagbadge{LEAN-6K}} Machine-checked in zero-Mathlib Lean~4.35.0 (\texttt{lean/}; \texttt{auto\allowbreak Implicit=\allowbreak false}, zero \texttt{sorry}, zero \texttt{admit}, zero \texttt{native\_\allowbreak decide}, zero custom axioms), audited within \texttt{propext}, \texttt{Classical.\allowbreak choice}, and \texttt{Quot.\allowbreak sound} ($31$ flagship checks in \texttt{Verify\allowbreak Axioms.lean} plus all $471$ constants in \texttt{WeylMagic\allowbreak Frontier.*} via \texttt{AuditAll\allowbreak Decls.lean}, $0$ violations), and replayed across six independent kernels (\texttt{lean}, \texttt{leanchecker-\allowbreak paranoid}, \texttt{lean4lean}, \texttt{nanoda}, \texttt{con-leche}, \texttt{con-ron}) via Palomar \texttt{comparator} \texttt{--paranoid}.
   \item \textbf{\tagbadge{EXACT-COMP}} Exact finite-field or integer native computation cross-checked across Rust (\texttt{\#![forbid(\allowbreak unsafe\_\allowbreak code)]}), Zig~0.17, ISO~C11 linked to bare-metal x86-64 NASM assembly, ISO~C++20, and exact Python \texttt{int}/\texttt{Fraction}.
   \item \textbf{\tagbadge{NUM-STACK}} Floating-point differential-geometric, gate-level quantum, or optimization confirmation via Eshkol~v1.3.6 LLVM automatic differentiation, pinned Moonlab WASM, pinned QGTL~C, or numerical L-BFGS-B/$\PCliff_d$ sweeps (never substituted for a formal proof).
 \end{itemize}
@@ -156,7 +156,7 @@ C4d & IV & Exhaustive $1{,}546{,}218$-orbit lower bound $\implies d_{\min}(\Qcod
 
 \begin{remark}[Honest Scope and Non-Claims]
 \label{rem:honest-scope}
-We explicitly report that \textbf{0 of the 1,900 overarching Mega-Atlas grand open problems} are retired by this work. In particular, we do \emph{not} claim: (i)~a resolution of Erew--Goldstein Conjecture~2 in the low-mana regime $\Mana(\ket{\psi})\le \tfrac{1}{2}\ln(D/2)$; (ii)~a proof of the global upper bound $M_2^{\max}(\C^d\otimes\C^d)\le \ln[d^4/(2d^2-1)]$ for general odd prime $d\ge 5$; (iii)~Zauner's conjecture on the existence of SIC-POVMs in every dimension; or (iv)~Kulhandjian--Hanzo Conjecture~27's lower bound $d_{\min}(\Qcode(p,2))\ge p+1$ for primes $p\ge 11$. All open gaps are cataloged verbatim in \texttt{LIMITATIONS.md} and \texttt{docs/MEGA\_ATLAS\_CROSSCHECK.md}.
+We explicitly report that \textbf{0 of the 2,000 overarching Mega-Atlas grand open problems} are retired by this work. In particular, we do \emph{not} claim: (i)~a resolution of Erew--Goldstein Conjecture~2 in the low-mana regime $\Mana(\ket{\psi})\le \tfrac{1}{2}\ln(D/2)$; (ii)~a proof of the global upper bound $M_2^{\max}(\C^d\otimes\C^d)\le \ln[d^4/(2d^2-1)]$ for general odd prime $d\ge 5$; (iii)~Zauner's conjecture on the existence of SIC-POVMs in every dimension; or (iv)~Kulhandjian--Hanzo Conjecture~27's lower bound $d_{\min}(\Qcode(p,2))\ge p+1$ for primes $p\ge 11$. All open gaps are cataloged verbatim in \texttt{LIMITATIONS.md} and \texttt{docs/MEGA\_ATLAS\_CROSSCHECK.md}.
 \end{remark}
 
 \begin{figure}[t]
@@ -225,7 +225,7 @@ To audit all $216=9\times 24$ elements of $\PCliff_3=\Z_3^2\rtimes\SL(2,\F_3)$ w
     \omega_3^{2b(dy^2+xy+ax^2)} & (b\not\equiv 0\pmod 3,\; s_F=3).
   \end{cases}
 \end{equation}
-In Lean (\leanref{allSL2F3\_meta\_unitary} and \leanref{allSL2F3\_symplectic\_covariant}), we verify exhaustively across all $24$ matrices $F\in\SL(2,\F_3)$ that $M_F^\dagger M_F = s_F I_3$ and that $M_F$ conjugates $X\mapsto \omega_3^{\phi_1}X^a Z^c$ and $Z\mapsto \omega_3^{\phi_2}X^b Z^d$. Moreover, collinearity $M v \in \C v$ for $v\neq 0$ holds \emph{if and only if} all three $2\times 2$ minors $v_i(Mv)_j - v_j(Mv)_i$ vanish identically in $\Z[\zeta_{12}]$---requiring zero division and zero radicals.
+In Lean (\leanref{allSL2F3\_\allowbreak meta\_\allowbreak unitary}, \leanref{allSL2F3\_\allowbreak symplectic\_\allowbreak covariant}, \leanref{allPCliff3\_\allowbreak nodup}, and \leanref{mem\_\allowbreak allPCliff3\_\allowbreak iff}), we verify exhaustively that the $216$-element list \leanref{allPCliff3} has zero duplicates and covers every $(p,q,F)\in\Z_3^2\rtimes\SL(2,\F_3)$, and across all $24$ matrices $F\in\SL(2,\F_3)$ that $M_F^\dagger M_F = s_F I_3$ and $M_F$ conjugates $X\mapsto \omega_3^{\phi_1}X^a Z^c$ and $Z\mapsto \omega_3^{\phi_2}X^b Z^d$. Moreover, collinearity $M v \in \C v$ for $v\neq 0$ holds \emph{if and only if} all three $2\times 2$ minors $v_i(Mv)_j - v_j(Mv)_i$ vanish identically in $\Z[\zeta_{12}]$ (\leanref{Vec3.\allowbreak isCollinear\_\allowbreak of\_\allowbreak scale})---requiring zero division and zero radicals.
 
 \begin{theorem}[{T1b: Refutation of Erew--Goldstein Conjecture~1 \tagbadge{LEAN-6K}}]
 \label{thm:t1b}
@@ -351,7 +351,7 @@ For every odd prime $p\ge 5$, the origin Wigner value of the Alltop state is $W_
 \begin{figure}[t]
   \centering
   \includegraphics[width=\textwidth]{figures/fig2_mana_lock_and_wigner_dichotomy.pdf}
-  \caption{(a)~Trace-Norm Spectral Lock phase diagram showing the proven high-mana lock zone $\Mana>\tfrac{1}{2}\ln(D/2)$ (Theorem~\ref{thm:t2ab}) alongside prime-dimension Alltop states ($p=5..47$). (b)~Exact Cubic-Mod-3 Wigner origin dichotomy (Theorem~\ref{thm:t2c}): exact vanishing for $p\equiv 2\pmod 3$ versus nonzero $3$-to-$1$ cubic character sums for $p\equiv 1\pmod 3$.}
+  \caption{(a)~Trace-Norm Spectral Lock phase diagram showing the proven high-mana lock zone $\Mana>\tfrac{1}{2}\ln(D/2)$ (Theorem~\ref{thm:t2ab}), prime-dimension Alltop states ($p=5..47$), and the explicit $3$-qutrit low-mana locally maximal witness ($D=27$). (b)~Exact Cubic-Mod-3 Wigner origin dichotomy (Theorem~\ref{thm:t2c}): exact vanishing for $p\equiv 2\pmod 3$ versus nonzero $3$-to-$1$ cubic character sums for $p\equiv 1\pmod 3$.}
   \label{fig:p2}
 \end{figure}
 
@@ -445,7 +445,7 @@ Define the perturbed $1$-qudit $d=5$ Alltop vector $\phi_5\in\Z[\zeta_5]^5$ by $
   \qquad\Longleftrightarrow\qquad
   \frac{S(\phi_5)}{5} \approx 0.3582441485 < \frac{9}{25} = 0.36.
 \]
-Hence the $1$-qudit $d=5$ Alltop state is a \emph{saddle point} (not a local maximum) of $M_2$, whereas numerical Hessian audits confirm that $1$-qudit Alltop states for $d\in\{7,11,13\}$ and the $2$-qudit $d=5$ Alltop state ($D=25$, exact tangent Hessian eigenvalues $\{112/25, 160/25, 272/25\}>0$) are strict local maxima (Figure~\ref{fig:p3}(b)).
+Hence the $1$-qudit $d=5$ Alltop state is a \emph{saddle point} (not a local maximum) of $M_2$, whereas reproducible numerical Hessian audits (\texttt{scripts/\allowbreak verify\_\allowbreak numerical\_\allowbreak claims.py}) confirm that $1$-qudit Alltop states for $d\in\{7,11,13\}$ and the $2$-qudit $d=5$ Alltop state ($D=25$, $48$-dimensional tangent Hessian of $S(\psi)$ with eight distinct strictly positive multiplicity-$6$ eigenvalue clusters $\{112/25,\, 160/25,\, (216-8\sqrt{29})/25,\, 192/25,\, 200/25,\, 240/25,\, (216+8\sqrt{29})/25,\, 272/25\}>0$, i.e., $\lambda_{\min}(\nabla^2(S/25))=112/625=0.1792>0$) are strict local maxima (Figure~\ref{fig:p3}(b)).
 \end{theorem}
 
 Independent Eshkol~v1.3.6 LLVM dual-number automatic differentiation along $\phi(\varepsilon)=(1+\varepsilon\delta)\odot\psi_{\mathrm{Alltop}}$ confirms exact stationarity $d(S/5)/d\varepsilon|_{\varepsilon=0}=4.77\times 10^{-17}$ and strict downward slope $d(S/5)/d\varepsilon|_{\varepsilon=0.1}=-0.0360167$ at $S(0.1)/5=0.3582441485$.
@@ -512,7 +512,7 @@ Suppose for contradiction that $u^T(A\mid M_Q A)\equiv (\tau_H^T\mid \tau_H^T)\p
 \[
   \tau_H^T \equiv u^T(M_Q A) = (u^T A)M_Q \equiv \tau_H^T M_Q \pmod p,
 \]
-meaning $c_k\equiv \tau_H[k]\in\{0,1\}\pmod p$ for every $k\in\Z_n$. Because $0\le c_k<p$, this forces $c_k\in\{0,1\}$ for all $k$, hence $\sum_k c_k(c_k-1)=0$, contradicting $\sum_k c_k(c_k-1)=p(p+1)>0$. Mechanized in full generality in \leanref{Pillar4.odd\_prime\_singer\_upper\_bound}.
+meaning $c_k\equiv \tau_H[k]\in\{0,1\}\pmod p$ for every $k\in\Z_n$. Because $0\le c_k<p$, this forces $c_k\in\{0,1\}$ for all $k$, hence $\sum_k c_k(c_k-1)=0$, contradicting $\sum_k c_k(c_k-1)=p(p+1)>0$. Mechanized in full generality in \leanref{Pillar4.odd\_prime\_singer\_upper\_bound}, which proves universal circulant convolution commutativity and associativity internally over $\mathrm{Fin}\,n$ (\leanref{circMulVec\_circConv}, \leanref{vecMulCirc\_circConv}) without external matrix-commutation assumptions.
 \end{proof}
 
 \begin{remark}[Conic vs.\ Reciprocal-Conic Orientation Discovered via Formalization]
@@ -555,15 +555,15 @@ To eliminate single-implementation, single-compiler, and single-kernel blindspot
 \toprule
 \textbf{Engine / Kernel} & \textbf{Scope} & \textbf{Key Verified Artifact \& Quantitative Result} & \textbf{Status} \\
 \midrule
-Lean~4.35.0 (6 kernels) & Pillars I--IV & 14 headline theorems + 8 NV + 8 AT; 31 \texttt{\#print axioms} $\subseteq\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ & \textbf{PASS} \\
+Lean~4.35.0 (6 kernels) & Pillars I--IV & 14 headline theorems + 8 NV + 8 AT; 31 \texttt{\#print axioms} + 471-decl \texttt{AuditAllDecls} ($0$ viol.) & \textbf{PASS} \\
 Rust 1.94 (\texttt{forbid(unsafe)}) & Pillars I--IV & Exact $1{,}546{,}218$-orbit $\Qcode(7,2)$ cert ($0$ dep, $5.4$\,s); $0$ clippy warnings & \textbf{PASS} \\
 Zig 0.17.0 (comptime+run) & Pillars I, III, IV & Comptime Hoggar $S_4=2304$ \& Conj.~24; runtime $v_{44}$ \& $\Qcode(p,2)$ & \textbf{PASS} \\
 ISO~C11 + NASM x86-64 & Pillar IV & Dual-ABI ASM \texttt{gf\_sub\_mul\_asm}; $10\text{k}/10\text{k}$ diff + $1{,}546{,}218$-orbit $\Qcode(7,2)$ & \textbf{PASS} \\
 ISO~C++20 (\texttt{constexpr}) & Pillars I, III, IV & \texttt{static\_assert} on $|\Stab|=3$ \& $S_4=2304$; $v_{44}$ \& Conj.~24 ($m\le 20$) & \textbf{PASS} \\
-Eshkol v1.3.6 LLVM AD & Pillars I--III & Exact $S_{\mathrm{SIC}}'=0$, gap slope $+2.305$, $d=5$ saddle $S'(0.1)=-0.03602$ & \textbf{PASS} \\
-Moonlab WASM + QRNG & Pillar III & $10{,}510$ native gates; $2\text{q}$ MUB ($4\times 10^{-16}$); $3\text{q}$ Hoggar ($4.0\times 10^{-16}$), $2048$ shots & \textbf{PASS} \\
+Eshkol v1.3.6 LLVM AD & Pillars I--III & 9-term WH SIC $S'=0$, gap slope $+2.305$, $d=5$ saddle $S'(0.1)=-0.03602$ & \textbf{PASS} \\
+Moonlab WASM + QRNG & Pillar III & $20{,}750$ native gates; $2\text{q}$ MUB ($4\times 10^{-16}$); $3\text{q}$ Hoggar ($4.0\times 10^{-16}$), $4096$ shots & \textbf{PASS} \\
 Pinned QGTL~C & Pillar I & Exact Fubini--Study $\mathrm{diag}(1/4,1)$ ($0.0$ err) \& Berry $|\Omega|=1.0$ ($0.0$ err) & \textbf{PASS} \\
-Python Oracle + Hypothesis & All + Diff & Exact \texttt{int}/\texttt{Fraction}, property tests, $8/8$ ($100\%$) mutation kill, \texttt{ruff}/\texttt{mypy} & \textbf{PASS} \\
+Python Oracle + Hypothesis & All + Diff & Independent \texttt{reference/oracle.py}, numerical claims audit, $8/8$ ($100\%$) mutation kill & \textbf{PASS} \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -573,11 +573,11 @@ Python Oracle + Hypothesis & All + Diff & Exact \texttt{int}/\texttt{Fraction}, 
 A formal proof can be kernel-valid yet mathematically vacuous if its statement deviates from the target literature or hides trivializing hypotheses. We enforce three safeguards:
 \begin{enumerate}[leftmargin=2em,itemsep=2pt]
   \item \textbf{Palomar Statement Contract:} \texttt{Challenge.lean} defines the literal \texttt{Prop} statements \texttt{T1aStmt}--\texttt{T4cStmt} plus the master conjunction. \texttt{PalomarChallenge.lean} holds the \texttt{sorry}-stubbed targets (excluded from \texttt{defaultTargets}), while \texttt{PalomarSolution.lean} discharges every target without \texttt{sorry}. CI runs \texttt{lake check --paranoid} and \texttt{lake comparator --paranoid} on six kernels (\texttt{lean}, \texttt{leanchecker-paranoid}, \texttt{lean4lean}, \texttt{nanoda}, \texttt{con-leche}, \texttt{con-ron}), plus a live tamper test verifying that injecting a synthetic axiom is rejected immediately.
-  \item \textbf{Constructive Non-Vacuity (\texttt{NonVacuity.lean}, NV01--NV08):} Eight theorems construct explicit concrete witnesses inhabiting the hypotheses of every universal theorem (e.g., the $(5,12,13)$ rational SIC, the $\F_5$ \texttt{AlltopFieldModel}, the concrete $D=7$ high-mana spectrum, and concrete $\Qcode(7,2)$ and $\Qcode(11,2)$ planes).
+  \item \textbf{Constructive Non-Vacuity (\texttt{NonVacuity.lean}, NV01--NV08):} Eight theorems construct explicit concrete witnesses inhabiting the hypotheses of every universal theorem (e.g., the $(5,12,13)$ rational SIC, the $\F_5$ \texttt{AlltopFieldModel}, the concrete $D=7$ high-mana spectrum, concrete $\Qcode(2,2)$ instantiating \leanref{binary\_singer\_exact\_distance\_two}, and concrete $\Qcode(3,2)$ instantiating \leanref{odd\_prime\_singer\_upper\_bound}).
   \item \textbf{Formal Adversarial Refutations (\texttt{AdversarialTests.lean}, AT01--AT08):} Eight theorems formally refute false strengthenings (e.g., proving $|\Stab_{\PCliff_3}(v_{345})|\notin\{1,9\}$, showing the Trace-Norm Spectral Lock fails without $2\lambda_k^2>D$, and refuting Remark~21 $u_+$ oddness at $d=2$).
 \end{enumerate}
 
-\noindent\textbf{Real Defects Caught During Hardening:} Our polyglot and formalization workflow caught and eliminated five genuine errors prior to release (logged in \texttt{HARDENING\_LOG.md}): (i)~Lean~4 caught an algebraic slip in the Welch--MUB gap numerator ($(D-1)$ rather than $(D-1)^2$); (ii)~Lean~4 discovered the conic vs.\ reciprocal-conic bound distinction ($c_k^+\le 2$ vs.\ $c_k^-\le 4<p$), yielding a strictly stronger Theorem~\ref{thm:t4b}; (iii)~QGTL~C caught a hand-computed Berry curvature zero on $\Span(e_1,e_2)$, revealing the exact Bloch-sphere monopole $|\Omega_{\theta\phi}|=1$; (iv)~Eshkol AD output inspection caught a missing square in the $d=5$ normalization denominator ($\norm{\phi}^8$ vs.\ $\norm{\phi}^4$); and (v)~adding a mandatory green-baseline guard to \texttt{scripts/mutate.py} exposed three weak mutants and strengthened \texttt{verify\_pillar1} to verify full $24$-element symplectic covariance.
+\noindent\textbf{Real Defects Caught During Hardening:} Our three-cycle polyglot and formalization audits caught and eliminated genuine mathematical, formal, and engineering defects prior to \texttt{v2.0.0} (logged in \texttt{HARDENING\_LOG.md}): (i)~Lean~4 caught an algebraic slip in the Welch--MUB gap numerator ($(D-1)$ rather than $(D-1)^2$); (ii)~Lean~4 discovered the conic vs.\ reciprocal-conic bound distinction ($c_k^+\le 2$ vs.\ $c_k^-\le 4<p$) and enabled internal proof of universal circulant commutation in Theorem~\ref{thm:t4b}; (iii)~QGTL~C caught a hand-computed Berry curvature zero on $\Span(e_1,e_2)$, revealing the exact Bloch-sphere monopole $|\Omega_{\theta\phi}|=1$; (iv)~Eshkol AD caught a missing square in the $d=5$ normalization denominator ($\norm{\phi}^8$ vs.\ $\norm{\phi}^4$) and upgraded $d=3$ SIC AD from a shortcut to the explicit $9$-term WH overlap sum; and (v)~the \texttt{v2.0.0} numerical audit (\texttt{scripts/verify\_numerical\_claims.py}) recovered all eight exact multiplicity-$6$ clusters of the $2$-qudit $d=5$ Alltop Hessian (superseding the incomplete three-value list in \texttt{v1.0.0}), removed $D=9$ from the $d\ge 5$ Alltop scatter in Figure~\ref{fig:p3}(a), added \leanref{binary\_singer\_exact\_distance\_two} directly into the Palomar contract \leanref{T4aStmt}, and replaced the wrapper \texttt{reference/oracle.py} with a standalone independent oracle.
 
 % ===========================================================================
 \section{Open Problems, Limitations, and Future Directions}
@@ -585,7 +585,7 @@ A formal proof can be kernel-valid yet mathematically vacuous if its statement d
 
 Our results sharpen four natural open problems left explicitly unresolved:
 \begin{enumerate}[leftmargin=2em,itemsep=2pt]
-  \item \textbf{Low-Mana Regime of Conjecture~2:} Extend Theorem~\ref{thm:t2ab} below $\Mana(\ket{\psi})\le \tfrac{1}{2}\ln(D/2)$---where $\Tr(H_s^2)=D$ alone no longer locks the spectral gap---or construct a counterexample (none appeared across $7{,}000+$ single-qudit states up to $d=47$ and $3{,}435$ two-qutrit Clifford eigenstates).
+  \item \textbf{Low-Mana Regime of Conjecture~2:} Extend Theorem~\ref{thm:t2ab} below $\Mana(\ket{\psi})\le \tfrac{1}{2}\ln(D/2)$---where $\Tr(H_s^2)=D$ alone no longer locks the spectral gap---or construct a counterexample (none appeared across our reproducible sweep of $15{,}566$ single-qudit $1$D Clifford eigenstates for primes $d=3..47$ [$13{,}215$ nowhere-vanishing] and $2{,}678$ two-qutrit eigenstates [$1{,}344$ nowhere-vanishing]---100\% of which lie in the proven high-mana regime---nor at the explicit low-mana $3$-qutrit tensor-cube witness at $D=27$ with $\Mana\approx 1.1924 < \tfrac{1}{2}\ln(27/2)\approx 1.3013$, which remains strictly locally maximal with spectral gap $\Delta\approx 1.4762$; Figure~\ref{fig:p2}(a)).
   \item \textbf{Global Upper Bound on Two-Qudit Prime $M_2$:} Prove or refute whether $M_2^{\max}(\C^d\otimes\C^d)=\ln[d^4/(2d^2-1)]$ for odd primes $d\ge 5$, given that $1$-qudit $d=5$ Alltop is an unstable saddle while $2$-qudit $d=5$ Alltop is a strict local maximum.
   \item \textbf{Conjecture~27 Lower Bound for $p\ge 11$:} Establish analytically whether $d_{\min}(\Qcode(p,2))=p+1$ holds for all odd primes $p\ge 5$ (now settled for $p=5,7$, with universal upper bound $p+1$ proved for all $p\ge 3$).
   \item \textbf{Hardware QRNG Classification:} The classical software mixer \texttt{quantum\_\allowbreak stack/\allowbreak qrng\_\allowbreak mixer.c} (SplitMix64 + xoshiro256**) used for Moonlab Born sampling is explicitly deterministic software and makes zero claim of quantum hardware entropy.
@@ -599,7 +599,7 @@ Our results sharpen four natural open problems left explicitly unresolved:
 
 \noindent\textbf{CRediT \& Transparent AI-Assistance Disclosure:} The human author conceived the research direction, enforced integrity and verification standards, and takes full responsibility for all mathematical claims and code. AI coding and proof-engineering assistants (Google Antigravity / Gemini) were used extensively for conjecture scouting, algebraic proof exploration, Lean~4.35.0 tactic synthesis, polyglot software engineering, figure generation, and manuscript drafting. Every mathematical theorem in Sections~\ref{sec:pillar1}--\ref{sec:pillar4} was independently machine-checked by the Lean~4.35.0 kernel (and five independent external kernels in CI) and cross-verified by nine independent executable engines, while every bibliographic entry in \texttt{paper/refs.bib} was verified live against the Crossref and arXiv APIs with zero retractions.
 
-\noindent\textbf{Data, Code, and Archival Availability:} All Lean~4 sources, Rust, Zig, C11, NASM, C++20, Eshkol, Moonlab, QGTL, and Python verification artifacts, SHA-256 manifests, DigiCert RFC~3161 and Bitcoin OpenTimestamps proofs, and the interactive 3D WebGL2 Observatory and Lean Blueprint are archived openly at \href{https://github.com/0thernes/weyl-magic-stabilizer-frontier}{\texttt{github.com/\allowbreak 0thernes/\allowbreak weyl-magic-stabilizer-frontier}} and registered under \texttt{0TH-2026-021} in \href{https://github.com/0thernes/0thernes-research-archive}{\texttt{0thernes-research-archive}}.
+\noindent\textbf{Data, Code, and Archival Availability:} All Lean~4 sources, Rust, Zig, C11, NASM, C++20, Eshkol, Moonlab, QGTL, and Python verification artifacts, SHA-256 manifests, DigiCert RFC~3161 (X.509 CMS-verified) and Bitcoin OpenTimestamps proofs, and the Interactive 3D Canvas Observatory and Lean Blueprint are archived openly at \href{https://github.com/0thernes/weyl-magic-stabilizer-frontier}{\texttt{github.com/\allowbreak 0thernes/\allowbreak weyl-\allowbreak magic-\allowbreak stabilizer-\allowbreak frontier}} and registered under \texttt{0TH-2026-021} in \href{https://github.com/0thernes/0thernes-research-archive}{\texttt{0thernes-\allowbreak research-\allowbreak archive}}.
 
 \clearpage
 \appendix
@@ -651,21 +651,20 @@ Table~\ref{tab:fidelity} provides a literal statement-fidelity audit matching ea
 \section{Verbatim Lean~4.35.0 Axiom Footprint and Six-Kernel Protocol}
 \label{app:axioms}
 
-Every single one of the $31$ audited declarations in \texttt{lean/VerifyAxioms.lean} (15 Palomar targets \texttt{prove\_t1a}--\texttt{prove\_all\_frontier\_theorems}, 8 constructive non-vacuity witnesses \texttt{NV01}--\texttt{NV08}, and 8 formal adversarial refutations \texttt{AT01}--\texttt{AT08}) depends \emph{strictly} on a subset of the three standard Lean~4 foundational axioms $\{\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}\}$---with zero occurrences of \texttt{sorryAx}, \texttt{Lean.ofReduceBool}, or any custom axiom. Table~\ref{tab:axioms} summarizes the exact kernel footprints captured verbatim in \texttt{results/lean\_axioms.txt} and enforced in CI by \texttt{scripts/check\_readme\_axioms.py}.
+All $31$ flagship declarations in \texttt{lean/\allowbreak Verify\allowbreak Axioms.lean} (15 Palomar targets \texttt{prove\_t1a}--\texttt{prove\_\allowbreak all\_\allowbreak frontier\_\allowbreak theorems}, 8 constructive non-vacuity witnesses \texttt{NV01}--\texttt{NV08}, and 8 formal adversarial refutations \texttt{AT01}--\texttt{AT08})---together with every single one of all $471$ constants in \texttt{WeylMagic\allowbreak Frontier.*} swept programmatically by \texttt{lean/\allowbreak AuditAll\allowbreak Decls.lean} ($0$ violations)---depend strictly on subsets of the three standard Lean~4 foundational axioms $\{\texttt{propext},\allowbreak\;\texttt{Classical.\allowbreak choice},\allowbreak\;\texttt{Quot.\allowbreak sound}\}$, with zero occurrences of \texttt{sorryAx}, \texttt{Lean.\allowbreak ofReduce\allowbreak Bool}, \texttt{Lean.\allowbreak trust\allowbreak Compiler}, or any custom axiom. Table~\ref{tab:axioms} summarizes the exact kernel footprints captured verbatim in \texttt{results/\allowbreak lean\_\allowbreak axioms.txt} and enforced in CI by \texttt{scripts/\allowbreak check\_\allowbreak readme\_\allowbreak axioms.py}.
 
 \begin{table}[h]
 \centering
-\caption{Exact transitive axiom footprints verified by \texttt{VerifyAxioms.lean} and checked across six independent Lean~4.35.0 kernels (\texttt{lean}, \texttt{leanchecker-paranoid}, \texttt{lean4lean}, \texttt{nanoda}, \texttt{con-leche}, \texttt{con-ron}).}
+\caption{Exact transitive axiom footprints verified by \texttt{VerifyAxioms.lean} (complemented by the 471-declaration \texttt{AuditAllDecls.lean} sweep) and checked across six independent Lean~4.35.0 kernels (\texttt{lean}, \texttt{leanchecker-paranoid}, \texttt{lean4lean}, \texttt{nanoda}, \texttt{con-leche}, \texttt{con-ron}).}
 \label{tab:axioms}
 \footnotesize
 \begin{tabularx}{\textwidth}{@{}lL@{}}
 \toprule
 \textbf{Axiom Footprint} & \textbf{Audited Lean~4.35.0 Declarations (31 Total)} \\
 \midrule
-$\emptyset$ (pure kernel) & \leanref{nonvacuity\_nv08\_singer\_q7\_q11\_witnesses} \\
-$\{\texttt{propext}\}$ & \leanref{prove\_t3b}, \leanref{prove\_t4c}, \leanref{nonvacuity\_nv07\_binary\_singer\_d2} \\
-$\{\texttt{propext}, \texttt{Quot.sound}\}$ & \leanref{prove\_t1a}, \leanref{prove\_t1c}, \leanref{prove\_t2a}, \leanref{prove\_t2c}, \leanref{prove\_t3a}, \leanref{prove\_t4a}, \leanref{nv01}, \leanref{nv03}, \leanref{nv05}, \leanref{at03}, \leanref{at04}, \leanref{at06}, \leanref{at08} \\
-$\{\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}\}$ & \leanref{prove\_t1b}, \leanref{prove\_t1d}, \leanref{prove\_t2b}, \leanref{prove\_t3c}, \leanref{prove\_t3d}, \leanref{prove\_t4b}, \leanref{prove\_all\_frontier\_theorems}, \leanref{nv02}, \leanref{nv04}, \leanref{nv06}, \leanref{at01}, \leanref{at02}, \leanref{at05}, \leanref{at07} \\
+$\{\texttt{propext}\}$ (2) & \leanref{prove\_t3b}, \leanref{prove\_t4c} \\
+$\{\texttt{propext}, \texttt{Quot.sound}\}$ (12) & \leanref{prove\_t1a}, \leanref{prove\_t1c}, \leanref{prove\_t2a}, \leanref{prove\_t2c}, \leanref{prove\_t3a}, \leanref{nv01}, \leanref{nv03}, \leanref{nv05}, \leanref{at03}, \leanref{at04}, \leanref{at06}, \leanref{at08} \\
+$\{\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}\}$ (17) & \leanref{prove\_t1b}, \leanref{prove\_t1d}, \leanref{prove\_t2b}, \leanref{prove\_t3c}, \leanref{prove\_t3d}, \leanref{prove\_t4a}, \leanref{prove\_t4b}, \leanref{prove\_all\_frontier\_theorems}, \leanref{nv02}, \leanref{nv04}, \leanref{nv06}, \leanref{nv07}, \leanref{nv08}, \leanref{at01}, \leanref{at02}, \leanref{at05}, \leanref{at07} \\
 \bottomrule
 \end{tabularx}
 \end{table}

@@ -3,11 +3,12 @@ set shell := ["bash", "-cu"]
 
 default: verify
 
-# Build and strictly audit all Lean 4.35.0 proofs (15 Palomar targets, 31 audited decls)
+# Build and strictly audit all Lean 4.35.0 proofs (15 Palomar targets, 31 explicit + 471 exhaustive decls)
 lean:
     cd lean && lake build && lake build PalomarChallenge && lake env lean VerifyAxioms.lean > ../results/lean_axioms_local.txt
     ! grep -E "sorryAx|_native|Lean\.ofReduceBool|Lean\.trustCompiler" results/lean_axioms_local.txt
     diff -u results/lean_axioms.txt results/lean_axioms_local.txt
+    cd lean && lake env lean AuditAllDecls.lean
     cd lean && lake env leanchecker --fresh PalomarSolution && lake env leanchecker-paranoid --fresh PalomarSolution
     python3 scripts/check_readme_axioms.py
 
@@ -27,14 +28,16 @@ c11:
 cpp:
     g++ -std=c++20 -O3 -Wall -Wextra -Wpedantic -Werror cpp/src/weyl_verify.cpp -o /tmp/weyl_verify_cpp && /tmp/weyl_verify_cpp
 
-# Run pinned Moonlab WASM + deterministic software QRNG mixer + pinned QGTL C harness
+# Run pinned Moonlab WASM (20,750 gates, 4,096 shots) + software QRNG mixer + pinned QGTL C harness
 quantum:
     mkdir -p build
     gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o build/qrng_mixer
     node quantum_stack/moonlab_super_mub.mjs
-    gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/quantum_geometric/distributed/differential_geometry.c -lm -o build/qgtl_sic_metric && ./build/qgtl_sic_metric
+    gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror -Ithird_party/qgtl/include -Ithird_party/qgtl/stub -c quantum_stack/qgtl_sic_metric.c -o build/qgtl_sic_metric.o
+    gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Wno-unused-function -Wno-unused-variable -Ithird_party/qgtl/include -Ithird_party/qgtl/stub -c third_party/qgtl/src/quantum_geometric/distributed/differential_geometry.c -o build/qgtl_diffgeo.o
+    gcc build/qgtl_sic_metric.o build/qgtl_diffgeo.o -lm -o build/qgtl_sic_metric && ./build/qgtl_sic_metric
 
-# Run Python exact oracle, Hypothesis property/differential tests, 100% mutation suite, ruff, mypy, citations, blueprint
+# Run Python exact oracle, standalone reference diff, Draft 2020-12 schema, 100% mutation, ruff, mypy, citations, blueprint
 python:
     PYTHONPATH=src:. python3 examples/quickstart_demo.py
     PYTHONPATH=src:. pytest -v tests/test_all.py
@@ -45,7 +48,11 @@ python:
     ruff check src/ reference/ scripts/ tests/ examples/
     mypy --strict src/ reference/ scripts/ tests/ examples/
 
-# Verify DigiCert RFC 3161 (.tsr) and Bitcoin OpenTimestamps (.ots) cryptographic proofs
+# Reproduce all four [NUM-STACK] claims in paper/main.tex
+numerical:
+    PYTHONPATH=src:. python3 scripts/verify_numerical_claims.py
+
+# Verify DigiCert RFC 3161 (.tsr, OpenSSL X.509 CMS) and Bitcoin OpenTimestamps (.ots) cryptographic proofs
 timestamps:
     python3 scripts/stamp_timestamps.py --verify --negative-test
 
@@ -56,13 +63,13 @@ paper:
     tectonic -X compile paper/main.tex --outdir paper/build --keep-logs
     ! grep -E "Overfull|Underfull|Undefined|Error" paper/build/main.log
 
-# Deploy interactive 3D Observatory & Lean Blueprint to GitHub Pages (via pages.yml)
+# Deploy Interactive 3D Canvas Observatory & Lean Blueprint to GitHub Pages (via pages.yml)
 deploy:
     python3 scripts/build_blueprint.py
     gh workflow run pages.yml
 
 # Roll back GitHub Pages deployment to a known-good git tag or commit SHA
-rollback tag="v1.0.0":
+rollback tag="v2.0.0":
     git rev-parse --verify "{{tag}}"
     git checkout "{{tag}}" -- docs/site/
     git status -s docs/site/

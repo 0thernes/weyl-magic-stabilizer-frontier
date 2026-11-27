@@ -1,24 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
-# Project manifest for the Build Standard for LLMs v1.2.0. Read by scripts/Audit-Repo.ps1 and scripts/audit-repo.sh.
+# Project manifest for the Build Standard for LLMs v1.2.0 (strict Draft 2020-12 schema compliant).
+# Read by scripts/Audit-Repo.ps1, scripts/audit-repo.sh, and validated in tests/test_all.py.
 standard: "1.2.0"
 name: "weyl-magic-stabilizer-frontier"
-description: "Zero-Mathlib Lean 4.35.0 six-kernel formalization (14 headline theorems, 15 Palomar targets) and 9-language polyglot/quantum verification stack refuting Erew-Goldstein Conj. 1, proving Conj. 2 (high-mana), establishing all-prime Alltop magic attainment & Super-MUB ruptures, proving Kulhandjian-Hanzo Conj. 24, and settling d_min(Q(7,2))=8."
+description: "Zero-Mathlib Lean 4.35.0 six-kernel formalization (14 headline theorems, 15 Palomar targets, 471 audited decls) and 9-language polyglot/quantum verification stack refuting Erew-Goldstein Conj. 1, proving Conj. 2 (high-mana), establishing all-prime Alltop magic attainment & Super-MUB ruptures, proving Kulhandjian-Hanzo Conj. 24, and settling d_min(Q(7,2))=8 (0TH-2026-021 v2.0.0)."
 owner: "0thernes"
 year: "2026"
-version: "1.0.0"
-archive_id: "0TH-2026-021"
 project_type: research
-stack: [lean4, rust, zig, c11, nasm, cpp20, eshkol, moonlab, qgtl, python, latex, web]
-author:
-  name: "Alexander Stephen Donahue"
-  orcid: "0009-0006-8168-9648"
-  email: "0_0@0thernes.art"
-  affiliation: "Independent Researcher, Spokane, WA, USA"
-repository: "https://github.com/0thernes/weyl-magic-stabilizer-frontier"
-pages_url: "https://0thernes.github.io/weyl-magic-stabilizer-frontier/"
-licenses:
-  code: "Apache-2.0"
-  docs: "CC-BY-4.0"
+stack: [python, rust, zig, c-cpp, other]
 flags:
   public: true
   package: true
@@ -37,18 +26,18 @@ flags:
   ml: false
   formal: true
 items:
-  A19: {status: done, note: "GitHub About description, homepage URL, and research topics configured via gh repo edit (v1.0.0)."}
-  A38: {status: done, note: "Interactive 3D Observatory (docs/site/index.html) and Lean Blueprint (docs/site/blueprint.html) satisfy WCAG 2.2 AA: skip-link, keyboard navigation, aria-live announcements, prefers-reduced-motion, strict zero-CDN CSP, and Okabe-Ito colorblind-safe palette."}
-  B03: {status: done, note: "Deterministic bit-for-bit JSON, PDF, tarball, and Blueprint generation verified across repeated runs and clean-clone reproduction."}
+  A19: {status: done, note: "GitHub About description, homepage URL, and research topics configured via gh repo edit."}
+  A38: {status: done, note: "Interactive 3D Canvas Observatory (docs/site/index.html) and Lean Blueprint (docs/site/blueprint.html) implement WCAG 2.2 AA: skip-link, :focus-visible, ARIA tablist Arrow/Home/End keyboard navigation, keyboard canvas controls, aria-live announcements, prefers-reduced-motion, strict zero-CDN CSP, and Okabe-Ito palette."}
+  B03: {status: done, note: "Deterministic bit-for-bit JSON, PDF, tarball, and Blueprint generation verified by SHA-256 repeatability test in tests/test_all.py."}
   B05: {status: done, note: "Every headline claim T1a..T4c and C4d has falsifiable Lean 4.35.0 theorems and executable assertions in tests/test_all.py."}
-  B06: {status: done, note: "AdversarialTests.lean (8 formal boundary refutations AT01-AT08), live CI tamper-injecting comparator gate, 8/8 mutation-killing tests, and RFC 3161/OTS 1-byte tamper rejection."}
-  B07: {status: done, note: "Regression tests lock the exact Welch-MUB numerator (D-1), conic vs. reciprocal-conic intersection split, unit Bloch Berry curvature |Omega|=1, Burnside 1,546,218 orbit count, and full 24-element symplectic covariance."}
-  B08: {status: done, note: "Frozen golden JSON outputs in results/ verified against data/MANIFEST.sha256, DigiCert RFC 3161 .tsr + Bitcoin .ots timestamps, and exact cross-language assertions in tests/test_all.py."}
-  B11: {status: done, note: "Cross-language differential suite compares Python exact oracle, zero-unsafe Rust, Zig 0.17, ISO C11 + bare-metal x86-64 NASM assembly (10,000 vector diff), ISO C++20, Moonlab WASM, and QGTL C."}
-  B12: {status: done, note: "reference/oracle.py independently implements exact Fraction/Gaussian-integer/GF(p^3) checks for all four pillars."}
-  B14: {status: done, note: "Hypothesis property and metamorphic tests verify Pythagorean WH-SIC scaling/conjugation invariance, Sign-Witness Parseval invariance, and Conjecture 24 non-divisibility."}
-  B20: {status: done, note: "100% exact integer, cyclotomic (Z[i], Z[zeta_12], Z[zeta_5]), and finite-field arithmetic for all formal and exact-comp claims; floating-point AD/WASM/QGTL tagged strictly [NUM-STACK]."}
-  B22: {status: done, note: "Complete zero-Mathlib Lean 4.35.0 formalization (lean/, 14 headline theorems, 15 Palomar targets, 31 audited declarations) replayed across 6 independent proof kernels."}
+  B06: {status: done, note: "AdversarialTests.lean (AT01-AT08), live CI tamper-injecting comparator gate, 8/8 mutation-killing tests, negative input/boundary tests in tests/test_all.py, and RFC 3161/OTS 1-byte tamper rejection."}
+  B07: {status: done, note: "Regression tests lock the exact Welch-MUB numerator (D-1), conic vs. reciprocal-conic intersection split, unit Bloch Berry curvature |Omega|=1, Burnside 1,546,218 orbit count, 8-cluster d=5 2-qudit Hessian, and full 24-element symplectic covariance."}
+  B08: {status: done, note: "Frozen golden JSON outputs in results/ verified against data/MANIFEST.sha256, OpenSSL X.509-verified DigiCert RFC 3161 .tsr + Bitcoin .ots timestamps, and exact cross-language assertions in tests/test_all.py."}
+  B11: {status: done, note: "Cross-language differential suite compares standalone reference/oracle.py, weyl_magic.oracle, zero-unsafe Rust, Zig 0.17, ISO C11 + bare-metal x86-64 NASM assembly (10,000 vector diff), ISO C++20, Moonlab WASM, and QGTL C."}
+  B12: {status: done, note: "reference/oracle.py is a 100% standalone naive reference implementation with zero imports from weyl_magic, differentially tested against weyl_magic.oracle across all four pillars."}
+  B14: {status: done, note: "1,000-case Hypothesis property and metamorphic tests verify Pythagorean WH-SIC scaling/conjugation/rotation invariance, Zeta12/GaussInt norm multiplicativity, Sign-Witness Parseval invariance, and Conjecture 24 non-divisibility."}
+  B20: {status: done, note: "100% exact integer, cyclotomic (Z[i], Z[zeta_12], Z[zeta_5]), and finite-field arithmetic for all formal and exact-comp claims; floating-point AD/WASM/QGTL/L-BFGS-B tagged strictly [NUM-STACK] and reproduced by scripts/verify_numerical_claims.py."}
+  B22: {status: done, note: "Complete zero-Mathlib Lean 4.35.0 formalization (lean/, 14 headline theorems, 15 Palomar targets, 31 explicit #print axioms audits + 471-decl exhaustive AuditAllDecls.lean sweep) replayed across 6 independent proof kernels."}
   B23: {status: n/a, note: "Full deductive Lean 4.35.0 machine-checked proofs supersede finite-state TLA+/Alloy design model checking."}
   B24: {status: done, note: "Mathematical core proved in Lean 4.35.0; exhaustive Q(7,2) certifier implemented in zero-dependency stdlib Rust with #![forbid(unsafe_code)]."}
   B25: {status: n/a, note: "Mathematical core is formally proved in Lean 4; C11 + NASM verifier is audited with -Werror -Wconversion -Wshadow, ASan+UBSan, 10k ASM differential vectors, and 100k libFuzzer-compatible fuzzing."}

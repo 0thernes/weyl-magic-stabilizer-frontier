@@ -2,7 +2,7 @@
 schema_version: "1.0"
 id: "0TH-2026-021"
 repository: "https://github.com/0thernes/weyl-magic-stabilizer-frontier"
-version: "1.0.0"
+version: "2.0.0"
 title: "Refutation of the SIC-Clifford Stabilizer Conjecture, Trace-Norm Spectral Locking of Mana, All-Prime Alltop Magic Attainment, and Exact Distance Settlement of Projective-Geometry Singer Qudit Codes"
 author:
   name: "Alexander Stephen Donahue"
@@ -12,6 +12,20 @@ author:
 license:
   code: "Apache-2.0"
   documentation: "CC-BY-4.0"
+origin: "Original independent research and zero-Mathlib Lean 4.35.0 formalization addressing open conjectures in arXiv:2512.19657v2, arXiv:2607.07197, and arXiv:2610.02392."
+sources:
+  - "Erew & Goldstein, arXiv:2512.19657v2 (2026)"
+  - "Knipfer, Roman, Matcheva & Matchev, arXiv:2607.07197 (2026)"
+  - "Kulhandjian & Hanzo, arXiv:2610.02392 (2026)"
+automation:
+  ai_assisted: true
+  human_role: "Problem selection, mathematical direction, definition/statement-fidelity audit, verification governance, and acceptance decisions."
+  ai_role: "Drafted Lean 4.35.0 proof scripts, nine-language polyglot verifiers, and monograph prose under human supervision; every theorem mechanically checked across 6 independent kernels."
+  tools:
+    - "Antigravity (Google DeepMind agentic assistant)"
+    - "Lean 4.35.0 kernel + leanchecker-paranoid + lean4lean + nanoda + con-leche + con-ron"
+review_status: "Preprint; not externally peer-reviewed. Mechanically verified across 6 independent Lean 4.35.0 proof kernels."
+limitations: "Does not settle low-mana Conjecture 2 (Mana <= (1/2) ln(D/2)), general prime d >= 5 global M_2 upper bound, Zauner's Conjecture, or Conjecture 27 lower bound for p >= 11. Full boundaries documented in LIMITATIONS.md and docs/statement-fidelity.md."
 prover:
   name: "Lean 4"
   version: "4.35.0"

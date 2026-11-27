@@ -8,32 +8,35 @@ authors:
     orcid: "https://orcid.org/0009-0006-8168-9648"
     email: "0_0@0thernes.art"
     affiliation: "Independent Researcher, Spokane, WA, USA"
-version: "1.0.0"
-date-released: "2026-11-26"
+version: "2.0.0"
+date-released: "2026-11-27"
 license: "Apache-2.0"
 repository-code: "https://github.com/0thernes/weyl-magic-stabilizer-frontier"
 url: "https://0thernes.github.io/weyl-magic-stabilizer-frontier/"
 abstract: >-
   Zero-Mathlib Lean 4.35.0 six-kernel formalization (14 headline theorems,
-  15 Palomar Comparator targets, 31 axiom-audited declarations strictly within
-  propext, Classical.choice, Quot.sound) and nine-language polyglot/quantum
-  verification stack (Lean 4.35.0, Rust, Zig 0.17, ISO C11, bare-metal x86-64
-  NASM assembly, ISO C++20, Eshkol v1.3.6 LLVM AD, Moonlab WASM, QGTL C, and
-  Python) resolving a connected chain of four open problems across three 2026
-  preprints (arXiv:2512.19657v2, arXiv:2607.07197, arXiv:2610.02392):
-  (1) Exact refutation of Erew-Goldstein Conjecture 1 via Pythagorean qutrit
-  WH-SIC fiducials (v345, |Stab|=3, dim=2 across all 216 elements of PCliff_3)
-  and a universal all-d Zauner eigenspace dimension obstruction; (2) Proof of
-  Erew-Goldstein Conjecture 2 across the entire high-mana regime
-  Mana(psi) > (1/2) ln(D/2) via the Trace-Norm Spectral Lock plus the exact
-  Cubic-Mod-3 Wigner origin dichotomy; (3) Universal all-prime d>=5, all-n
-  finite-field Alltop attainment M_2 = ln[q^2/(2q-1)], 1D parabolic Clifford
-  unification, exact Gaussian-integer Super-MUB ruptures at composite d=4 and
-  3-qubit Hoggar, and exact Z[zeta_5] certification of the 1-qudit d=5 Alltop
-  saddle instability; and (4) Complete all-d>=2 proof of Kulhandjian-Hanzo
-  Conjecture 24, universal odd-prime upper bound d_min(Q(p,2)) <= p+1, and
-  exact settlement d_min(Q(7,2)) = 8 via Lean-verified weight-8 witness and
-  independent Rust and C11+NASM exhaustive 1,546,218-orbit certifications.
+  15 Palomar Comparator targets, 31 explicit #print axioms checks and an
+  exhaustive 471-declaration AuditAllDecls.lean metaprogramming sweep with
+  0 violations strictly within propext, Classical.choice, Quot.sound) and
+  nine-language polyglot/quantum verification stack (Lean 4.35.0, Rust, Zig 0.17,
+  ISO C11, bare-metal x86-64 NASM assembly, ISO C++20, Eshkol v1.3.6 LLVM AD,
+  Moonlab WASM, QGTL C, and Python) resolving a connected chain of four open
+  problems across three 2026 preprints (arXiv:2512.19657v2, arXiv:2607.07197,
+  arXiv:2610.02392): (1) Exact refutation of Erew-Goldstein Conjecture 1 via
+  Pythagorean qutrit WH-SIC fiducials (v345, |Stab|=3, dim=2 across all 216
+  provably distinct elements of PCliff_3) and a universal all-d Zauner
+  eigenspace dimension obstruction; (2) Proof of Erew-Goldstein Conjecture 2
+  across the entire high-mana regime Mana(psi) > (1/2) ln(D/2) via the
+  Trace-Norm Spectral Lock plus the exact Cubic-Mod-3 Wigner origin dichotomy;
+  (3) Universal all-prime d>=5, all-n finite-field Alltop attainment
+  M_2 = ln[q^2/(2q-1)], 1D parabolic Clifford unification, exact Gaussian-integer
+  Super-MUB ruptures at composite d=4 and 3-qubit Hoggar, and exact Z[zeta_5]
+  certification of the 1-qudit d=5 Alltop saddle instability; and (4) Complete
+  all-d>=2 proof of Kulhandjian-Hanzo Conjecture 24 and d_min(Q(2,d))=2,
+  universal odd-prime upper bound d_min(Q(p,2)) <= p+1 with internal circulant
+  commutation proof, and exact settlement d_min(Q(7,2)) = 8 via Lean-verified
+  weight-8 witness and independent Rust and C11+NASM exhaustive 1,546,218-orbit
+  certifications.
 keywords:
   - sic-povm
   - clifford-group

@@ -13,7 +13,7 @@ Prints exact transitive axiom footprints for all 15 Palomar headline targets
 (`T1a`–`T4c` + `ALL`), all 8 constructive non-vacuity witnesses (`NV01`–`NV08`),
 and all 8 formal adversarial boundary refutations (`AT01`–`AT08`) — 31 declarations total.
 Every single declaration must depend ONLY on a subset of `{propext, Classical.choice, Quot.sound}`
-(zero `sorryAx`, zero `Lean.ofReduceBool`, zero custom axioms).
+(zero `sorryAx`, zero Lean 4.35 `_native` axioms, zero `Lean.ofReduceBool`, zero custom axioms).
 -/
 
 #print axioms WeylMagicFrontier.Palomar.prove_t1a

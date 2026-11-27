@@ -1,5 +1,5 @@
 Weyl-Magic-Stabilizer-Frontier Eshkol AD Verification Report
-  [Pillar I]   d=3 SIC S(atan2(4,3)) [exact 1.5]      = 1.5
+  [Pillar I]   d=3 SIC S(atan2(4,3)) [exact 1.5]      = 1.4999999999999984
   [Pillar I]   dS/dtheta at (3,4,5) [exact 0.0]       = 0
   [Pillar II]  Spectral Lock gap (D=7, lam=2.1)       = 0.4906523060568919
   [Pillar II]  d(gap)/d(lam) at (D=7, lam=2.1) [> 0]  = 2.3048765086025202

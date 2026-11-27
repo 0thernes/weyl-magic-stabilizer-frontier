@@ -1,14 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "weyl-magic-stabilizer-frontier"
-version = "1.0.0"
-description = "Zero-Mathlib Lean 4.35.0 six-kernel formalization (14 headline theorems, 15 Palomar targets) and 9-language polyglot/quantum verification suite for Weyl-Heisenberg SIC-Clifford stabilizers, Trace-Norm Spectral Locking of mana, Alltop magic, and projective-geometry Singer qudit codes."
+version = "2.0.0"
+description = "Zero-Mathlib Lean 4.35.0 six-kernel formalization (14 headline theorems, 15 Palomar targets, 471 audited declarations) and 9-language polyglot/quantum verification suite for Weyl-Heisenberg SIC-Clifford stabilizers, Trace-Norm Spectral Locking of mana, Alltop magic, and projective-geometry Singer qudit codes."
 readme = "README.md"
-license = {text = "Apache-2.0"}
+license = "Apache-2.0"
+license-files = ["LICENSE", "LICENSE-DOCS"]
 authors = [{name = "Alexander Stephen Donahue", email = "0_0@0thernes.art"}]
 requires-python = ">=3.11"
 dependencies = []
@@ -22,6 +23,8 @@ dev = [
     "matplotlib>=3.9",
     "ruff>=0.6",
     "mypy>=1.11",
+    "jsonschema>=4.20",
+    "PyYAML>=6.0",
 ]
 
 [tool.setuptools.packages.find]

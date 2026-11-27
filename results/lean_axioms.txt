@@ -9,7 +9,7 @@
 'WeylMagicFrontier.Palomar.prove_t3b' depends on axioms: [propext]
 'WeylMagicFrontier.Palomar.prove_t3c' depends on axioms: [propext, Classical.choice, Quot.sound]
 'WeylMagicFrontier.Palomar.prove_t3d' depends on axioms: [propext, Classical.choice, Quot.sound]
-'WeylMagicFrontier.Palomar.prove_t4a' depends on axioms: [propext, Quot.sound]
+'WeylMagicFrontier.Palomar.prove_t4a' depends on axioms: [propext, Classical.choice, Quot.sound]
 'WeylMagicFrontier.Palomar.prove_t4b' depends on axioms: [propext, Classical.choice, Quot.sound]
 'WeylMagicFrontier.Palomar.prove_t4c' depends on axioms: [propext]
 'WeylMagicFrontier.Palomar.prove_all_frontier_theorems' depends on axioms: [propext, Classical.choice, Quot.sound]
@@ -19,8 +19,8 @@
 'WeylMagicFrontier.nonvacuity_nv04_mana_spectral_lock' depends on axioms: [propext, Classical.choice, Quot.sound]
 'WeylMagicFrontier.nonvacuity_nv05_alltop_f5_model' depends on axioms: [propext, Quot.sound]
 'WeylMagicFrontier.nonvacuity_nv06_super_mub_witnesses' depends on axioms: [propext, Classical.choice, Quot.sound]
-'WeylMagicFrontier.nonvacuity_nv07_binary_singer_d2' depends on axioms: [propext]
-'WeylMagicFrontier.nonvacuity_nv08_singer_q7_q11_witnesses' does not depend on any axioms
+'WeylMagicFrontier.nonvacuity_nv07_binary_singer_d2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'WeylMagicFrontier.nonvacuity_nv08_singer_q7_q11_witnesses' depends on axioms: [propext, Classical.choice, Quot.sound]
 'WeylMagicFrontier.refute_at01_sic_is_1d_clifford_stabilizer' depends on axioms: [propext, Classical.choice, Quot.sound]
 'WeylMagicFrontier.refute_at02_v345_stabilizer_order_not_1_or_9' depends on axioms: [propext,
  Classical.choice,

@@ -153,6 +153,7 @@ static bool col_basis_insert(ColBasisC *b, const uint8_t *col, size_t rank, uint
 }
 
 static bool build_singer_c(uint8_t p, const uint32_t c[3], SingerCodeC *out) {
+    if (p < 3U || p >= 16U) return false;
     memset(out, 0, sizeof(*out));
     out->p = p;
     size_t n = (size_t)p * (size_t)p + (size_t)p + 1U;
@@ -324,10 +325,17 @@ static void dfs_cert_c(size_t depth, size_t w_target, size_t start, size_t cur[8
 static void certify_c(const SingerCodeC *code, size_t w_target, uint64_t *orbits, uint64_t *deps) {
     *orbits = 0ULL;
     *deps = 0ULL;
+    if (code->rank > 32U || w_target == 0U || w_target > 8U) {
+        *deps = 1ULL;
+        return;
+    }
     ColBasisC base0;
     memset(&base0, 0, sizeof(base0));
-    col_basis_insert(&base0, code->cols_b[0], code->rank, code->p, code->inv_tbl);
-    col_basis_insert(&base0, code->cols_ma[0], code->rank, code->p, code->inv_tbl);
+    if (!col_basis_insert(&base0, code->cols_b[0], code->rank, code->p, code->inv_tbl) ||
+        !col_basis_insert(&base0, code->cols_ma[0], code->rank, code->p, code->inv_tbl)) {
+        *deps = 1ULL;
+        return;
+    }
     size_t cur[8] = {0};
     dfs_cert_c(1U, w_target, 1U, cur, &base0, code, code->n / w_target, orbits, deps);
 }
@@ -370,13 +378,15 @@ int main(int argc, char **argv) {
 
 #ifdef USE_NASM_KERNEL
     const char *kernel = "c11+nasm-x86_64";
+    const char *nasm_diff_val = "true";
 #else
     const char *kernel = "c11-pure";
+    const char *nasm_diff_val = "null";
 #endif
-    printf("{\"status\":\"PASS\",\"engine\":\"%s\",\"nasm_diff_10k_ok\":true,"
+    printf("{\"status\":\"PASS\",\"engine\":\"%s\",\"nasm_diff_10k_ok\":%s,"
            "\"qp2_witnesses_ok\":true,\"q5_orbits\":%llu,\"q5_deps\":%llu,"
            "\"q7_orbits\":%llu,\"q7_deps\":%llu}\n",
-           kernel, (unsigned long long)orb5, (unsigned long long)dep5,
+           kernel, nasm_diff_val, (unsigned long long)orb5, (unsigned long long)dep5,
            (unsigned long long)orb7, (unsigned long long)dep7);
     return 0;
 }

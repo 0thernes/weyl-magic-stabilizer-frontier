@@ -34,9 +34,15 @@ abbrev T1aStmt : Prop :=
 
 abbrev T1bStmt : Prop :=
   allSL2F3.length = 24 ∧
+  allSL2F3.Nodup ∧
   allPCliff3.length = 216 ∧
+  allPCliff3.Nodup ∧
+  (∀ p q a b c d : Fin 3,
+    (a.val * d.val + 2 * (b.val * c.val)) % 3 = 1 ↔
+      ⟨p.val, q.val, ⟨a.val, b.val, c.val, d.val⟩⟩ ∈ allPCliff3) ∧
   allSL2F3.all checkMetaUnitary = true ∧
   allSL2F3.all checkMetaSymplecticCov = true ∧
+  (∀ (s : Zeta12) (u : Vec3), Vec3.isCollinear u (Vec3.scale s u) = true) ∧
   (∀ p q : Fin 3, (p.val ≠ 0 ∨ q.val ≠ 0) →
     let ov := Vec3.inner Vec3.v345 (Vec3.actWH p.val q.val Vec3.v345)
     4 * Zeta12.normSqIntPart ov = 2500 ∧ Zeta12.normSqSqrt3Part ov = 0) ∧
@@ -133,6 +139,11 @@ abbrev T3cStmt : Prop :=
   (v44NormSq = 354 ∧ 256 * v44FourthMoment < 31 * 16 * (v44NormSq ^ 4))
 
 abbrev T3dStmt : Prop :=
+  Zeta5.mul Zeta5.sqrt5Elem Zeta5.sqrt5Elem = Zeta5.ofInt 5 ∧
+  (∀ x : Zeta5, x.c1 = 0 → x.c2 = x.c3 →
+    Zeta5.scaleInt 2 x =
+      Zeta5.add (Zeta5.ofInt (Zeta5.realTwiceInt x))
+                (Zeta5.scaleInt (Zeta5.realTwiceSqrt5 x) Zeta5.sqrt5Elem)) ∧
   phi5NormSq = 506 ∧
   Zeta5.beq (Zeta5.conj phi5FourthMoment) phi5FourthMoment = true ∧
   phi5FourthMoment.c1 = 0 ∧
@@ -146,7 +157,27 @@ abbrev T4aStmt : Prop :=
     ¬ ((2 ^ m - 1) ∣ 1) ∧ ¬ ((2 ^ m - 1) ∣ 3) ∧ ¬ ((2 ^ m - 1) ∣ (3 * 2 ^ r - 1))) ∧
   (((2 ^ 3 - 1) ∣ (3 * 2 ^ 1 + 1)) ∧
     ∀ m r : Nat, m ≥ 4 → r < m → ¬ ((2 ^ m - 1) ∣ (3 * 2 ^ r + 1))) ∧
-  (∀ m i e : Nat, m ≥ 1 → (((2 ^ m - 1) ∣ (2 ^ i * e)) ↔ ((2 ^ m - 1) ∣ e)))
+  (∀ m i e : Nat, m ≥ 1 → (((2 ^ m - 1) ∣ (2 ^ i * e)) ↔ ((2 ^ m - 1) ∣ e))) ∧
+  (∀ {n : Nat}, n ≥ 7 →
+    ∀ (A : Fin n → Fin n → Bool),
+      (∀ c : Fin n, ∃ r : Fin n, A r c = true) →
+      (∀ c : Fin n, ∃ r : Fin n, A r c = false) →
+      (∀ (u : Fin n → Bool),
+        let rowComb (j : Fin n) : Bool :=
+          (List.finRange n).foldl (fun acc r => xor acc (u r && A r j)) false
+        (∃ j : Fin n, rowComb j = true) →
+        3 ≤ ((List.finRange n).filter (fun j => rowComb j)).length) →
+      (∀ c : Fin n,
+        (∃ _r : Fin n, true = true) ∧
+        (∃ r : Fin n, A r c = true) ∧
+        (∃ r : Fin n, xor true (A r c) = true)) ∧
+      (∀ j0 j1 : Fin n, j0 ≠ j1 →
+        let xVec (j : Fin n) : Bool := (j == j0) || (j == j1)
+        (((List.finRange n).filter (fun j => xVec j)).length = 2) ∧
+        (∀ u : Fin n → Bool,
+          let rowComb (j : Fin n) : Bool :=
+            (List.finRange n).foldl (fun acc r => xor acc (u r && A r j)) false
+          ¬ (∀ j : Fin n, rowComb j = xVec j))))
 
 abbrev T4bStmt : Prop :=
   ∀ {n : Nat} (p : Nat), p ≥ 3 →
@@ -154,10 +185,6 @@ abbrev T4bStmt : Prop :=
       (∀ k : Fin n, tauH k = 0 ∨ tauH k = 1) →
       sumFin tauQ = (p : Int) + 1 →
       (∀ i : Fin n, circMulVec tauH tauH i % (p : Int) = 1) →
-      (∀ (u : Fin n → Int) (k : Fin n),
-        (∀ j : Fin n, vecMulCirc u tauH j % (p : Int) = tauH j % (p : Int)) →
-        vecMulCirc u (circConv tauQ tauH) k % (p : Int) = vecMulCirc tauH tauQ k % (p : Int)) →
-      (∀ i : Fin n, circMulVec (circConv tauQ tauH) tauH i % (p : Int) = (sumFin tauQ) % (p : Int)) →
       (∀ k : Fin n, 0 ≤ vecMulCirc tauH tauQ k ∧ vecMulCirc tauH tauQ k < (p : Int)) →
       sumFin (fun k : Fin n => vecMulCirc tauH tauQ k * (vecMulCirc tauH tauQ k - 1)) =
         (p : Int) * ((p : Int) + 1) →

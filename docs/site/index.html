@@ -4,11 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:;">
-<title>Weyl-Magic-Stabilizer-Frontier — Interactive 3D WebGL2 Observatory (0TH-2026-021)</title>
+<title>Weyl-Magic-Stabilizer-Frontier — Interactive 3D Canvas Observatory (0TH-2026-021 v2.0.0)</title>
 <style>
 :root { --bg:#0b0f17; --panel:#131a26; --fg:#e8eef7; --muted:#9fb0c8; --accent:#56b4e9; --warn:#e69f00; --ok:#009e73; --bad:#d55e00; --border:#263247; }
 * { box-sizing:border-box; }
 body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:var(--fg); line-height:1.5; }
+.skip-link { position:absolute; left:-9999px; top:0; background:var(--accent); color:#04101a; padding:.6rem 1rem; font-weight:700; z-index:100; border-radius:0 0 6px 0; }
+.skip-link:focus { left:0; }
+a:focus-visible, button:focus-visible, input:focus-visible, canvas:focus-visible { outline:3px solid var(--accent); outline-offset:2px; border-radius:4px; }
 header { padding:1.25rem 1.8rem; background:var(--panel); border-bottom:1px solid var(--border); }
 header h1 { margin:0 0 .35rem; font-size:1.35rem; }
 header p { margin:0; color:var(--muted); font-size:.92rem; }
@@ -19,7 +22,7 @@ main { max-width:1280px; margin:0 auto; padding:1.25rem 1.8rem 3rem; display:gri
 @media (max-width:920px) { main { grid-template-columns:1fr; } }
 .card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:1rem 1.2rem; }
 .card h2 { margin:0 0 .6rem; font-size:1.05rem; color:var(--accent); }
-#glCanvas { width:100%; height:440px; border-radius:8px; background:#06090f; display:block; border:1px solid var(--border); cursor:grab; }
+#geoCanvas { width:100%; height:440px; border-radius:8px; background:#06090f; display:block; border:1px solid var(--border); cursor:grab; }
 .tabs { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:.75rem; }
 .tab { background:#1b2537; color:var(--fg); border:1px solid var(--border); border-radius:6px; padding:.42rem .75rem; cursor:pointer; font-size:.84rem; font-weight:600; }
 .tab[aria-selected="true"] { background:var(--accent); color:#04101a; border-color:var(--accent); }
@@ -30,33 +33,39 @@ main { max-width:1280px; margin:0 auto; padding:1.25rem 1.8rem 3rem; display:gri
 .pill.ok { background:#0d3a2d; color:#52e3b4; }
 .pill.refute { background:#451b09; color:#ff965e; }
 .controls { margin-top:.75rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap; font-size:.85rem; color:var(--muted); }
+.hint { margin:.45rem 0 0; font-size:.78rem; color:var(--muted); }
 input[type=range] { accent-color:var(--accent); }
 footer { text-align:center; padding:1rem; color:var(--muted); font-size:.82rem; border-top:1px solid var(--border); }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior:auto !important; transition:none !important; animation:none !important; } }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
 <header>
-  <h1>Weyl-Heisenberg Magic, Clifford Stabilizers &amp; Singer Qudit Codes &mdash; 3D Observatory</h1>
-  <p>0TH-2026-021 &middot; Alexander Stephen Donahue (Independent Researcher, ORCID 0009-0006-8168-9648) &middot; Lean 4.35.0 (6 Kernels) + Rust + Zig + C11/NASM + C++20 + Eshkol + Moonlab + QGTL</p>
+  <h1>Weyl-Heisenberg Magic, Clifford Stabilizers &amp; Singer Qudit Codes &mdash; Interactive 3D Canvas Observatory (v2.0.0)</h1>
+  <p>0TH-2026-021 &middot; Alexander Stephen Donahue (Independent Researcher, ORCID 0009-0006-8168-9648) &middot; Lean 4.35.0 (6 Kernels, 471 Audited Decls) + Rust + Zig + C11/NASM + C++20 + Eshkol + Moonlab + QGTL</p>
   <nav class="nav" aria-label="Primary">
     <a href="blueprint.html">Lean 4.35.0 Blueprint (1:1 Proof Coverage)</a>
     <a href="https://github.com/0thernes/weyl-magic-stabilizer-frontier">GitHub Repository</a>
     <a href="https://github.com/0thernes/0thernes-research-archive">0thernes Research Archive</a>
   </nav>
 </header>
-<main>
+<main id="main-content" tabindex="-1">
   <section class="card" aria-label="Interactive 3D Geometry">
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" aria-selected="true" data-mode="p1">Pillar I: 2D Stabilized Bloch Sphere &amp; WH-SIC Equator</button>
-      <button class="tab" role="tab" aria-selected="false" data-mode="p3">Pillar III: d=5 Alltop Saddle Surface</button>
-      <button class="tab" role="tab" aria-selected="false" data-mode="p4">Pillar IV: PG(2,7) Singer Plane &amp; Weight-8 Witness</button>
+    <div class="tabs" role="tablist" aria-label="Mathematical Pillar Views">
+      <button class="tab" id="tab-p1" role="tab" tabindex="0" aria-selected="true" aria-controls="geoPanel" data-mode="p1">Pillar I: 2D Stabilized Bloch Sphere &amp; WH-SIC Equator</button>
+      <button class="tab" id="tab-p3" role="tab" tabindex="-1" aria-selected="false" aria-controls="geoPanel" data-mode="p3">Pillar III: d=5 Alltop Saddle Surface</button>
+      <button class="tab" id="tab-p4" role="tab" tabindex="-1" aria-selected="false" aria-controls="geoPanel" data-mode="p4">Pillar IV: PG(2,7) Singer Plane &amp; Weight-8 Witness</button>
     </div>
-    <canvas id="glCanvas" width="760" height="440" aria-label="Interactive 3D WebGL2 visualization"></canvas>
+    <div id="geoPanel" role="tabpanel" aria-labelledby="tab-p1">
+      <canvas id="geoCanvas" width="760" height="440" tabindex="0" role="img" aria-label="Interactive 3D software-projected HTML5 Canvas visualization of Weyl-Heisenberg magic and Singer code geometry; use pointer drag or arrow keys to rotate"></canvas>
+    </div>
     <div class="controls">
-      <label>Parameter <input id="paramSlider" type="range" min="0" max="100" value="53"></label>
-      <span id="paramReadout">Pythagorean (3,4,5) witness: &theta; = atan2(4,3)</span>
-      <button class="tab" id="toggleSpin" type="button">Pause Spin</button>
+      <label for="paramSlider">Parameter <input id="paramSlider" type="range" min="0" max="100" value="53"></label>
+      <span id="paramReadout" aria-live="polite">Pythagorean (3,4,5) witness: &theta; = atan2(4,3)</span>
+      <button class="tab" id="toggleSpin" type="button" aria-pressed="true">Pause Spin</button>
     </div>
+    <p class="hint">Keyboard: Left/Right/Home/End switch tabs; focus canvas and press Arrow keys to rotate, Space to pause/resume rotation.</p>
   </section>
 
   <section class="card" aria-label="Verified Quantitative Ledger">
@@ -74,7 +83,7 @@ footer { text-align:center; padding:1rem; color:var(--muted); font-size:.82rem; 
       <dt>Sign-witness Parseval identity</dt><dd>Tr(H<sub>s</sub><sup>2</sup>) = D (&forall; odd D)</dd>
       <dt>High-mana lock threshold</dt><dd>Mana(&psi;) &gt; &frac12; ln(D/2)</dd>
       <dt>All-prime d &ge; 5 attainment</dt><dd>M<sub>2</sub> = ln(q<sup>2</sup>/(2q&minus;1)), q = d<sup>n</sup></dd>
-      <dt>3-qubit Hoggar rupture (D=8)</dt><dd>S/8 = 2/9 &lt; 15/64 (Moonlab err 4.0e-16)</dd>
+      <dt>3-qubit Hoggar rupture (D=8)</dt><dd>S/8 = 2/9 &lt; 15/64 (Moonlab 20,750 gates, 4.0e-16)</dd>
       <dt>Composite d=4 witness (D=16)</dt><dd>v<sub>44</sub> &in; Z[i]<sup>16</sup>: S/16 = 0.12060 &lt; 31/256</dd>
       <dt>1-qudit d=5 Alltop saddle</dt><dd>S(0.1)/5 = 0.358244 &lt; 9/25 (Eshkol &amp; Lean)</dd>
     </dl>
@@ -88,16 +97,28 @@ footer { text-align:center; padding:1rem; color:var(--muted); font-size:.82rem; 
     </dl>
   </section>
 </main>
-<footer>Zero external CDNs &middot; Strict Content-Security-Policy &middot; Dual-licensed Apache-2.0 (code) / CC-BY-4.0 (docs &amp; paper).</footer>
+<footer>Zero external CDNs &middot; Strict Content-Security-Policy &middot; WCAG 2.2 AA &middot; Dual-licensed Apache-2.0 (code) / CC-BY-4.0 (docs &amp; paper).</footer>
 <script>
 (() => {
-  const canvas = document.getElementById('glCanvas');
+  const canvas = document.getElementById('geoCanvas');
   const ctx = canvas.getContext('2d');
+  const panel = document.getElementById('geoPanel');
+  const tabs = Array.from(document.querySelectorAll('.tab[data-mode]'));
+  const readout = document.getElementById('paramReadout');
+  const spinBtn = document.getElementById('toggleSpin');
+  const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   let mode = 'p1';
-  let spin = true;
+  let spin = !reducedMotion;
   let yaw = 0.55, pitch = 0.38;
   let dragging = false, lx = 0, ly = 0;
   let sliderVal = 53;
+
+  function syncSpinButton() {
+    spinBtn.textContent = spin ? 'Pause Spin' : 'Resume Spin';
+    spinBtn.setAttribute('aria-pressed', spin ? 'true' : 'false');
+  }
+  syncSpinButton();
 
   function proj(x, y, z) {
     const cy = Math.cos(yaw), sy = Math.sin(yaw);
@@ -129,8 +150,20 @@ footer { text-align:center; padding:1rem; color:var(--muted); font-size:.82rem; 
     ctx.fill();
   }
 
+  function updateReadout() {
+    if (mode === 'p1') {
+      const th = (sliderVal / 100) * Math.PI * 2;
+      readout.textContent = `Equator angle θ = ${th.toFixed(3)} rad | S(θ) = 1.500000 | |Stab|=3, dim=2`;
+    } else if (mode === 'p3') {
+      const eps = ((sliderVal - 50) / 50) * 0.2;
+      readout.textContent = `Perturbation ε = ${eps.toFixed(3)} along δ=(2,-1,0,0,-1) | Saddle drop below 9/25`;
+    } else {
+      const shift = Math.floor((sliderVal / 100) * 57) % 57;
+      readout.textContent = `PG(2,7) Singer shift k=${shift} | Weight-8 logical L_line = (τ_H | τ_H) | d_min(Q(7,2)) = 8`;
+    }
+  }
+
   function renderP1() {
-    // 2D stabilized Bloch sphere span(e1, e2): wireframe latitudes & longitudes
     for (let k = -2; k <= 2; k++) {
       const lat = k * Math.PI / 6;
       const rr = Math.cos(lat), yy = Math.sin(lat);
@@ -149,19 +182,15 @@ footer { text-align:center; padding:1rem; color:var(--muted); font-size:.82rem; 
                    'rgba(130,160,200,0.2)', 1.0);
       }
     }
-    // Highlight e1 (north pole), e2 (south pole), and rational WH-SIC witnesses on equator
     drawDot3D([0, 1, 0], 6, '#009e73');
     drawDot3D([0, -1, 0], 6, '#009e73');
     const th = (sliderVal / 100) * Math.PI * 2;
     drawDot3D([Math.cos(th), 0, Math.sin(th)], 7.5, '#d55e00');
     drawDot3D([3 / 5, 0, 4 / 5], 5.5, '#e69f00');
     drawDot3D([5 / 13, 0, 12 / 13], 4.5, '#e69f00');
-    document.getElementById('paramReadout').textContent =
-      `Equator angle θ = ${th.toFixed(3)} rad | S(θ) = 1.500000 | |Stab|=3, dim=2`;
   }
 
   function renderP3() {
-    // 3D Saddle surface z = 0.45 * (y^2 - x^2) modeling d=5 Alltop negative Hessian curvature
     const N = 16;
     for (let i = -N; i <= N; i += 2) {
       const u = i / N;
@@ -176,14 +205,11 @@ footer { text-align:center; padding:1rem; color:var(--muted); font-size:.82rem; 
     const drop = -0.55 * (eps / 0.2) * (eps / 0.2);
     drawDot3D([0, 0, 0], 6.5, '#ffffff');
     drawDot3D([eps / 0.2, drop, 0], 7.5, '#d55e00');
-    document.getElementById('paramReadout').textContent =
-      `Perturbation ε = ${eps.toFixed(3)} along δ=(2,-1,0,0,-1) | Saddle drop below 9/25`;
   }
 
   function renderP4() {
-    // PG(2, 7) Singer cycle (57 points on a 3D torus knot) highlighting 8-point Singer hyperplane tau_H
     const n = 57;
-    const supH = [0, 1, 3, 13, 32, 36, 43, 52]; // Singer difference set mod 57 (weight 8)
+    const supH = [0, 1, 3, 13, 32, 36, 43, 52];
     const pts = [];
     for (let i = 0; i < n; i++) {
       const a = (i / n) * Math.PI * 2;
@@ -203,31 +229,68 @@ footer { text-align:center; padding:1rem; color:var(--muted); font-size:.82rem; 
     for (let i = 0; i < n; i++) {
       drawDot3D(pts[i], shifted.includes(i) ? 6.2 : 2.6, shifted.includes(i) ? '#e69f00' : '#56b4e9');
     }
-    document.getElementById('paramReadout').textContent =
-      `PG(2,7) Singer shift k=${shift} | Weight-8 logical L_line = (τ_H | τ_H) | d_min(Q(7,2)) = 8`;
   }
 
-  function frame() {
+  function drawScene() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    if (spin && !dragging) yaw += 0.008;
     if (mode === 'p1') renderP1();
     else if (mode === 'p3') renderP3();
     else renderP4();
+  }
+
+  function frame() {
+    if (spin && !dragging) yaw += 0.008;
+    drawScene();
     requestAnimationFrame(frame);
   }
 
-  document.querySelectorAll('.tab[data-mode]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.tab[data-mode]').forEach((b) => b.setAttribute('aria-selected', 'false'));
-      btn.setAttribute('aria-selected', 'true');
-      mode = btn.dataset.mode;
+  function activateTab(btn) {
+    tabs.forEach((b) => {
+      const active = b === btn;
+      b.setAttribute('aria-selected', active ? 'true' : 'false');
+      b.setAttribute('tabindex', active ? '0' : '-1');
+    });
+    mode = btn.dataset.mode;
+    panel.setAttribute('aria-labelledby', btn.id);
+    updateReadout();
+    drawScene();
+  }
+
+  tabs.forEach((btn, idx) => {
+    btn.addEventListener('click', () => activateTab(btn));
+    btn.addEventListener('keydown', (e) => {
+      let next = null;
+      if (e.key === 'ArrowRight') next = tabs[(idx + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') next = tabs[(idx - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') next = tabs[0];
+      else if (e.key === 'End') next = tabs[tabs.length - 1];
+      if (next) {
+        e.preventDefault();
+        activateTab(next);
+        next.focus();
+      }
     });
   });
-  document.getElementById('paramSlider').addEventListener('input', (e) => { sliderVal = Number(e.target.value); });
-  document.getElementById('toggleSpin').addEventListener('click', (e) => {
-    spin = !spin;
-    e.target.textContent = spin ? 'Pause Spin' : 'Resume Spin';
+
+  document.getElementById('paramSlider').addEventListener('input', (e) => {
+    sliderVal = Number(e.target.value);
+    updateReadout();
+    drawScene();
   });
+
+  spinBtn.addEventListener('click', () => {
+    spin = !spin;
+    syncSpinButton();
+  });
+
+  canvas.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); yaw -= 0.12; drawScene(); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); yaw += 0.12; drawScene(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); pitch = Math.min(1.3, pitch + 0.10); drawScene(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); pitch = Math.max(-1.3, pitch - 0.10); drawScene(); }
+    else if (e.key === ' ') { e.preventDefault(); spin = !spin; syncSpinButton(); }
+  });
+
   canvas.addEventListener('pointerdown', (e) => { dragging = true; lx = e.clientX; ly = e.clientY; });
   window.addEventListener('pointerup', () => { dragging = false; });
   window.addEventListener('pointermove', (e) => {
@@ -236,6 +299,8 @@ footer { text-align:center; padding:1rem; color:var(--muted); font-size:.82rem; 
     pitch = Math.max(-1.3, Math.min(1.3, pitch + (e.clientY - ly) * 0.01));
     lx = e.clientX; ly = e.clientY;
   });
+
+  updateReadout();
   frame();
 })();
 </script>

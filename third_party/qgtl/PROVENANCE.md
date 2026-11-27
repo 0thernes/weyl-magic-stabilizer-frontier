@@ -23,8 +23,10 @@ parameter derivatives**. The latter returns `F_ij = -2 Im Q_ij`; this
 convention is used explicitly in the experiments. These kernels do not
 normalize their state input, so callers must provide a unit vector.
 
-`scripts/stack_audit.py` builds a shared library from this source and compares
-its outputs against independent NumPy inner products, phase-gauge shifts,
-and random normalized states. Only those kernels and conditions are audited.
+`quantum_stack/qgtl_sic_metric.c` compiles and links against this source under strict
+warnings (`-Wall -Wextra -Wpedantic -Werror` on the harness), compares its Fubini-Study and
+Berry curvature outputs against closed-form analytic values on the `d = 3` WH-SIC circle and
+off-circle deformations (`results/qgtl_sic_metric.json`), and is cross-checked in
+`tests/test_all.py` and `.github/workflows/ci.yml`. Only those kernels and conditions are audited.
 The broader QGTL library, generic-coordinate QGT entry point, distributed
 algorithms, GPU paths, and other geometry routines are not validated here.

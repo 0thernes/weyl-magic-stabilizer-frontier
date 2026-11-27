@@ -51,6 +51,8 @@ gf_sub_mul_asm:
     jz .sub_done
     test r13d, r13d
     jz .sub_done
+    cmp r14d, 2
+    jb .sub_done
 
     xor r15, r15            ; i = 0
 .sub_loop:
@@ -104,6 +106,8 @@ gf_dot_mod_asm:
     xor r14, r14            ; i = 0
     test r12, r12
     jz .dot_done
+    cmp r13d, 2
+    jb .dot_done
 
 .dot_loop:
     movzx ecx, byte [r10 + r14]

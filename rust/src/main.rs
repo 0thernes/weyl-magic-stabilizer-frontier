@@ -3,7 +3,7 @@
 //
 // Zero-dependency, `#![forbid(unsafe_code)]` exact verifier for all four pillars of
 // `weyl-magic-stabilizer-frontier`, including the exhaustive Singer-Frobenius
-// paired-rigidity distance certifier for Q(3,2), Q(5,2), and Q(7,2) (1,546,218+ orbits).
+// paired-rigidity distance certifier for Q(3,2), Q(5,2), and Q(7,2) (1,546,218 orbits).
 
 #![forbid(unsafe_code)]
 #![deny(clippy::all)]
@@ -801,6 +801,10 @@ fn certify_no_commuting_up_to(code: &SingerCode, w_target: usize) -> ExhaustiveC
     let p = code.p;
     let n = code.n;
     let rank = code.rank;
+    assert!(
+        rank <= 32 && (1..=8).contains(&w_target) && (p as usize) < 16,
+        "Stack ColBasis preconditions violated: rank={rank}, w_target={w_target}, p={p}"
+    );
     let mut inv_tbl = [0u8; 16];
     for a in 1..p {
         inv_tbl[a as usize] = mod_inv(a, p);
@@ -1088,8 +1092,9 @@ mod tests {
         assert!(q3.line_witness_ok && q5.line_witness_ok && q7.line_witness_ok && q11.line_witness_ok);
         let c3 = certify_no_commuting_up_to(&q3, 2);
         assert_eq!(c3.dependent_orbits_found, 0);
+        assert_eq!(c3.orbits_checked, 2);
         let c5 = certify_no_commuting_up_to(&q5, 5);
         assert_eq!(c5.dependent_orbits_found, 0);
-        assert!(c5.orbits_checked > 1000);
+        assert_eq!(c5.orbits_checked, 1827);
     }
 }

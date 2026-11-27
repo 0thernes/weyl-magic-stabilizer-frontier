@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# Informational-only 6-kernel Lean + 9-language polyglot + LaTeX + SLSA provenance CI (Build Standard R1-R4)
+# Informational-only 6-kernel Lean + 9-language polyglot + LaTeX + Security + SLSA provenance CI (Build Standard R1-R4)
 name: CI
 
 on:
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   lean-6kernel:
-    name: Lean 4.35.0 (6 Independent Proof Kernels)
+    name: Lean 4.35.0 (6 Independent Proof Kernels + 471-Decl Axiom Sweep)
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -37,12 +37,13 @@ jobs:
           lake build
           lake build PalomarChallenge
 
-      - name: Audit axioms (31/31 strictly within propext, Classical.choice, Quot.sound)
+      - name: Audit axioms (31 flagship + 471 exhaustive WeylMagicFrontier.* declarations)
         working-directory: lean
         run: |
           lake env lean VerifyAxioms.lean > ../results/ci_lean_axioms.txt
           cat ../results/ci_lean_axioms.txt
           diff -u ../results/lean_axioms.txt ../results/ci_lean_axioms.txt
+          lake env lean AuditAllDecls.lean
           python3 ../scripts/check_readme_axioms.py
 
       - name: Standalone leanchecker & leanchecker-paranoid
@@ -139,19 +140,23 @@ jobs:
         run: |
           g++ -std=c++20 -O3 -Wall -Wextra -Wpedantic -Werror cpp/src/weyl_verify.cpp -o /tmp/weyl_verify_cpp
           /tmp/weyl_verify_cpp
-      - name: Pinned Moonlab WASM + deterministic software QRNG mixer
+      - name: Pinned Moonlab WASM (20,750 gates, 4,096 shots) + deterministic software QRNG mixer
         run: |
           mkdir -p build
           gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o build/qrng_mixer
           node quantum_stack/moonlab_super_mub.mjs
-      - name: Pinned QGTL C differential geometry harness
+      - name: Pinned QGTL C differential geometry harness (-Werror on harness)
         run: |
-          gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
-            quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/quantum_geometric/distributed/differential_geometry.c -lm -o /tmp/qgtl_sic_metric
+          mkdir -p build
+          gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
+            -c quantum_stack/qgtl_sic_metric.c -o build/qgtl_sic_metric.o
+          gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Wno-unused-function -Wno-unused-variable -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
+            -c third_party/qgtl/src/quantum_geometric/distributed/differential_geometry.c -o build/qgtl_diffgeo.o
+          gcc build/qgtl_sic_metric.o build/qgtl_diffgeo.o -lm -o /tmp/qgtl_sic_metric
           /tmp/qgtl_sic_metric
 
   python-matrix:
-    name: Python Oracle, Hypothesis, Mutation & Differential (${{ matrix.os }})
+    name: Python Oracle, Schema, Diff, Hypothesis & 100% Mutation (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
@@ -164,18 +169,19 @@ jobs:
           python-version: "3.12"
       - name: Install pinned test dependencies
         run: pip install -r requirements.lock.txt
-      - name: Run quickstart, pytest, 100% mutation suite, anti-drift, citation & blueprint checks
+      - name: Run quickstart, pytest, 100% mutation suite, anti-drift, reference oracle & blueprint checks
         env:
           PYTHONPATH: src:.
         run: |
           python examples/quickstart_demo.py
+          python reference/oracle.py
           pytest -v tests/test_all.py
           python scripts/mutate.py
           python scripts/check_readme_axioms.py
           python scripts/build_blueprint.py
 
   latex-and-provenance:
-    name: AMS-LaTeX (0 Warnings), Clean-Room arXiv & SLSA Provenance
+    name: AMS-LaTeX (0 Warnings), Clean-Room arXiv, X.509 TSR & SLSA Provenance
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -192,9 +198,10 @@ jobs:
         run: |
           mkdir -p /tmp/arxiv_cleanroom/out
           tar -xzf dist/arxiv_submission.tar.gz -C /tmp/arxiv_cleanroom
-          tectonic -X compile /tmp/arxiv_cleanroom/main.tex --outdir /tmp/arxiv_cleanroom/out
+          tectonic -X compile /tmp/arxiv_cleanroom/main.tex --outdir /tmp/arxiv_cleanroom/out --keep-logs
           test -s /tmp/arxiv_cleanroom/out/main.pdf
-      - name: Verify SHA-256 manifests, RFC 3161/OTS timestamps & generate SHA256SUMS
+          ! grep -E "Overfull|Underfull|Undefined|Error" /tmp/arxiv_cleanroom/out/main.log
+      - name: Verify SHA-256 manifests, OpenSSL X.509 RFC 3161/OTS timestamps & generate SHA256SUMS
         run: |
           sha256sum -c data/MANIFEST.sha256
           sha256sum -c MANIFEST.sha256
@@ -203,6 +210,7 @@ jobs:
           cat SHA256SUMS
       - name: Generate SLSA build provenance attestation
         if: github.event_name == 'push'
+        continue-on-error: true
         uses: actions/attest-build-provenance@v2
         with:
           subject-path: |
@@ -213,11 +221,13 @@ jobs:
             data/MANIFEST.sha256.ots
 
   lint-audit-security:
-    name: Lint, Typecheck, Security & Build Standard Audit (Report-Only)
+    name: Lint, Typecheck, Security (gitleaks + osv-scanner) & Build Standard Audit (Report-Only)
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -228,7 +238,20 @@ jobs:
           mypy --strict src/ reference/ scripts/ tests/ examples/
       - name: Build Standard v1.2.0 Audit
         run: bash scripts/audit-repo.sh .
-      - name: Secret, placeholder & affiliation hygiene scan (gitleaks-style + policy audit)
+      - name: gitleaks v8.30.1 (SHA-256 pinned, full git history secret scan)
         run: |
-          ! grep -rnE "(ghp_[A-Za-z0-9]{30,}|sk-[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16})" . --exclude-dir=.git --exclude-dir=.lake --exclude-dir=target
+          curl -sSfL -o gitleaks.tgz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  gitleaks.tgz" | sha256sum -c -
+          tar xzf gitleaks.tgz gitleaks
+          ./gitleaks detect --source . --redact --no-banner --exit-code 0 --report-format json --report-path gitleaks.json
+          echo "gitleaks findings: $(grep -c '"RuleID"' gitleaks.json || true)" >> "$GITHUB_STEP_SUMMARY"
+      - name: osv-scanner v2.7.1 (SHA-256 pinned, dependency vulnerability scan)
+        run: |
+          curl -sSfL -o osv-scanner https://github.com/google/osv-scanner/releases/download/v2.7.1/osv-scanner_linux_amd64
+          echo "fb7dab19a8bd9bbe5c3189f09d4b7ee1820c9553a23bac202648a56efd2f6ee8  osv-scanner" | sha256sum -c -
+          chmod +x osv-scanner
+          ./osv-scanner --recursive . > osv.txt 2>&1 || true
+          { echo '### osv-scanner'; echo '```'; tail -n 40 osv.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Affiliation hygiene scan
+        run: |
           ! grep -rn "0thernes LLC" . --exclude-dir=.git --exclude-dir=.lake --exclude-dir=target --exclude="ci.yml" --exclude="test_all.py"

@@ -24,7 +24,8 @@ public theorem prove_t1a : T1aStmt :=
   fun a b c hpyth => qutrit_rational_circle_wh_sic a b c hpyth
 
 public theorem prove_t1b : T1bStmt :=
-  ⟨allSL2F3_card, allPCliff3_card, allSL2F3_meta_unitary, allSL2F3_symplectic_covariant,
+  ⟨allSL2F3_card, allSL2F3_nodup, allPCliff3_card, allPCliff3_nodup, mem_allPCliff3_iff,
+   allSL2F3_meta_unitary, allSL2F3_symplectic_covariant, Vec3.isCollinear_of_scale,
    qutrit_sic_refutes_clifford_stabilizer_conjecture.1,
    qutrit_sic_refutes_clifford_stabilizer_conjecture.2.1,
    qutrit_sic_refutes_clifford_stabilizer_conjecture.2.2.1,
@@ -60,14 +61,20 @@ public theorem prove_t3c : T3cStmt :=
    composite_d4_beats_mub⟩
 
 public theorem prove_t3d : T3dStmt :=
-  alltop_d5_saddle_instability
+  ⟨Zeta5.sqrt5Elem_sq, Zeta5.real_twice_decomp,
+   alltop_d5_saddle_instability.1,
+   alltop_d5_saddle_instability.2.1,
+   alltop_d5_saddle_instability.2.2.1,
+   alltop_d5_saddle_instability.2.2.2.1,
+   alltop_d5_saddle_instability.2.2.2.2⟩
 
 public theorem prove_t4a : T4aStmt :=
-  ⟨conjecture24_nondivisibility, remark21_plus_sign_dichotomy, pow2_dvd_iff_of_odd_mod⟩
+  ⟨conjecture24_nondivisibility, remark21_plus_sign_dichotomy, pow2_dvd_iff_of_odd_mod,
+   fun hn A hnz hnf hmin => binary_singer_exact_distance_two hn A hnz hnf hmin⟩
 
 public theorem prove_t4b : T4bStmt :=
-  fun p hp tauH tauQ hbin hwt hline hcomm hmq harc hsec =>
-    odd_prime_singer_upper_bound p hp tauH tauQ hbin hwt hline hcomm hmq harc hsec
+  fun p hp tauH tauQ hbin hwt hline harc hsec =>
+    odd_prime_singer_upper_bound p hp tauH tauQ hbin hwt hline harc hsec
 
 public theorem prove_t4c : T4cStmt :=
   ⟨conj24_concrete_d2_to_d5, qp2_concrete_flagship_witnesses⟩

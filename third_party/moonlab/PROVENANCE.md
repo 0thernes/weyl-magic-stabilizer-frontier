@@ -25,6 +25,8 @@ matches [`src/quantum/state.h`](https://github.com/tsotchke/moonlab/blob/cd3b234
 This private-layout access is tied to the pinned artifact and must be
 rechecked when upgrading.
 
-`scripts/stack_audit.py` records SHA-256 fingerprints and independently runs
-and checks the experiment in an isolated directory. It does not make claims about unused
+`quantum_stack/moonlab_super_mub.mjs` records the `moonlab.wasm` SHA-256 fingerprint,
+executes native gate-level 2-qubit `CS|++>` and 3-qubit Hoggar Pauli expectation circuits,
+and outputs `results/moonlab_super_mub.json`, cross-checked against exact integer invariants in
+`tests/test_all.py` and `.github/workflows/ci.yml`. It does not make claims about unused
 Moonlab algorithms or backends.

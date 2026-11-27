@@ -286,23 +286,166 @@ theorem binary_singer_exact_distance_two {n : Nat} (_hn : n ≥ 7)
 @[expose] def circConv {n : Nat} (g f : Fin n → Int) (k : Fin n) : Int :=
   sumFin (fun j : Fin n => g j * f ⟨(k.val + n - j.val) % n, Nat.mod_lt _ (Fin.pos k)⟩)
 
+private theorem sumFin_mul_right {n : Nat} (f : Fin n → Int) (c : Int) :
+    sumFin (fun i => f i * c) = sumFin f * c := by
+  have h : sumFin (fun i => f i * c) = sumFin (fun i => c * f i) :=
+    sumFin_eq_of_eq _ _ (fun i => Int.mul_comm _ _)
+  rw [h, sumFin_mul_left, Int.mul_comm]
+
+private theorem mod_sub_sub_eq {n : Nat} (a b c : Nat) (ha : a < n) (hb : b < n) (hc : c < n) :
+    ((a + n - b) % n + n - c) % n = (a + n - ((b + c) % n)) % n := by
+  by_cases hba : b ≤ a
+  · have h1 : (a + n - b) % n = a - b := by
+      have heq : a + n - b = (a - b) + n := by omega
+      rw [heq, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]
+    rw [h1]
+    by_cases hbc : b + c < n
+    · rw [Nat.mod_eq_of_lt hbc]
+      congr 1; omega
+    · have h2 : (b + c) % n = b + c - n := by
+        have heq : b + c = (b + c - n) + n := by omega
+        conv => lhs; rw [heq]
+        rw [Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]
+      rw [h2]
+      have heq : a + n - (b + c - n) = (a - b + n - c) + n := by omega
+      rw [heq, Nat.add_mod_right]
+  · have h1 : (a + n - b) % n = a + n - b := Nat.mod_eq_of_lt (by omega)
+    rw [h1]
+    by_cases hbc : b + c < n
+    · rw [Nat.mod_eq_of_lt hbc]
+      have heq : a + n - b + n - c = (a + n - (b + c)) + n := by omega
+      rw [heq, Nat.add_mod_right]
+    · have h2 : (b + c) % n = b + c - n := by
+        have heq : b + c = (b + c - n) + n := by omega
+        conv => lhs; rw [heq]
+        rw [Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]
+      rw [h2]
+      congr 1; omega
+
+private theorem mod_add_sub_cancel {n : Nat} (i s : Nat) (hi : i < n) (hs : s < n) :
+    ((i + s) % n + n - i) % n = s := by
+  by_cases his : i + s < n
+  · rw [Nat.mod_eq_of_lt his]
+    have heq : i + s + n - i = s + n := by omega
+    rw [heq, Nat.add_mod_right, Nat.mod_eq_of_lt hs]
+  · have h1 : (i + s) % n = i + s - n := by
+      have heq : i + s = (i + s - n) + n := by omega
+      conv => lhs; rw [heq]
+      rw [Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]
+    rw [h1]
+    have heq : i + s - n + n - i = s := by omega
+    rw [heq, Nat.mod_eq_of_lt hs]
+
+private theorem mod_neg_invol {n : Nat} (k s : Nat) (hk : k < n) (hs : s < n) :
+    (k + n - (k + n - s) % n) % n = s := by
+  by_cases hsk : s ≤ k
+  · have h1 : (k + n - s) % n = k - s := by
+      have heq : k + n - s = (k - s) + n := by omega
+      rw [heq, Nat.add_mod_right, Nat.mod_eq_of_lt (by omega)]
+    rw [h1]
+    have heq : k + n - (k - s) = s + n := by omega
+    rw [heq, Nat.add_mod_right, Nat.mod_eq_of_lt hs]
+  · have h1 : (k + n - s) % n = k + n - s := Nat.mod_eq_of_lt (by omega)
+    rw [h1]
+    have heq : k + n - (k + n - s) = s := by omega
+    rw [heq, Nat.mod_eq_of_lt hs]
+
+/-- Universal exact associativity of circulant matrix-vector action:
+    `(M_Q A) v = M_Q (A v)` for ALL `n : Nat` and ALL integer functions `g, f, v : Fin n -> Int`. -/
+theorem circMulVec_circConv {n : Nat} (g f v : Fin n → Int) (i : Fin n) :
+    circMulVec (circConv g f) v i = circMulVec g (circMulVec f v) i := by
+  unfold circMulVec circEntry circConv
+  have h1 : sumFin (fun j : Fin n =>
+      sumFin (fun s : Fin n => g s * f ⟨((j.val + n - i.val) % n + n - s.val) % n, Nat.mod_lt _ (Fin.pos j)⟩) * v j) =
+      sumFin (fun j : Fin n =>
+      sumFin (fun s : Fin n => g s * (f ⟨(j.val + n - (i.val + s.val) % n) % n, Nat.mod_lt _ (Fin.pos j)⟩ * v j))) := by
+    apply sumFin_eq_of_eq
+    intro j
+    rw [← sumFin_mul_right]
+    apply sumFin_eq_of_eq
+    intro s
+    have hm : ((j.val + n - i.val) % n + n - s.val) % n = (j.val + n - (i.val + s.val) % n) % n :=
+      mod_sub_sub_eq j.val i.val s.val j.isLt i.isLt s.isLt
+    rw [Int.mul_assoc]
+    congr 2; congr 1; exact Fin.ext hm
+  rw [h1, sumFin_swap]
+  have h2 : sumFin (fun s : Fin n =>
+      sumFin (fun j : Fin n => g s * (f ⟨(j.val + n - (i.val + s.val) % n) % n, Nat.mod_lt _ (Fin.pos j)⟩ * v j))) =
+      sumFin (fun s : Fin n =>
+        g s * sumFin (fun j : Fin n => f ⟨(j.val + n - (i.val + s.val) % n) % n, Nat.mod_lt _ (Fin.pos j)⟩ * v j)) := by
+    apply sumFin_eq_of_eq
+    intro s
+    exact sumFin_mul_left _ _
+  rw [h2]
+  have hshift := sumFin_shift i.val (fun r : Fin n =>
+    g ⟨(r.val + n - i.val) % n, Nat.mod_lt _ (Fin.pos r)⟩ *
+      sumFin (fun j : Fin n => f ⟨(j.val + n - r.val) % n, Nat.mod_lt _ (Fin.pos j)⟩ * v j))
+  rw [← hshift]
+  apply sumFin_eq_of_eq
+  intro s
+  have hidx : ((s.val + i.val) % n + n - i.val) % n = s.val := by
+    rw [Nat.add_comm s.val i.val]
+    exact mod_add_sub_cancel i.val s.val i.isLt s.isLt
+  have hcomm : (s.val + i.val) % n = (i.val + s.val) % n := by rw [Nat.add_comm]
+  congr 1
+  · congr 1; exact Fin.ext hidx.symm
+  · apply sumFin_eq_of_eq; intro j; congr 2; apply Fin.ext; dsimp only; rw [hcomm]
+
+/-- Universal exact associativity/commutativity of row-vector circulant action:
+    `u (M_Q A) = (u A) M_Q` for ALL `n : Nat` and ALL integer functions `u, g, f : Fin n -> Int`. -/
+theorem vecMulCirc_circConv {n : Nat} (u g f : Fin n → Int) (k : Fin n) :
+    vecMulCirc u (circConv g f) k = vecMulCirc (vecMulCirc u f) g k := by
+  unfold vecMulCirc circEntry circConv
+  have h1 : sumFin (fun j : Fin n =>
+      u j * sumFin (fun s : Fin n => g s * f ⟨((k.val + n - j.val) % n + n - s.val) % n, Nat.mod_lt _ (Fin.pos k)⟩)) =
+      sumFin (fun j : Fin n =>
+      sumFin (fun s : Fin n => g s * (u j * f ⟨((k.val + n - s.val) % n + n - j.val) % n, Nat.mod_lt _ (Fin.pos k)⟩))) := by
+    apply sumFin_eq_of_eq
+    intro j
+    rw [← sumFin_mul_left]
+    apply sumFin_eq_of_eq
+    intro s
+    have hm1 := mod_sub_sub_eq k.val j.val s.val k.isLt j.isLt s.isLt
+    have hm2 := mod_sub_sub_eq k.val s.val j.val k.isLt s.isLt j.isLt
+    have hm : ((k.val + n - j.val) % n + n - s.val) % n = ((k.val + n - s.val) % n + n - j.val) % n := by
+      rw [hm1, hm2, Nat.add_comm j.val s.val]
+    have hmul : u j * (g s * f ⟨((k.val + n - j.val) % n + n - s.val) % n, Nat.mod_lt _ (Fin.pos k)⟩) =
+        g s * (u j * f ⟨((k.val + n - j.val) % n + n - s.val) % n, Nat.mod_lt _ (Fin.pos k)⟩) := by
+      rw [← Int.mul_assoc, Int.mul_comm (u j) (g s), Int.mul_assoc]
+    rw [hmul]
+    congr 2; congr 1; exact Fin.ext hm
+  rw [h1, sumFin_swap]
+  have h2 : sumFin (fun s : Fin n =>
+      sumFin (fun j : Fin n => g s * (u j * f ⟨((k.val + n - s.val) % n + n - j.val) % n, Nat.mod_lt _ (Fin.pos k)⟩))) =
+      sumFin (fun s : Fin n =>
+        g s * sumFin (fun j : Fin n => u j * f ⟨((k.val + n - s.val) % n + n - j.val) % n, Nat.mod_lt _ (Fin.pos k)⟩)) := by
+    apply sumFin_eq_of_eq
+    intro s
+    exact sumFin_mul_left _ _
+  rw [h2]
+  have hneg := sumFin_neg_shift k.val (fun r : Fin n =>
+    sumFin (fun j : Fin n => u j * f ⟨(r.val + n - j.val) % n, Nat.mod_lt _ (Fin.pos r)⟩) *
+      g ⟨(k.val + n - r.val) % n, Nat.mod_lt _ (Fin.pos r)⟩)
+  rw [← hneg]
+  apply sumFin_eq_of_eq
+  intro s
+  rw [Int.mul_comm]
+  congr 1
+  congr 1
+  exact Fin.ext (mod_neg_invol k.val s.val k.isLt s.isLt).symm
+
 /-- **Theorem T4b (Universal Odd-Prime Flagship Upper Bound `d_min(Q(p, 2)) <= p + 1`)**:
     Holds for EVERY odd prime `p >= 3` and BOTH orientations `B = M_Q A` (`0 <= c_k < p`)
-    and `B = M_Q^T A` (`0 <= c_k <= 2 < p`)! Whenever `0 <= c_k < p` for all `k` and
-    `sum_k c_k * (c_k - 1) = p * (p + 1) > 0`, there MUST exist `k` with `2 <= c_k < p`,
-    so `c_k % p = c_k ∉ {0, 1}`, ruling out `L_line = (tauH | tauH) ∈ rowspace(A | B)`! -/
+    and `B = M_Q^T A` (`0 <= c_k <= 2 < p`), with circulant associativity/commutativity
+    (`circMulVec_circConv`, `vecMulCirc_circConv`) proved internally (zero algebraic axioms!).
+    Whenever `0 <= c_k < p` for all `k` and `sum_k c_k * (c_k - 1) = p * (p + 1) > 0`, there MUST
+    exist `k` with `2 <= c_k < p`, so `c_k % p = c_k ∉ {0, 1}`, proving `L_line = (tauH | tauH)`
+    commutes with all stabilizers yet `L_line ∉ rowspace(A | B)`! -/
 theorem odd_prime_singer_upper_bound {n : Nat} (p : Nat) (hp : p ≥ 3)
     (tauH tauQ : Fin n → Int)
     (htauH_bin : ∀ k : Fin n, tauH k = 0 ∨ tauH k = 1)
     (hQ_wt : sumFin tauQ = (p : Int) + 1)
     (hA_line : ∀ i : Fin n, circMulVec tauH tauH i % (p : Int) = 1)
-    (hcomm_row : ∀ (u : Fin n → Int) (k : Fin n),
-      (∀ j : Fin n, vecMulCirc u tauH j % (p : Int) = tauH j % (p : Int)) →
-      vecMulCirc u (circConv tauQ tauH) k % (p : Int) =
-        vecMulCirc tauH tauQ k % (p : Int))
-    (hMQ_A_line : ∀ i : Fin n,
-      circMulVec (circConv tauQ tauH) tauH i % (p : Int) =
-        (sumFin tauQ) % (p : Int))
     (harc_lt_p : ∀ k : Fin n, 0 ≤ vecMulCirc tauH tauQ k ∧ vecMulCirc tauH tauQ k < (p : Int))
     (hsecant_sum : sumFin (fun k : Fin n =>
         vecMulCirc tauH tauQ k * (vecMulCirc tauH tauQ k - 1)) = (p : Int) * ((p : Int) + 1)) :
@@ -313,7 +456,32 @@ theorem odd_prime_singer_upper_bound {n : Nat} (p : Nat) (hp : p ≥ 3)
       (∀ k : Fin n, vecMulCirc u (circConv tauQ tauH) k % (p : Int) = tauH k % (p : Int))) := by
   constructor
   · intro i
-    have h1 := hMQ_A_line i
+    rw [circMulVec_circConv]
+    have h1 : circMulVec tauQ (circMulVec tauH tauH) i % (p : Int) = (sumFin tauQ) % (p : Int) := by
+      change (sumFin (fun j : Fin n => circEntry tauQ i j * circMulVec tauH tauH j)) % (p : Int) =
+        (sumFin tauQ) % (p : Int)
+      have hmod := sumFin_emod_eq (p : Int)
+        (fun j : Fin n => circEntry tauQ i j * circMulVec tauH tauH j)
+        (fun j : Fin n => circEntry tauQ i j)
+        (fun j => by
+          rw [Int.mul_emod, hA_line j]
+          have h1mod : (1 : Int) % (p : Int) = 1 := Int.emod_eq_of_lt (by omega) (by omega)
+          rw [Int.mul_one, Int.emod_emod])
+      rw [hmod]
+      unfold circEntry
+      have hreidx : sumFin (fun j : Fin n => tauQ ⟨(j.val + n - i.val) % n, Nat.mod_lt _ (Fin.pos i)⟩) =
+          sumFin tauQ := by
+        have hstep : sumFin (fun j : Fin n => tauQ ⟨(j.val + n - i.val) % n, Nat.mod_lt _ (Fin.pos i)⟩) =
+            sumFin (fun j : Fin n => tauQ ⟨(j.val + (n - i.val)) % n, Nat.mod_lt _ (Fin.pos j)⟩) := by
+          apply sumFin_eq_of_eq
+          intro j
+          congr 1; apply Fin.ext
+          have hi : i.val < n := i.isLt
+          have heq : j.val + n - i.val = j.val + (n - i.val) := by omega
+          rw [heq]
+        rw [hstep]
+        exact sumFin_shift (n - i.val) tauQ
+      rw [hreidx]
     rw [hQ_wt] at h1
     have hp1 : ((p : Int) + 1) % (p : Int) = 1 := by
       have : (1 : Int) < (p : Int) := by omega
@@ -343,7 +511,14 @@ theorem odd_prime_singer_upper_bound {n : Nat} (p : Nat) (hp : p ≥ 3)
         Int.mul_pos (by omega) (by omega)
       omega
     rcases hex_ge2 with ⟨k, hk_ge2, hk_ltp⟩
-    have hck := hcomm_row u k huA
+    have hck : vecMulCirc u (circConv tauQ tauH) k % (p : Int) =
+        vecMulCirc tauH tauQ k % (p : Int) := by
+      rw [vecMulCirc_circConv]
+      unfold vecMulCirc
+      exact sumFin_emod_eq (p : Int)
+        (fun j : Fin n => vecMulCirc u tauH j * circEntry tauQ j k)
+        (fun j : Fin n => tauH j * circEntry tauQ j k)
+        (fun j => by rw [Int.mul_emod, huA j, ← Int.mul_emod])
     have hub := huB k
     rw [hck] at hub
     have hcmod : vecMulCirc tauH tauQ k % (p : Int) = vecMulCirc tauH tauQ k :=

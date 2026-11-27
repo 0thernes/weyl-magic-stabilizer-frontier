@@ -2,7 +2,7 @@
 # Copyright (c) 2026 Alexander Stephen Donahue
 [package]
 name = "weyl-magic-verifier"
-version = "1.0.0"
+version = "2.0.0"
 edition = "2021"
 license = "Apache-2.0"
 description = "Zero-dependency exact verifier for Pillars I-IV of Weyl-Heisenberg magic, Clifford stabilizers, and projective-geometry Singer qudit codes (including exhaustive Q(5,2) and Q(7,2) distance certification)."

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Independent Replication Protocol (`REPLICATION.md`)
 
-Any independent researcher can reproduce every formal proof, exact computation, quantum simulation, figure, and the 21-page AMS-LaTeX monograph from a clean clone without proprietary software or credentials.
+Any independent researcher can reproduce every formal proof, exact computation, quantum simulation, figure, and the 21-page AMS-LaTeX monograph (`v2.0.0`) from a clean clone without proprietary software or credentials.
 
 ## 1. Prerequisites
 - **Lean 4.35.0** via `elan` (`leanprover/lean4:v4.35.0`; `lean/lean-toolchain` pins this automatically)
@@ -14,13 +14,14 @@ Any independent researcher can reproduce every formal proof, exact computation, 
 - *(Optional)* **Eshkol v1.3.6** (`eshkol-run -r eshkol/weyl_magic_ad.esk`)
 
 ## 2. Step-by-Step Clean-Clone Reproduction
-1. **Six-Kernel Lean 4.35.0 Formal Verification:**
+1. **Six-Kernel Lean 4.35.0 Formal Verification & Exhaustive Axiom Sweep:**
    ```bash
    cd lean
    lake build
    lake build PalomarChallenge
    lake env lean VerifyAxioms.lean > ../results/lean_axioms_local.txt
    diff -u ../results/lean_axioms.txt ../results/lean_axioms_local.txt
+   lake env lean AuditAllDecls.lean
    lake env leanchecker --fresh PalomarSolution
    lake env leanchecker-paranoid --fresh PalomarSolution
    # On Linux with bubblewrap + Palomar kernels:
@@ -39,14 +40,18 @@ Any independent researcher can reproduce every formal proof, exact computation, 
    ```bash
    mkdir -p build && gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror quantum_stack/qrng_mixer.c -o build/qrng_mixer
    node quantum_stack/moonlab_super_mub.mjs
-   gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
-       quantum_stack/qgtl_sic_metric.c third_party/qgtl/src/quantum_geometric/distributed/differential_geometry.c -lm -o build/qgtl_sic && ./build/qgtl_sic
+   gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Werror -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
+       -c quantum_stack/qgtl_sic_metric.c -o build/qgtl_sic_metric.o
+   gcc -std=c11 -O3 -Wall -Wextra -Wpedantic -Wno-unused-function -Wno-unused-variable -Ithird_party/qgtl/include -Ithird_party/qgtl/stub \
+       -c third_party/qgtl/src/quantum_geometric/distributed/differential_geometry.c -o build/qgtl_diffgeo.o
+   gcc build/qgtl_sic_metric.o build/qgtl_diffgeo.o -lm -o build/qgtl_sic && ./build/qgtl_sic
    ```
-4. **Python Oracle, Property/Differential Tests, 100% Mutation Suite & Blueprint:**
+4. **Python Oracle, Standalone Reference Diff, Schema, Numerical Claims, 100% Mutation & Blueprint:**
    ```bash
    PYTHONPATH=src:. python3 examples/quickstart_demo.py
    PYTHONPATH=src:. pytest -v tests/test_all.py
    PYTHONPATH=src:. python3 scripts/mutate.py
+   PYTHONPATH=src:. python3 scripts/verify_numerical_claims.py
    python3 scripts/check_readme_axioms.py
    python3 scripts/build_blueprint.py
    ```
@@ -63,5 +68,6 @@ Any independent researcher can reproduce every formal proof, exact computation, 
 
 | Date | Environment | Scope Verified | Result | Notes |
 | :--- | :--- | :--- | :---: | :--- |
-| 2026-11-26 | Windows 11 x86-64 (local ReFS Dev Drive) | All 9 toolchains (Lean 4.35.0 paranoid, Rust 1.94, Zig 0.17.0, GCC C11+NASM, G++ C++20, Eshkol v1.3.6, Moonlab WASM, QGTL C, Python 3.13), Tectonic 0-warning PDF, clean-room arXiv tarball, 8/8 mutation | PASS | Author baseline build (`v1.0.0`) |
-| 2026-11-26 | GitHub Actions (`ubuntu-latest`, `macos-latest`, `windows-latest`) | 6-kernel Lean 4.35.0 (`lean`, `leanchecker-paranoid`, `lean4lean`, `nanoda`, `con-leche`, `con-ron`) + tamper negative test, Rust matrix, Zig 0.17.0, C11+NASM+ASan/UBSan+100k Fuzz, C++20, Moonlab WASM, QGTL C, Python matrix, LaTeX + SLSA | PASS | Clean-room cloud CI reproduction (`v1.0.0`) |
+| 2026-11-26 | Windows 11 x86-64 (local ReFS Dev Drive) | All 9 toolchains (Lean 4.35.0 paranoid, Rust 1.94, Zig 0.17.0, GCC C11+NASM, G++ C++20, Eshkol v1.3.6, Moonlab WASM, QGTL C, Python 3.12), Tectonic 0-warning PDF, clean-room arXiv tarball, 8/8 mutation | PASS | Author baseline build (`v1.0.0`) |
+| 2026-11-26 | GitHub Actions (`ubuntu-latest`, `macos-latest`, `windows-latest`) | 6-kernel Lean 4.35.0 + tamper negative test, Rust matrix, Zig 0.17.0, C11+NASM+ASan/UBSan+100k Fuzz, C++20, Moonlab WASM, QGTL C, Python matrix, LaTeX + SLSA | PASS | Clean-room cloud CI reproduction (`v1.0.0`) |
+| 2026-11-27 | Windows 11 x86-64 (local + clean-clone cold reproduction) | All 9 toolchains + 471-decl `AuditAllDecls.lean` + standalone `reference/oracle.py` + `verify_numerical_claims.py` + Draft 2020-12 schema + OpenSSL X.509 CMS TSR + Tectonic 0-warning PDF + clean-room arXiv tarball | PASS | Three-cycle hardened release (`v2.0.0`) |

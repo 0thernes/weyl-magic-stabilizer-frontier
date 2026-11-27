@@ -62,6 +62,22 @@ namespace Vec3
   Zeta12.beq (Zeta12.mul u.v0 w.v2) (Zeta12.mul u.v2 w.v0) &&
   Zeta12.beq (Zeta12.mul u.v1 w.v2) (Zeta12.mul u.v2 w.v1)
 
+/-- Soundness of collinearity witness: any scalar multiple `scale s u` satisfies `isCollinear u (scale s u) = true`. -/
+theorem isCollinear_of_scale (s : Zeta12) (u : Vec3) :
+    isCollinear u (scale s u) = true := by
+  unfold isCollinear scale
+  have h01 : Zeta12.mul u.v0 (Zeta12.mul s u.v1) = Zeta12.mul u.v1 (Zeta12.mul s u.v0) := by
+    rw [← Zeta12.mul_assoc, Zeta12.mul_comm u.v0 s, Zeta12.mul_assoc,
+        Zeta12.mul_comm u.v0 u.v1, ← Zeta12.mul_assoc, Zeta12.mul_comm s u.v1, Zeta12.mul_assoc]
+  have h02 : Zeta12.mul u.v0 (Zeta12.mul s u.v2) = Zeta12.mul u.v2 (Zeta12.mul s u.v0) := by
+    rw [← Zeta12.mul_assoc, Zeta12.mul_comm u.v0 s, Zeta12.mul_assoc,
+        Zeta12.mul_comm u.v0 u.v2, ← Zeta12.mul_assoc, Zeta12.mul_comm s u.v2, Zeta12.mul_assoc]
+  have h12 : Zeta12.mul u.v1 (Zeta12.mul s u.v2) = Zeta12.mul u.v2 (Zeta12.mul s u.v1) := by
+    rw [← Zeta12.mul_assoc, Zeta12.mul_comm u.v1 s, Zeta12.mul_assoc,
+        Zeta12.mul_comm u.v1 u.v2, ← Zeta12.mul_assoc, Zeta12.mul_comm s u.v2, Zeta12.mul_assoc]
+  simp only [Bool.and_eq_true, Zeta12.beq_iff_eq]
+  exact ⟨⟨h01, h02⟩, h12⟩
+
 /-- Action of Weyl-Heisenberg displacement `X^p Z^q` on `Vec3`. -/
 @[expose] def actWH (p q : Nat) (v : Vec3) : Vec3 :=
   let get (k : Nat) : Zeta12 :=
@@ -240,6 +256,14 @@ structure SL2F3 where
 
 theorem allSL2F3_card : allSL2F3.length = 24 := by decide
 
+theorem allSL2F3_nodup : allSL2F3.Nodup := by decide
+
+/-- Exhaustiveness of `allSL2F3`: EVERY `2 x 2` matrix over `F_3` with `det = 1` appears in `allSL2F3`. -/
+theorem mem_allSL2F3_iff :
+    ∀ a b c d : Fin 3,
+      (a.val * d.val + 2 * (b.val * c.val)) % 3 = 1 ↔ ⟨a.val, b.val, c.val, d.val⟩ ∈ allSL2F3 := by
+  decide
+
 /-- Exact projective Clifford element `(p, q, F)` in `PCliff_3 = Z_3^2 x SL(2, F_3)`. -/
 @[ext]
 structure PCliff3 where
@@ -256,6 +280,69 @@ structure PCliff3 where
 
 theorem allPCliff3_card : allPCliff3.length = 216 := by
   simp [allPCliff3, allSL2F3_card]
+
+theorem allPCliff3_nodup : allPCliff3.Nodup := by
+  let block : Nat → List PCliff3 := fun p =>
+    ([0, 1, 2] : List Nat).flatMap fun q => allSL2F3.map fun F => PCliff3.mk p q F
+  have hmap : ∀ p q : Nat, (allSL2F3.map fun F => PCliff3.mk p q F).Nodup := fun p q =>
+    List.Pairwise.map (fun F => PCliff3.mk p q F) (fun _ _ hne heq => hne (by cases heq; rfl)) allSL2F3_nodup
+  have hqblock : ∀ p : Nat, (block p).Nodup := by
+    intro p
+    change (([0, 1, 2] : List Nat).flatMap fun q => allSL2F3.map fun F => PCliff3.mk p q F).Nodup
+    simp only [List.flatMap_cons, List.flatMap_nil, List.append_nil]
+    rw [List.nodup_append, List.nodup_append]
+    refine ⟨hmap p 0, ⟨hmap p 1, hmap p 2, ?_⟩, ?_⟩
+    · intro a ha b hb heq
+      rw [List.mem_map] at ha hb
+      rcases ha with ⟨_, _, rfl⟩; rcases hb with ⟨_, _, rfl⟩; cases heq
+    · intro a ha b hb heq
+      rw [List.mem_map] at ha; rw [List.mem_append, List.mem_map, List.mem_map] at hb
+      rcases ha with ⟨_, _, rfl⟩
+      rcases hb with ⟨_, _, rfl⟩ | ⟨_, _, rfl⟩ <;> cases heq
+  have hpval : ∀ p : Nat, ∀ g ∈ block p, g.p = p := by
+    intro p g hg
+    change g ∈ (([0, 1, 2] : List Nat).flatMap fun q => allSL2F3.map fun F => PCliff3.mk p q F) at hg
+    rw [List.mem_flatMap] at hg
+    rcases hg with ⟨_, _, h2⟩
+    rw [List.mem_map] at h2
+    rcases h2 with ⟨_, _, rfl⟩
+    rfl
+  have hall : allPCliff3 = block 0 ++ (block 1 ++ block 2) := by
+    show (([0, 1, 2] : List Nat).flatMap block) = block 0 ++ (block 1 ++ block 2)
+    simp only [List.flatMap_cons, List.flatMap_nil, List.append_nil]
+  rw [hall, List.nodup_append, List.nodup_append]
+  refine ⟨hqblock 0, ⟨hqblock 1, hqblock 2, ?_⟩, ?_⟩
+  · intro a ha b hb heq
+    have h1 := hpval 1 a ha; have h2 := hpval 2 b hb; rw [heq] at h1; omega
+  · intro a ha b hb heq
+    have h0 := hpval 0 a ha
+    rw [List.mem_append] at hb
+    cases hb with
+    | inl h => have h1 := hpval 1 b h; rw [heq] at h0; omega
+    | inr h => have h2 := hpval 2 b h; rw [heq] at h0; omega
+
+/-- Exhaustiveness of `allPCliff3`: EVERY `(p, q, F)` in `Z_3^2 x SL(2, F_3)` appears in `allPCliff3`. -/
+theorem mem_allPCliff3_iff :
+    ∀ p q a b c d : Fin 3,
+      (a.val * d.val + 2 * (b.val * c.val)) % 3 = 1 ↔
+        ⟨p.val, q.val, ⟨a.val, b.val, c.val, d.val⟩⟩ ∈ allPCliff3 := by
+  intro p q a b c d
+  rw [mem_allSL2F3_iff a b c d]
+  have hp : p.val ∈ ([0, 1, 2] : List Nat) := by
+    rcases p with ⟨pv, hpv⟩
+    dsimp only
+    match pv with | 0 | 1 | 2 => decide | _ + 3 => omega
+  have hq : q.val ∈ ([0, 1, 2] : List Nat) := by
+    rcases q with ⟨qv, hqv⟩
+    dsimp only
+    match qv with | 0 | 1 | 2 => decide | _ + 3 => omega
+  simp only [allPCliff3, List.mem_flatMap, List.mem_map]
+  constructor
+  · intro hF
+    exact ⟨p.val, hp, q.val, hq, ⟨a.val, b.val, c.val, d.val⟩, hF, rfl⟩
+  · rintro ⟨_, _, _, _, F', hF', heq⟩
+    cases heq
+    exact hF'
 
 /-- Exact scaled metaplectic matrix entry `M_F[y, x] in Z[omega_3]`. -/
 @[expose] def metaEntry (F : SL2F3) (y x : Nat) : Zeta12 :=
