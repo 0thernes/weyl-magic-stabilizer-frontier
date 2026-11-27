@@ -2,7 +2,7 @@
 # Red-Team & Independent Audit Review 001 (`docs/reviews/001-red-team-audit.md`)
 
 - **Date:** 2026-11-26
-- **Scope:** Full pre-release adversarial review of `weyl-magic-stabilizer-frontier` (`0TH-2026-020`, `v1.0.0`) across mathematics, Lean 4.35.0 kernel soundness, statement fidelity, native memory safety, quantum stack honesty, bibliography accuracy, and Build Standard v1.2.0 compliance.
+- **Scope:** Full pre-release adversarial review of `weyl-magic-stabilizer-frontier` (`0TH-2026-021`, `v1.0.0`) across mathematics, Lean 4.35.0 kernel soundness, statement fidelity, native memory safety, quantum stack honesty, bibliography accuracy, and Build Standard v1.2.0 compliance.
 - **Methodology:** Playbook v1.3 10-lens red-team protocol + Build Standard 10 finding classes (`bug, error, issue, problem, concern, dilemma, conflict, gap, hole, blindspot`) across three full hardening cycles.
 
 ## Key Red-Team Findings & Resolutions

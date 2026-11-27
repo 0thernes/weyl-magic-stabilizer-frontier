@@ -37,13 +37,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          cp data/MANIFEST.sha256 data_MANIFEST.sha256
           gh release create "${GITHUB_REF_NAME}" \
             dist/Donahue_2026_weyl_magic_stabilizer_frontier.pdf \
             dist/arxiv_submission.tar.gz \
             MANIFEST.sha256 \
-            data/MANIFEST.sha256 \
+            data_MANIFEST.sha256 \
             data/MANIFEST.sha256.tsr \
             data/MANIFEST.sha256.ots \
             SHA256SUMS \
-            --title "${GITHUB_REF_NAME} — Weyl-Heisenberg Magic, Clifford Stabilizers & Singer Codes (0TH-2026-020)" \
+            --title "${GITHUB_REF_NAME} — Weyl-Heisenberg Magic, Clifford Stabilizers & Singer Codes (0TH-2026-021)" \
             --generate-notes

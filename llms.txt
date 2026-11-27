@@ -1,11 +1,11 @@
-# weyl-magic-stabilizer-frontier (0TH-2026-020)
+# weyl-magic-stabilizer-frontier (0TH-2026-021)
 
 > Zero-Mathlib Lean 4.35.0 six-kernel formalization (14 headline theorems, 15 Palomar targets, 31 audited declarations) and 9-language polyglot/quantum verification stack resolving a connected chain of four 2026 open problems across Weyl-Heisenberg SIC-Clifford stabilizers, discrete Wigner mana, Alltop stabilizer Rényi entropy, and projective-geometry Singer qudit codes.
 
 - Author: Alexander Stephen Donahue (Independent Researcher, Spokane, WA, USA; ORCID 0009-0006-8168-9648)
 - Repository: https://github.com/0thernes/weyl-magic-stabilizer-frontier
 - Interactive Observatory & Lean Blueprint: https://0thernes.github.io/weyl-magic-stabilizer-frontier/
-- Master Archive Entry: 0TH-2026-020 (https://github.com/0thernes/0thernes-research-archive)
+- Master Archive Entry: 0TH-2026-021 (https://github.com/0thernes/0thernes-research-archive)
 
 ## Core Artifacts
 - [README.md](README.md): Executive summary, verbatim `#print axioms` proof block, 9-language quickstart

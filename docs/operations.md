@@ -11,7 +11,7 @@
 - **Independent Time-Stamping:** `data/MANIFEST.sha256` is sealed with both a DigiCert RFC 3161 TSA token (`data/MANIFEST.sha256.tsr`) and a 3-calendar Bitcoin OpenTimestamps proof (`data/MANIFEST.sha256.ots`), verified via `python3 scripts/stamp_timestamps.py --verify --negative-test`.
 - **Offsite Git Mirror & Archival Bundle:**
   1. **Primary Remote:** `https://github.com/0thernes/weyl-magic-stabilizer-frontier`
-  2. **Master Research Archive Submodule Mirror:** Pinned commit + frozen PDF registered as `0TH-2026-020` in `https://github.com/0thernes/0thernes-research-archive`
+  2. **Master Research Archive Submodule Mirror:** Pinned commit + frozen PDF registered as `0TH-2026-021` in `https://github.com/0thernes/0thernes-research-archive`
   3. **Public Preservation Mirror:** Requested archival snapshot on Software Heritage (`https://archive.softwareheritage.org/`)
   4. **Offline Git Bundle Backup:** Generate a self-contained single-file cold backup at any time via:
      ```bash

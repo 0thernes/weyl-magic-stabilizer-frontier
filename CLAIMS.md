@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Structured Claims Ledger (`CLAIMS.md`)
 
-Every mathematical and computational claim in `weyl-magic-stabilizer-frontier` (`0TH-2026-020`) is listed below with its exact verification class, machine-checked artifact, and explicit falsification condition ("what would prove us wrong").
+Every mathematical and computational claim in `weyl-magic-stabilizer-frontier` (`0TH-2026-021`) is listed below with its exact verification class, machine-checked artifact, and explicit falsification condition ("what would prove us wrong").
 
 ## Verification Classes
 - **`[LEAN-6K]`** — Machine-checked in zero-Mathlib Lean 4.35.0 (`lean/`), zero `sorry`, zero `admit`, zero `native_decide`, zero custom axioms, verified within `{propext, Classical.choice, Quot.sound}` and replayed across 6 independent kernels (`lean`, `leanchecker-paranoid`, `lean4lean`, `nanoda`, `con-leche`, `con-ron`).

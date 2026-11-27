@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 schema_version: "1.0"
-id: "0TH-2026-020"
+id: "0TH-2026-021"
 repository: "https://github.com/0thernes/weyl-magic-stabilizer-frontier"
 version: "1.0.0"
 title: "Refutation of the SIC-Clifford Stabilizer Conjecture, Trace-Norm Spectral Locking of Mana, All-Prime Alltop Magic Attainment, and Exact Distance Settlement of Projective-Geometry Singer Qudit Codes"

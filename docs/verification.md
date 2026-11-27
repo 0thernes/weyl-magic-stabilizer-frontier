@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Verification Ledger & Tool Matrix (`docs/verification.md`)
 
-Complete summary of every automated verification check executed locally and in GitHub Actions CI for `weyl-magic-stabilizer-frontier` (`0TH-2026-020`, `v1.0.0`).
+Complete summary of every automated verification check executed locally and in GitHub Actions CI for `weyl-magic-stabilizer-frontier` (`0TH-2026-021`, `v1.0.0`).
 
 | Layer | Command | Evidence File | Verified Result |
 | :--- | :--- | :--- | :--- |

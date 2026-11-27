@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Limitations, Boundaries, and Real-vs-Metaphor Audit (`LIMITATIONS.md`)
 
-To uphold absolute epistemic clarity (Playbook v1.3 & Build Standard B41), this document records every explicit boundary, non-claim, and scope constraint of `weyl-magic-stabilizer-frontier` (`0TH-2026-020`).
+To uphold absolute epistemic clarity (Playbook v1.3 & Build Standard B41), this document records every explicit boundary, non-claim, and scope constraint of `weyl-magic-stabilizer-frontier` (`0TH-2026-021`).
 
 ## 1. Explicit Non-Claims (What We Do NOT Prove)
 1. **Mega-Atlas Grand Problems Retired: `0 / 1,900`.** None of the 1,900 overarching Mega-Atlas grand open problems are retired by this work (see [`docs/MEGA_ATLAS_CROSSCHECK.md`](docs/MEGA_ATLAS_CROSSCHECK.md)).

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Agent & Contributor Guide (`AGENTS.md`)
 
-This repository (`weyl-magic-stabilizer-frontier`, Archive ID `0TH-2026-020`) is a formally verified mathematical and quantum-information research project following the **Build Standard for LLMs v1.2.0** (`repo.yaml`, `scripts/audit-checks.tsv`).
+This repository (`weyl-magic-stabilizer-frontier`, Archive ID `0TH-2026-021`) is a formally verified mathematical and quantum-information research project following the **Build Standard for LLMs v1.2.0** (`repo.yaml`, `scripts/audit-checks.tsv`).
 
 ## Non-Negotiable Rules
 1. **Lean 4.35.0 Strictness (`lean/`):**

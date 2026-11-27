@@ -23,7 +23,7 @@
     <line x1="1050" y1="135" x2="1050" y2="495"/>
     <circle cx="1175" cy="348" r="8" fill="#D55E00" stroke="#FFFFFF" stroke-width="2"/>
   </g>
-  <text x="68" y="88" fill="#56B4E9" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" letter-spacing="1.6">0TH-2026-020 · LEAN 4.35.0 (6 KERNELS) · RUST · ZIG · C11+NASM · C++20 · ESHKOL · MOONLAB · QGTL</text>
+  <text x="68" y="88" fill="#56B4E9" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="20" font-weight="700" letter-spacing="1.6">0TH-2026-021 · LEAN 4.35.0 (6 KERNELS) · RUST · ZIG · C11+NASM · C++20 · ESHKOL · MOONLAB · QGTL</text>
   <text x="68" y="168" fill="#F8FAFC" font-family="Georgia, serif" font-size="44" font-weight="700">Weyl–Heisenberg Magic, Clifford</text>
   <text x="68" y="222" fill="#F8FAFC" font-family="Georgia, serif" font-size="44" font-weight="700">Stabilizers &amp; Singer Qudit Codes</text>
   <text x="68" y="274" fill="#CBD5E1" font-family="system-ui, -apple-system, sans-serif" font-size="23">Four Linked 2026 Open Problems Resolved Across 6 Kernels &amp; 9 Toolchains</text>

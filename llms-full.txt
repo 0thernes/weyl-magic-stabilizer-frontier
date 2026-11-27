@@ -1,4 +1,4 @@
-# weyl-magic-stabilizer-frontier (0TH-2026-020) — Full LLM Context
+# weyl-magic-stabilizer-frontier (0TH-2026-021) — Full LLM Context
 
 ## 1. Scientific Summary (Four Linked 2026 Pillars)
 1. **Pillar I — Refutation of Erew & Goldstein Conjecture 1 (`arXiv:2512.19657v2`) [LEAN-6K]:**

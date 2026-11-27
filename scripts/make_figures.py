@@ -371,7 +371,7 @@ def make_fig5() -> None:
         ax.annotate("", xy=(tx, 2.76), xytext=(tx, 3.04), arrowprops={"arrowstyle": "->", "color": OI["gray"], "lw": 1.0})
 
     # Bottom tier: Cryptographic Provenance & Archive
-    box(0.10, 0.10, 10.40, 0.96, "Layer 4: Reproducible Publication, Cryptographic Provenance & Archive Registration (0TH-2026-020)",
+    box(0.10, 0.10, 10.40, 0.96, "Layer 4: Reproducible Publication, Cryptographic Provenance & Archive Registration (0TH-2026-021)",
         "AMS-LaTeX Monograph (0.00pt overfull)  |  Live DOI & arXiv Title/Retraction Audit  |  GitHub Actions 6-Kernel CI + SLSA Provenance\nDual License (Apache-2.0 Code / CC-BY-4.0 Docs)  |  SHA-256 Manifest  |  DigiCert RFC 3161 + Bitcoin OpenTimestamps",
         OI["black"], "#F5F5F5")
     for mx in [1.75, 5.30, 8.85]:

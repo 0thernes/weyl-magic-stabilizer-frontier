@@ -6,7 +6,7 @@ description: "Zero-Mathlib Lean 4.35.0 six-kernel formalization (14 headline the
 owner: "0thernes"
 year: "2026"
 version: "1.0.0"
-archive_id: "0TH-2026-020"
+archive_id: "0TH-2026-021"
 project_type: research
 stack: [lean4, rust, zig, c11, nasm, cpp20, eshkol, moonlab, qgtl, python, latex, web]
 author:

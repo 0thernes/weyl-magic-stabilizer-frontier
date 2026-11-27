@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Mega-Atlas Crosscheck (`docs/MEGA_ATLAS_CROSSCHECK.md`)
 
-**Overarching Mega-Atlas Grand Problems Retired by `0TH-2026-020`: `0 / 1,900`.**
+**Overarching Mega-Atlas Grand Problems Retired by `0TH-2026-021`: `0 / 1,900`.**
 
 Following the Defensible Independent AI Research Playbook v1.3, we explicitly cross-check our results against adjacent classical grand open problems to prevent scope inflation:
 
-| Adjacent Grand Problem | Status After `0TH-2026-020` | Exact Boundary Explanation |
+| Adjacent Grand Problem | Status After `0TH-2026-021` | Exact Boundary Explanation |
 | :--- | :---: | :--- |
 | **Zauner's Conjecture** (existence of WH-SIC POVMs in every finite dimension $d\ge 2$) | **OPEN (0 retired)** | `T1c` proves an *eigenspace-dimension obstruction* ($m_\lambda\ge 2$) for Zauner Clifford symmetries, refuting Erew–Goldstein Conjecture 1, without settling existence of SIC fiducials in arbitrary $d$. |
 | **Global $M_2^{\max}$ in Arbitrary Dimension** | **OPEN (0 retired)** | `T3a`–`T3d` settle universal Alltop attainment ($d\ge 5$ prime, all $n$) and sharpness of primality/$n=2$ (composite $d=4$ and 3-qubit Hoggar ruptures), without establishing the global upper bound for prime $d\ge 5$. |

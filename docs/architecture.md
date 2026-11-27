@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # System & Proof Architecture (`docs/architecture.md`)
 
-`weyl-magic-stabilizer-frontier` (`0TH-2026-020`) separates its formal trust base, exact native verification, physical/differential-geometry cross-checks, and publication provenance into four clean, independently auditable layers.
+`weyl-magic-stabilizer-frontier` (`0TH-2026-021`) separates its formal trust base, exact native verification, physical/differential-geometry cross-checks, and publication provenance into four clean, independently auditable layers.
 
 ```mermaid
 flowchart TD

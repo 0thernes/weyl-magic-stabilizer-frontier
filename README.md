@@ -1,5 +1,5 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
-# Weyl–Heisenberg Magic, Clifford Stabilizers, and Projective-Geometry Singer Codes (`0TH-2026-020`)
+# Weyl–Heisenberg Magic, Clifford Stabilizers, and Projective-Geometry Singer Codes (`0TH-2026-021`)
 
 [![Lean 4.35.0](https://img.shields.io/badge/Lean-4.35.0%20(6%20Kernels)-0072B2?style=flat-square)](lean/)
 [![CI](https://img.shields.io/github/actions/workflow/status/0thernes/weyl-magic-stabilizer-frontier/ci.yml?branch=main&label=CI%20(6-Kernel%20%2B%209-Lang)&style=flat-square)](https://github.com/0thernes/weyl-magic-stabilizer-frontier/actions/workflows/ci.yml)
@@ -14,7 +14,7 @@ Zero-Mathlib Lean 4.35.0 six-kernel formalization (14 headline theorems, 15 Palo
 
 > **Author:** Alexander Stephen Donahue · Independent Researcher, Spokane, WA, USA · ORCID [`0009-0006-8168-9648`](https://orcid.org/0009-0006-8168-9648) · `0_0@0thernes.art`  
 > **Monograph (21 pp., 0 warnings):** [`dist/Donahue_2026_weyl_magic_stabilizer_frontier.pdf`](dist/Donahue_2026_weyl_magic_stabilizer_frontier.pdf) · **Clean-Room arXiv Source:** [`dist/arxiv_submission.tar.gz`](dist/arxiv_submission.tar.gz)  
-> **Interactive 3D Observatory & Lean Blueprint:** [0thernes.github.io/weyl-magic-stabilizer-frontier](https://0thernes.github.io/weyl-magic-stabilizer-frontier/) · **Master Archive:** `0TH-2026-020` in [`0thernes-research-archive`](https://github.com/0thernes/0thernes-research-archive)
+> **Interactive 3D Observatory & Lean Blueprint:** [0thernes.github.io/weyl-magic-stabilizer-frontier](https://0thernes.github.io/weyl-magic-stabilizer-frontier/) · **Master Archive:** `0TH-2026-021` in [`0thernes-research-archive`](https://github.com/0thernes/0thernes-research-archive)
 
 ---
 

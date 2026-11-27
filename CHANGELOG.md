@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Changelog
 
-All notable changes to `weyl-magic-stabilizer-frontier` (`0TH-2026-020`) are documented in this file following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and Semantic Versioning.
+All notable changes to `weyl-magic-stabilizer-frontier` (`0TH-2026-021`) are documented in this file following [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and Semantic Versioning.
 
 ## [1.0.0] - 2026-11-26
 
