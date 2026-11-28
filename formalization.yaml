@@ -1,0 +1,154 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+# SPDX-License-Identifier: Apache-2.0
+version: v0.4
+release_version: 2.0.0
+project:
+  name: Refutation of the SIC-Clifford Stabilizer Conjecture, Trace-Norm Spectral Locking of Mana, All-Prime
+    Alltop Magic Attainment, and Exact Distance Settlement of Projective-Geometry Singer Qudit Codes
+  description: 'Zero-Mathlib Lean 4.35.0 formalization of four linked pillars in discrete quantum magic
+    and stabilizer geometry: (1) refutation of the SIC-Clifford stabilizer conjecture; (2) trace-norm
+    spectral locking of Mana; (3) all-prime Alltop magic attainment; and (4) exact distance settlement
+    of projective-geometry Singer qudit codes, audited strictly within [propext, Classical.choice, Quot.sound].
+    Explicitly leaves open low-mana Conjecture 2, general prime d >= 5 global M_2 upper bounds, Zauner''s
+    Conjecture, and Conjecture 27 lower bounds for p >= 11.'
+  authors:
+  - Alexander Stephen Donahue
+  responsible_maintainers:
+  - Alexander Stephen Donahue
+  license: Apache-2.0
+  release_version: 2.0.0
+  orcid: 0009-0006-8168-9648
+classification:
+  arxiv:
+  - quant-ph
+  - math.CO
+  - cs.LO
+  msc2020:
+  - 81P45
+  - 81P70
+  - 51E21
+  - 03B35
+sources:
+- title: Refutation of the SIC-Clifford Stabilizer Conjecture, Trace-Norm Spectral Locking of Mana, All-Prime
+    Alltop Magic Attainment, and Exact Distance Settlement of Projective-Geometry Singer Qudit Codes
+  authors:
+  - Alexander Stephen Donahue
+  id: https://github.com/0thernes/weyl-magic-stabilizer-frontier
+  type: original-proof
+  relationship: other
+  author_endorsement: participated
+  note: Original zero-Mathlib Lean 4.35.0 formalization and preprint (v2.0.0; SWHID swh:1:snp:f5d459ee8888a15fc0310532d3c6ba402835c939).
+- title: SIC-POVMs and Clifford stabilizers (arXiv:2512.19657v2)
+  authors:
+  - Erew
+  - Goldstein
+  id: https://arxiv.org/abs/2512.19657v2
+  type: preprint
+  relationship: background
+  author_endorsement: not-contacted
+- title: Two-qudit maximal magic Pareto frontier (arXiv:2607.07197)
+  authors:
+  - Knipfer
+  - Roman
+  - Matcheva
+  - Matchev
+  id: https://arxiv.org/abs/2607.07197
+  type: preprint
+  relationship: background
+  author_endorsement: not-contacted
+- title: Projective-geometry Singer qudit codes (arXiv:2610.02392)
+  authors:
+  - Kulhandjian
+  - Hanzo
+  id: https://arxiv.org/abs/2610.02392
+  type: preprint
+  relationship: background
+  author_endorsement: not-contacted
+automation:
+  methods:
+  - method: manual
+    notes: Alexander Stephen Donahue directed problem selection, mathematical scoping, definition/statement-fidelity
+      audit, and verification governance.
+  - method: agent
+    models:
+    - Gemini
+    framework: Antigravity
+    notes: Drafted zero-Mathlib Lean 4.35.0 proof scripts, nine-language polyglot verifiers, and monograph
+      prose under human supervision.
+review:
+  status: self-assessed
+  notes: Not externally peer-reviewed. Machine-checked across 6 independent Lean 4.35.0 proof kernels.
+prover:
+  name: Lean 4
+  version: 4.35.0
+  toolchain: leanprover/lean4:v4.35.0
+  mathlib: false
+  zero_mathlib: true
+  module_system: true
+verification:
+  allowed_axioms:
+  - propext
+  - Classical.choice
+  - Quot.sound
+  forbid_sorry: true
+  forbid_admit: true
+  forbid_native_decide: true
+  forbid_custom_axioms: true
+  independent_kernels:
+  - lean (Lean 4.35.0 C++ kernel)
+  - leanchecker-paranoid
+  - lean4lean
+  - nanoda
+  - con-leche
+  - con-ron
+  statement_contract:
+    challenge: PalomarChallenge
+    solution: PalomarSolution
+    comparator_config: comparator.json
+    comparator_flags: --paranoid
+theorems:
+- id: T1a
+  name: qutrit_rational_circle_wh_sic
+  module: WeylMagicFrontier.Pillar1_SICRefutation
+- id: T1b
+  name: qutrit_sic_refutes_clifford_stabilizer_conjecture
+  module: WeylMagicFrontier.Pillar1_SICRefutation
+- id: T1c
+  name: zauner_eigenspace_dim_universal_obstruction
+  module: WeylMagicFrontier.Pillar1_SICRefutation
+- id: T1d
+  name: dim4_scott_grassl_4a_obstruction
+  module: WeylMagicFrontier.Pillar1_SICRefutation
+- id: T2a
+  name: sign_witness_trace_sq_identity
+  module: WeylMagicFrontier.Pillar2_ManaLock
+- id: T2b
+  name: trace_norm_spectral_lock
+  module: WeylMagicFrontier.Pillar2_ManaLock
+- id: T2c
+  name: cubic_bijection_mod3_eq2 / cubic_origin_wigner_concrete_dichotomy
+  module: WeylMagicFrontier.Pillar2_ManaLock
+- id: T3a
+  name: alltop_fourth_moment_exact / AlltopFieldModel.cube_add_identity / six_mul_eq_zero_imp
+  module: WeylMagicFrontier.Pillar3_AlltopMagic
+- id: T3b
+  name: alltop_clifford_unification
+  module: WeylMagicFrontier.Pillar3_AlltopMagic
+- id: T3c
+  name: welch_bound_and_mub_gap / hoggar_3qubit_beats_mub / composite_d4_beats_mub
+  module: WeylMagicFrontier.Pillar3_AlltopMagic
+- id: T3d
+  name: alltop_d5_saddle_instability
+  module: WeylMagicFrontier.Pillar3_AlltopMagic
+- id: T4a
+  name: conjecture24_nondivisibility / remark21_plus_sign_dichotomy / binary_singer_exact_distance_two
+  module: WeylMagicFrontier.Pillar4_SingerCodes
+- id: T4b
+  name: odd_prime_singer_upper_bound
+  module: WeylMagicFrontier.Pillar4_SingerCodes
+- id: T4c
+  name: conj24_concrete_d2_to_d5 / qp2_concrete_flagship_witnesses
+  module: WeylMagicFrontier.Pillar4_SingerCodes
+limitations: Does not settle low-mana Conjecture 2 (Mana <= (1/2) ln(D/2)), general prime d >= 5 global
+  M_2 upper bound, Zauner's Conjecture, or Conjecture 27 lower bound for p >= 11. Full boundaries documented
+  in LIMITATIONS.md and docs/statement-fidelity.md.
