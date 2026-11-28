@@ -260,7 +260,9 @@ def test_version_governance_accessibility_and_csp() -> None:
     assert f'version = "{ver}"' in (ROOT / "pyproject.toml").read_text(encoding="utf-8")
     assert f'version = "{ver}"' in (ROOT / "rust" / "Cargo.toml").read_text(encoding="utf-8")
     assert f'version = "{ver}"' in (ROOT / "lean" / "lakefile.toml").read_text(encoding="utf-8")
-    assert f'version: "{ver}"' in (ROOT / "lean" / "formalization.yaml").read_text(encoding="utf-8")
+    _fy_txt = (ROOT / "lean" / "formalization.yaml").read_text(encoding="utf-8")
+    assert 'version: v0.4' in _fy_txt or 'version: "v0.4"' in _fy_txt
+    assert f'release_version: "{ver}"' in _fy_txt or f'release_version: {ver}' in _fy_txt
 
     # WCAG 2.2 AA + strict zero-CDN CSP checks on BOTH docs/site/ pages
     for site_file in ("index.html", "blueprint.html"):
